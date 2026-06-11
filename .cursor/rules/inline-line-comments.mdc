@@ -1,0 +1,37 @@
+---
+description: Add inline comments explaining what each line of code does
+alwaysApply: true
+---
+
+# Inline Line-by-Line Comments
+
+When writing or modifying code for the user, add a short inline comment on **every line** explaining what that line does.
+
+## Format
+
+Place the comment at the end of the line (or on the line above if the line is too long):
+
+```typescript
+const total = items.reduce((sum, item) => sum + item.price, 0); // Sum all item prices into a running total
+```
+
+```python
+response = requests.get(url, timeout=30)  # Fetch data from the URL with a 30-second timeout
+```
+
+## Guidelines
+
+- Keep each comment brief (a few words to one short sentence)
+- Explain **what** the line does, not restate the syntax
+- Apply to new code and meaningful edits — not to unchanged lines in large files
+- Use the language's standard comment syntax (`//`, `#`, `<!-- -->`, etc.)
+- For multi-line blocks (imports, object literals, JSX), comment each line individually
+- Skip blank lines and closing braces that add no behavior on their own
+
+## Example
+
+```javascript
+const users = await db.query('SELECT * FROM users'); // Load all users from the database
+const active = users.filter(u => u.isActive);        // Keep only users marked as active
+return active.map(u => u.email);                   // Return a list of active user emails
+```

@@ -1,0 +1,46 @@
+<!DOCTYPE html> <!-- Tell the browser this is an HTML5 document -->
+<html lang="en"> <!-- Root element; lang helps screen readers and search engines -->
+<head> <!-- Document metadata section (not visible on page) -->
+  <meta charset="UTF-8"> <!-- Use UTF-8 character encoding for special characters -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Make layout responsive on mobile -->
+  <title>Events | The Cigar Club Nashville</title> <!-- Text shown in browser tab -->
+  <link rel="stylesheet" href="css/styles.css"> <!-- Load shared site styles -->
+</head>
+<body> <!-- Visible page content starts here -->
+
+  <header> <!-- Top navigation bar -->
+    <nav> <!-- Navigation container -->
+      <a href="index.html" class="logo">The Cigar Club Nashville</a> <!-- Logo links back to home -->
+      <ul class="nav-links"> <!-- List of navigation links -->
+        <li><a href="index.html">Home</a></li> <!-- Link to home page -->
+        <li><a href="events.html" class="active">Events</a></li> <!-- Current page; marked active -->
+      </ul>
+    </nav>
+  </header>
+
+  <main> <!-- Main page content -->
+    <h1>Upcoming Events</h1> <!-- Page title -->
+    <p class="page-intro"> <!-- Short description below the title -->
+      Join us for tastings, lounge nights, and special releases. Our calendar updates automatically — check back often for new events.
+    </p>
+
+    <div class="calendar-wrapper"> <!-- Responsive container for the embedded calendar -->
+      <!-- Google Calendar embed: staff add/edit events in Google Calendar; changes appear here automatically -->
+      <iframe
+        src="https://calendar.google.com/calendar/embed?src=9d624c02bc316b9c422aa30a1f3f580a11b1a85b2412df9d30bf675adfcdf607%40group.calendar.google.com&ctz=America%2FChicago"
+        style="border: 0"
+        width="800"
+        height="600"
+        frameborder="0"
+        scrolling="no"
+        title="The Cigar Club Nashville Events Calendar">
+      </iframe>
+    </div>
+  </main>
+
+  <footer> <!-- Site footer -->
+    <p>&copy; 2026 The Cigar Club Nashville. All rights reserved.</p> <!-- Copyright notice -->
+  </footer>
+
+</body>
+</html>

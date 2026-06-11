@@ -1,0 +1,369 @@
+/* Reset default browser margin and padding on all elements */
+* {
+  margin: 0; /* Remove outer spacing */
+  padding: 0; /* Remove inner spacing */
+  box-sizing: border-box; /* Include padding and border in width/height */
+}
+
+/* Set base typography and page background */
+body {
+  font-family: Georgia, "Times New Roman", serif; /* Classic serif font for a cigar lounge feel */
+  background-color: #1a1410; /* Dark brown background */
+  color: #e8dcc8; /* Warm cream text color */
+  line-height: 1.6; /* Comfortable reading line spacing */
+  min-height: 100vh; /* Ensure page fills at least the full viewport height */
+}
+
+/* Style the top navigation bar */
+header {
+  background-color: #0f0b08; /* Darker header background */
+  border-bottom: 1px solid #3d2e1f; /* Subtle bottom border */
+  padding: 1rem 2rem; /* Vertical and horizontal padding */
+}
+
+/* Lay out logo and nav links horizontally */
+nav {
+  max-width: 1100px; /* Limit nav width on large screens */
+  margin: 0 auto; /* Center nav horizontally */
+  display: flex; /* Place children in a row */
+  justify-content: space-between; /* Push logo left and links right */
+  align-items: center; /* Vertically center nav items */
+}
+
+/* Style the site name / logo link */
+.logo {
+  font-size: 1.4rem; /* Slightly larger site title */
+  font-weight: bold; /* Emphasize the brand name */
+  color: #c9a96e; /* Gold accent color */
+  text-decoration: none; /* Remove underline from link */
+  letter-spacing: 0.05em; /* Slight spacing between letters */
+}
+
+/* Style navigation link list */
+.nav-links {
+  list-style: none; /* Remove bullet points */
+  display: flex; /* Display links in a row */
+  gap: 2rem; /* Space between nav links */
+}
+
+/* Style individual navigation links */
+.nav-links a {
+  color: #e8dcc8; /* Cream link color */
+  text-decoration: none; /* Remove underline */
+  font-size: 0.95rem; /* Slightly smaller nav text */
+  letter-spacing: 0.03em; /* Subtle letter spacing */
+  transition: color 0.2s; /* Smooth color change on hover */
+}
+
+/* Highlight nav link on hover */
+.nav-links a:hover,
+.nav-links a.active {
+  color: #c9a96e; /* Gold color when hovered or active */
+}
+
+/* Style the main content area */
+main {
+  max-width: 1100px; /* Limit content width */
+  margin: 0 auto; /* Center content horizontally */
+  padding: 3rem 2rem; /* Space around page content */
+}
+
+/* Style page headings */
+h1 {
+  font-size: 2.2rem; /* Large page title */
+  color: #c9a96e; /* Gold heading color */
+  margin-bottom: 0.75rem; /* Space below heading */
+}
+
+/* Style introductory paragraph under headings */
+.page-intro {
+  color: #b0a090; /* Muted text for descriptions */
+  margin-bottom: 2rem; /* Space before calendar section */
+  max-width: 600px; /* Keep intro text readable width */
+}
+
+/* Wrapper around the Google Calendar iframe */
+.calendar-wrapper {
+  max-width: 100%; /* Prevent overflow on small screens */
+  overflow-x: auto; /* Allow horizontal scroll if calendar is wider than screen */
+  background-color: #241c14; /* Slightly lighter panel behind calendar */
+  border: 1px solid #3d2e1f; /* Subtle border around calendar area */
+  border-radius: 6px; /* Rounded corners */
+  padding: 1rem; /* Inner spacing around iframe */
+}
+
+/* Style the embedded Google Calendar iframe */
+.calendar-wrapper iframe {
+  display: block; /* Remove inline gap below iframe */
+  width: 100%; /* Fill available container width */
+  max-width: 800px; /* Cap width at Google embed default size */
+  height: 600px; /* Fixed calendar height */
+  border: 0; /* Remove iframe border */
+  margin: 0 auto; /* Center iframe in wrapper */
+}
+
+/* Style the page footer */
+footer {
+  text-align: center; /* Center footer text */
+  padding: 2rem; /* Space around footer content */
+  color: #6b5c4e; /* Muted footer text */
+  font-size: 0.85rem; /* Smaller footer text */
+  border-top: 1px solid #3d2e1f; /* Top border separating footer */
+  margin-top: 2rem; /* Space above footer */
+}
+
+/* Hero section on the home page */
+.hero {
+  text-align: center; /* Center hero content */
+  padding: 4rem 1rem; /* Vertical and horizontal padding */
+}
+
+/* Style the hero headline */
+.hero h1 {
+  font-size: 2.8rem; /* Large welcome headline */
+  margin-bottom: 1rem; /* Space below headline */
+}
+
+/* Style the hero tagline */
+.hero p {
+  color: #b0a090; /* Muted tagline color */
+  font-size: 1.1rem; /* Slightly larger body text */
+  max-width: 500px; /* Limit tagline width */
+  margin: 0 auto 2rem; /* Center and add space below */
+}
+
+/* Style the call-to-action button on home page */
+.btn {
+  display: inline-block; /* Allow padding and sizing */
+  background-color: #c9a96e; /* Gold button background */
+  color: #1a1410; /* Dark text on gold button */
+  padding: 0.75rem 1.75rem; /* Button inner spacing */
+  text-decoration: none; /* Remove underline */
+  border-radius: 4px; /* Slightly rounded button corners */
+  font-size: 0.95rem; /* Button text size */
+  letter-spacing: 0.05em; /* Spaced button label */
+  transition: background-color 0.2s; /* Smooth hover transition */
+}
+
+/* Darken button on hover */
+.btn:hover {
+  background-color: #b8944f; /* Darker gold on hover */
+}
+
+/* ===== Home page (mockup layout) ===== */
+
+/* Black background for the home page only */
+body.home {
+  background-color: #000000; /* Solid black main area per mockup */
+  color: #e8dcc8; /* Cream text color */
+}
+
+/* Maroon header container with room for overlapping logo */
+body.home .site-header {
+  position: relative; /* Anchor absolutely positioned logo tab */
+  z-index: 10; /* Keep header above card content */
+}
+
+/* Full-width maroon navigation bar */
+body.home .header-bar {
+  display: flex; /* Lay out left nav and right CTA in a row */
+  justify-content: space-between; /* Push nav groups to opposite sides */
+  align-items: center; /* Vertically center nav pills */
+  height: 64px; /* Fixed header bar height */
+  padding: 0 3rem; /* Horizontal padding inside header */
+  background-color: #7a2222; /* Maroon header color from mockup */
+}
+
+/* Left group of three small nav pills */
+body.home .nav-left {
+  display: flex; /* Arrange pills in a horizontal row */
+  gap: 1.25rem; /* Space between left nav pills */
+}
+
+/* Base style for tan rounded navigation pills */
+body.home .nav-pill {
+  display: block; /* Give pills explicit width and height */
+  background-color: #c4a57b; /* Tan/gold pill color */
+  border-radius: 14px; /* Rounded rectangle shape */
+  text-decoration: none; /* Remove underline if pill is a link */
+  transition: background-color 0.2s; /* Smooth hover color change */
+}
+
+/* Slightly darken nav pill on hover */
+body.home .nav-pill:hover {
+  background-color: #b89460; /* Darker tan on hover */
+}
+
+/* Small nav pill size (left side) */
+body.home .nav-pill--sm {
+  width: 58px; /* Small pill width */
+  height: 38px; /* Small pill height */
+}
+
+/* Large nav pill size (right CTA) */
+body.home .nav-pill--lg {
+  width: 130px; /* Larger CTA pill width */
+  height: 46px; /* Larger CTA pill height */
+  border-radius: 18px; /* Slightly more rounded on large pill */
+}
+
+/* Centered logo tab overlapping header and content */
+body.home .logo-tab {
+  position: absolute; /* Position over header and main content */
+  left: 50%; /* Start at horizontal center of header */
+  top: 0; /* Align to top of header */
+  transform: translateX(-50%); /* Center the tab exactly */
+  display: flex; /* Center the logo image inside the tab */
+  align-items: center; /* Vertically center logo */
+  justify-content: center; /* Horizontally center logo */
+  padding: 10px 2rem 28px; /* Inner spacing; extra bottom for curved tab */
+  background-color: #000000; /* Black background matches logo artwork */
+  border-radius: 0 0 90px 90px; /* Curved bottom edge of logo tab */
+  text-decoration: none; /* Remove underline from logo link */
+  z-index: 20; /* Keep logo above header bar and cards */
+}
+
+/* Full brand logo image inside logo tab */
+body.home .logo-img {
+  display: block; /* Remove inline image gap */
+  height: 52px; /* Logo display height */
+  width: auto; /* Preserve logo aspect ratio */
+}
+
+/* Three-column card grid on home page */
+body.home .home-cards {
+  display: grid; /* CSS grid for three equal columns */
+  grid-template-columns: repeat(3, 1fr); /* Three equal-width columns */
+  gap: 2.5rem; /* Space between cards */
+  max-width: 1200px; /* Limit grid width on large screens */
+  margin: 0 auto; /* Center grid horizontally */
+  padding: 5.5rem 3rem 4rem; /* Top padding clears overlapping logo tab */
+}
+
+/* Individual feature card container */
+body.home .feature-card {
+  position: relative; /* Anchor notch and action elements */
+  display: flex; /* Stack card surface and action area */
+  flex-direction: column; /* Vertical card layout */
+  align-items: center; /* Center card contents horizontally */
+}
+
+/* Gray image frame with rounded top corners (placeholder until photos are added) */
+body.home .card-image-frame {
+  width: 100%; /* Fill column width */
+  min-height: 420px; /* Tall frame height matching mockup */
+  margin: 0; /* Remove default figure margin */
+  background-color: #c8c8c8; /* Light gray placeholder until image loads */
+  border-radius: 70px 70px 0 0; /* Large rounded top corners */
+  position: relative; /* Anchor the bottom notch pseudo-element */
+  overflow: hidden; /* Clip future images to the frame shape */
+}
+
+/* Image inside frame: fills area and crops to fit */
+body.home .card-image {
+  display: block; /* Remove inline gap below image */
+  width: 100%; /* Stretch image to frame width */
+  height: 100%; /* Stretch image to frame height */
+  min-height: 420px; /* Match frame minimum height */
+  object-fit: cover; /* Crop image to fill frame without distortion */
+  border-radius: 70px 70px 0 0; /* Match frame rounded top corners */
+}
+
+/* Semi-circular cutout at bottom center of each image frame */
+body.home .card-image-frame::after {
+  content: ""; /* Create decorative notch element */
+  position: absolute; /* Position at bottom of card */
+  bottom: -36px; /* Overlap into black background below */
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%); /* Perfect horizontal centering */
+  width: 110px; /* Notch circle width */
+  height: 110px; /* Notch circle height */
+  background-color: #000000; /* Black matches page bg to create cutout */
+  border-radius: 50%; /* Circular notch shape */
+  z-index: 1; /* Layer above card, below button */
+}
+
+/* Container for tan button and line in card notch */
+body.home .card-action {
+  position: relative; /* Stack button above decorative line */
+  z-index: 2; /* Place button above notch cutout */
+  margin-top: -18px; /* Pull button into the notch area */
+  display: flex; /* Stack button and line vertically */
+  flex-direction: column; /* Vertical layout */
+  align-items: center; /* Center button and line */
+}
+
+/* Tan rounded-square icon button at bottom of each card */
+body.home .card-btn {
+  display: block; /* Give button explicit dimensions */
+  width: 52px; /* Square button width */
+  height: 52px; /* Square button height */
+  background-color: #c4a57b; /* Tan/gold button color */
+  border-radius: 14px; /* Rounded square corners */
+  text-decoration: none; /* Remove underline from link button */
+  transition: background-color 0.2s; /* Smooth hover transition */
+}
+
+/* Darken card button on hover */
+body.home .card-btn:hover {
+  background-color: #b89460; /* Darker tan on hover */
+}
+
+/* Small decorative line under each card button */
+body.home .card-line {
+  display: block; /* Allow width and height */
+  width: 36px; /* Short horizontal line width */
+  height: 3px; /* Thin line thickness */
+  margin-top: 0.5rem; /* Space between button and line */
+  background-color: #c4a57b; /* Tan line color matching buttons */
+  border-radius: 2px; /* Slightly rounded line ends */
+}
+
+/* Tablet: two columns */
+@media (max-width: 900px) {
+  body.home .home-cards {
+    grid-template-columns: repeat(2, 1fr); /* Two columns on medium screens */
+    padding: 5rem 2rem 3rem; /* Slightly reduced padding */
+  }
+}
+
+/* Mobile: single column and smaller header padding */
+@media (max-width: 600px) {
+  body.home .header-bar {
+    padding: 0 1.25rem; /* Tighter header padding on mobile */
+  }
+
+  body.home .nav-pill--sm {
+    width: 44px; /* Smaller nav pills on mobile */
+    height: 32px; /* Smaller nav pill height */
+  }
+
+  body.home .nav-pill--lg {
+    width: 90px; /* Smaller CTA pill on mobile */
+    height: 38px; /* Smaller CTA height */
+  }
+
+  body.home .logo-tab {
+    padding: 8px 1.25rem 22px; /* Compact logo tab on mobile */
+  }
+
+  body.home .logo-img {
+    height: 40px; /* Smaller logo on mobile */
+  }
+
+  body.home .home-cards {
+    grid-template-columns: 1fr; /* Stack cards vertically on mobile */
+    gap: 3rem; /* Extra gap when stacked */
+    padding: 4.5rem 1.25rem 2rem; /* Reduced outer padding */
+  }
+
+  body.home .card-image-frame {
+    min-height: 320px; /* Shorter frames on mobile */
+    border-radius: 50px 50px 0 0; /* Slightly smaller top radius */
+  }
+
+  body.home .card-image {
+    min-height: 320px; /* Match shorter mobile frame height */
+    border-radius: 50px 50px 0 0; /* Match mobile frame corners */
+  }
+}
