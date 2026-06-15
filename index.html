@@ -28,8 +28,8 @@
     <div class="header-nav-panel" id="header-nav-panel" hidden> <!-- Collapsible bar with page links -->
       <nav aria-label="Site"> <!-- Navigation landmark for screen readers -->
         <ul class="header-nav-links"> <!-- Horizontal list of header links -->
-          <li><a href="events.html"><img src="images/ICON-10.png" alt="" class="header-nav-icon" width="40" height="40"><span>Events</span></a></li> <!-- Calendar icon for events -->
           <li><a href="about-us.html"><img src="images/ICON-09.png" alt="" class="header-nav-icon" width="40" height="40"><span>About Us</span></a></li> <!-- Person icon for about us -->
+          <li><a href="events.html"><img src="images/ICON-10.png" alt="" class="header-nav-icon" width="40" height="40"><span>Events</span></a></li> <!-- Calendar icon for events -->
           <li><a href="location.html"><img src="images/ICON-08.png" alt="" class="header-nav-icon" width="40" height="40"><span>Location</span></a></li> <!-- House icon for location -->
         </ul>
       </nav>
@@ -48,6 +48,16 @@
   </header>
 
   <main class="home-main"> <!-- Main scrollable content area -->
+    <section class="home-hero"> <!-- Opening hero guides visitors into the site -->
+      <p class="home-hero__eyebrow">The Cigar Club Nashville</p> <!-- Brand eyebrow above headline -->
+      <h1 class="home-hero__title">Where Craft Meets Community</h1> <!-- Primary home headline -->
+      <p class="home-hero__lead">Curated cigars, pipes, and accessories — plus tastings and lounge nights in Madison.</p> <!-- Supporting hero copy -->
+      <div class="home-hero__actions"> <!-- Primary paths into the site -->
+        <a href="about-us.html" class="btn">Learn about us</a> <!-- Story-first entry like Flyward About flow -->
+        <a href="events.html" class="btn btn--ghost">View upcoming events</a> <!-- Secondary path to calendar -->
+      </div>
+    </section>
+
     <section class="home-cards" aria-label="Shop categories"> <!-- Original three feature cards -->
       <article class="feature-card"> <!-- First card column -->
         <a href="events.html" class="card-link" aria-label="Pipes"> <!-- Image and icon link together as one unit -->
@@ -196,7 +206,18 @@
     </section>
   </main>
 
+  <footer class="site-footer"> <!-- Site footer with navigation -->
+    <nav class="site-footer__nav" aria-label="Footer"> <!-- Footer links mirror main site flow -->
+      <a href="index.html">Home</a> <!-- Link back to home -->
+      <a href="about-us.html">About Us</a> <!-- About page -->
+      <a href="events.html">Events</a> <!-- Events page -->
+      <a href="location.html">Location</a> <!-- Location page -->
+    </nav>
+    <p class="site-footer__copy">&copy; 2026 The Cigar Club Nashville. All rights reserved.</p> <!-- Copyright notice -->
+  </footer>
+
   <script src="js/calendar-config.js"></script> <!-- Google Calendar ID and optional API key -->
+  <script src="js/ical-utils.js"></script> <!-- Shared iCal parser for live calendar fallback -->
   <script src="js/calendar-events-loader.js"></script> <!-- Shared event loading for ticker -->
   <script src="js/events-ticker.js"></script> <!-- Scrolling events and tasks announcement -->
   <script src="js/theme.js"></script> <!-- Theme toggle logic and persistence -->

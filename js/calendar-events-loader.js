@@ -78,16 +78,47 @@
     });
   }
 
-  function loadEvents() { // Load events from API, synced JSON, and manual JSON
+  function fetchFromIcal() { // Load events live from public Google iCal feed
+    var config = getConfig(); // Read calendar settings
+    var ical = root.CigarClubIcal; // Shared iCal parser from ical-utils.js
+    var icalUrl = config.icalUrl; // Public iCal URL from calendar-config.js
+    if (!icalUrl || !ical) { return Promise.reject(new Error("iCal unavailable")); } // Require URL and parser
+    return fetch(icalUrl, { cache: "no-store" }).then(function (response) { // Request public iCal feed
+      if (!response.ok) { throw new Error("iCal HTTP " + response.status); } // Fail on HTTP errors
+      return response.text(); // Read iCal document as text
+    }).then(function (raw) { // Parse iCal into normalized event items
+      return ical.parseIcalFeed(raw).map(function (item) { // Map each parsed VEVENT/VTODO
+        return normalizeItem({ // Shared item shape for ticker and list
+          summary: item.summary, // Event title
+          description: item.description, // Event description
+          categories: item.categories, // iCal categories
+          start: item.start.toISOString(), // ISO datetime string
+          allDay: item.allDay, // All-day flag
+          isTodo: item.isTodo, // Task flag
+        });
+      });
+    });
+  }
+
+  function loadFromJsonSources() { // Load synced and manual JSON event files
     var config = getConfig(); // Read calendar settings
     var jsonPath = config.jsonPath || "data/calendar-events.json"; // Auto-synced JSON path
     var manualPath = config.manualPath || "data/events-manual.json"; // Manual events JSON path
+    return Promise.all([ // Load both JSON files in parallel
+      fetchJson(jsonPath).then(itemsFromPayload).catch(function () { return []; }), // Synced events (optional)
+      fetchJson(manualPath).then(itemsFromPayload).catch(function () { return []; }), // Manual events (optional)
+    ]).then(function (results) { // Merge JSON sources
+      return mergeItems(results); // Combined synced + manual items
+    });
+  }
+
+  function loadEvents() { // Load events from API, JSON, and live iCal feed
     return fetchAllFromApi().catch(function () { // Try live API first when key is configured
-      return Promise.all([ // Load both JSON files in parallel
-        fetchJson(jsonPath).then(itemsFromPayload).catch(function () { return []; }), // Synced events (optional)
-        fetchJson(manualPath).then(itemsFromPayload).catch(function () { return []; }), // Manual events (optional)
-      ]).then(function (results) { // Merge JSON sources
-        return mergeItems(results); // Combined synced + manual items
+      return Promise.all([ // Load JSON and iCal in parallel
+        loadFromJsonSources(), // Synced + manual JSON files
+        fetchFromIcal().catch(function () { return []; }), // Live iCal when browser allows it
+      ]).then(function (results) { // Merge all available sources
+        return mergeItems(results); // Combined events from JSON and iCal
       });
     });
   }

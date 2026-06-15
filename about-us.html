@@ -29,8 +29,8 @@
     <div class="header-nav-panel" id="header-nav-panel" hidden> <!-- Collapsible bar with page links -->
       <nav aria-label="Site"> <!-- Navigation landmark for screen readers -->
         <ul class="header-nav-links"> <!-- Horizontal list of header links -->
-          <li><a href="events.html"><img src="images/ICON-10.png" alt="" class="header-nav-icon" width="40" height="40"><span>Events</span></a></li> <!-- Calendar icon for events -->
           <li><a href="about-us.html" class="active"><img src="images/ICON-09.png" alt="" class="header-nav-icon" width="40" height="40"><span>About Us</span></a></li> <!-- Person icon for about us -->
+          <li><a href="events.html"><img src="images/ICON-10.png" alt="" class="header-nav-icon" width="40" height="40"><span>Events</span></a></li> <!-- Calendar icon for events -->
           <li><a href="location.html"><img src="images/ICON-08.png" alt="" class="header-nav-icon" width="40" height="40"><span>Location</span></a></li> <!-- House icon for location -->
         </ul>
       </nav>
@@ -45,21 +45,103 @@
     </a>
   </header>
 
-  <main> <!-- Main page content -->
-    <h1>About Us</h1> <!-- Page title -->
-    <p class="page-intro"> <!-- Short description below the title -->
-      The Cigar Club Nashville is a gathering place for enthusiasts who appreciate fine cigars, pipes, and the company of fellow aficionados.
-    </p>
-    <p>
-      Whether you are new to the hobby or a seasoned collector, our lounge offers a welcoming atmosphere, curated selections, and regular events to explore the craft.
-    </p>
+  <main class="page-flow"> <!-- Main page content with editorial section flow -->
+    <section class="page-hero"> <!-- Opening hero establishes the page story -->
+      <p class="page-hero__eyebrow">About Us</p> <!-- Section label above headline -->
+      <h1 class="page-hero__title">A Lounge Built for the Aficionado</h1> <!-- Primary page headline -->
+      <p class="page-hero__lead">The Cigar Club Nashville is a gathering place for enthusiasts who appreciate fine cigars, pipes, and the company of fellow collectors.</p> <!-- Supporting hero copy -->
+      <div class="page-hero__actions"> <!-- Next-step actions from hero -->
+        <a href="events.html" class="btn">See upcoming events</a> <!-- Guide visitors to calendar -->
+        <a href="location.html" class="btn btn--ghost">Plan your visit</a> <!-- Guide visitors to location -->
+      </div>
+    </section>
+
+    <section class="page-section"> <!-- Value proposition section -->
+      <h2 class="page-section__title">We combine curated selection with club hospitality</h2> <!-- Section headline -->
+      <p class="page-section__lead">Whether you are new to the hobby or a seasoned collector, our lounge offers a welcoming atmosphere, hand-picked inventory, and regular events to explore the craft.</p> <!-- Section intro -->
+      <div class="pillar-grid"> <!-- Numbered pillars like Flyward service pillars -->
+        <article class="pillar"> <!-- First value pillar -->
+          <span class="pillar__number">1</span> <!-- Step number -->
+          <h3 class="pillar__title">Curated selection</h3> <!-- Pillar title -->
+          <p class="pillar__text">Cigars, pipes, and accessories chosen for quality and character — from everyday favorites to limited releases worth discovering.</p> <!-- Pillar description -->
+        </article>
+        <article class="pillar"> <!-- Second value pillar -->
+          <span class="pillar__number">2</span> <!-- Step number -->
+          <h3 class="pillar__title">Lounge hospitality</h3> <!-- Pillar title -->
+          <p class="pillar__text">A relaxed space to unwind, compare notes, and enjoy the ritual — with guidance when you want it and room to explore on your own.</p> <!-- Pillar description -->
+        </article>
+        <article class="pillar"> <!-- Third value pillar -->
+          <span class="pillar__number">3</span> <!-- Step number -->
+          <h3 class="pillar__title">Living calendar</h3> <!-- Pillar title -->
+          <p class="pillar__text">Tastings, lounge nights, and special releases stay current on our events page so members always know what is coming next.</p> <!-- Pillar description -->
+        </article>
+      </div>
+    </section>
+
+    <section class="page-section"> <!-- Principles that guide the club -->
+      <h2 class="page-section__title">Principles that guide us</h2> <!-- Section headline -->
+      <p class="page-section__lead">Trust built over time — through honest recommendations, a welcoming room, and respect for the traditions behind every blend and bowl.</p> <!-- Section intro -->
+      <div class="principle-grid"> <!-- Principle cards -->
+        <article class="principle"> <!-- First principle -->
+          <h3 class="principle__title">Welcome to all</h3> <!-- Principle title -->
+          <p class="principle__text">First visit or fiftieth, everyone deserves a seat at the table and a thoughtful answer to their questions.</p> <!-- Principle copy -->
+        </article>
+        <article class="principle"> <!-- Second principle -->
+          <h3 class="principle__title">Honest guidance</h3> <!-- Principle title -->
+          <p class="principle__text">We recommend what fits your taste and budget — never what simply costs the most.</p> <!-- Principle copy -->
+        </article>
+        <article class="principle"> <!-- Third principle -->
+          <h3 class="principle__title">Respect the craft</h3> <!-- Principle title -->
+          <p class="principle__text">From boutique cigar makers to pipe artisans, we celebrate the skill and story behind every product on our shelves.</p> <!-- Principle copy -->
+        </article>
+        <article class="principle"> <!-- Fourth principle -->
+          <h3 class="principle__title">Community first</h3> <!-- Principle title -->
+          <p class="principle__text">The club is as much about conversation and camaraderie as it is about what is in your humidor.</p> <!-- Principle copy -->
+        </article>
+      </div>
+    </section>
+
+    <section class="page-section"> <!-- FAQ section answers common questions -->
+      <h2 class="page-section__title">Frequently asked questions</h2> <!-- Section headline -->
+      <div class="faq-list"> <!-- FAQ card list -->
+        <article class="faq-item"> <!-- First FAQ -->
+          <h3 class="faq-item__question">Do I need to be a member to visit?</h3> <!-- FAQ question -->
+          <p class="faq-item__answer">Not at all. The lounge is open to anyone curious about cigars and pipes. Stop by during our posted hours or check events for tastings and club nights.</p> <!-- FAQ answer -->
+        </article>
+        <article class="faq-item"> <!-- Second FAQ -->
+          <h3 class="faq-item__question">I am new to cigars — can you help me choose?</h3> <!-- FAQ question -->
+          <p class="faq-item__answer">Absolutely. Tell us what flavors you enjoy and how much time you have, and we will point you toward a blend that fits — no pressure, no jargon.</p> <!-- FAQ answer -->
+        </article>
+        <article class="faq-item"> <!-- Third FAQ -->
+          <h3 class="faq-item__question">How do I find out about tastings and events?</h3> <!-- FAQ question -->
+          <p class="faq-item__answer">Our <a href="events.html">Events</a> page stays synced with The Cigar Club Google Calendar. New tastings and lounge nights appear there as soon as they are published.</p> <!-- FAQ answer -->
+        </article>
+        <article class="faq-item"> <!-- Fourth FAQ -->
+          <h3 class="faq-item__question">Where are you located?</h3> <!-- FAQ question -->
+          <p class="faq-item__answer">We are at <a href="location.html">2148 Gallatin Pike N in Madison, TN</a>. Tap the address on our Location page for directions.</p> <!-- FAQ answer -->
+        </article>
+      </div>
+    </section>
+
+    <section class="page-cta"> <!-- Closing call-to-action -->
+      <h2 class="page-cta__title">Your next visit starts here</h2> <!-- CTA headline -->
+      <p class="page-cta__text">See what is on the calendar, then come experience the lounge for yourself.</p> <!-- CTA supporting copy -->
+      <a href="events.html" class="btn">View upcoming events</a> <!-- Primary CTA button -->
+    </section>
   </main>
 
-  <footer> <!-- Site footer -->
-    <p>&copy; 2026 The Cigar Club Nashville. All rights reserved.</p> <!-- Copyright notice -->
+  <footer class="site-footer"> <!-- Site footer with navigation -->
+    <nav class="site-footer__nav" aria-label="Footer"> <!-- Footer links mirror main site flow -->
+      <a href="index.html">Home</a> <!-- Link back to home -->
+      <a href="about-us.html">About Us</a> <!-- About page -->
+      <a href="events.html">Events</a> <!-- Events page -->
+      <a href="location.html">Location</a> <!-- Location page -->
+    </nav>
+    <p class="site-footer__copy">&copy; 2026 The Cigar Club Nashville. All rights reserved.</p> <!-- Copyright notice -->
   </footer>
 
   <script src="js/calendar-config.js"></script> <!-- Google Calendar ID and optional API key -->
+  <script src="js/ical-utils.js"></script> <!-- Shared iCal parser for live calendar fallback -->
   <script src="js/calendar-events-loader.js"></script> <!-- Shared event loading for ticker -->
   <script src="js/events-ticker.js"></script> <!-- Scrolling events and tasks announcement -->
   <script src="js/theme.js"></script> <!-- Theme toggle logic and persistence -->

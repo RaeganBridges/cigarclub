@@ -157,8 +157,327 @@ h1 {
 /* Style introductory paragraph under headings */
 .page-intro {
   color: var(--text-muted); /* Theme-aware muted description text */
-  margin-bottom: 2rem; /* Space before calendar section */
-  max-width: 600px; /* Keep intro text readable width */
+  margin-bottom: 2rem; /* Space before next section */
+  max-width: 640px; /* Keep intro text readable width */
+}
+
+/* Inner-page narrative flow inspired by editorial landing pages */
+.page-flow {
+  display: flex; /* Stack page sections vertically */
+  flex-direction: column; /* Top-to-bottom reading order */
+  gap: 4rem; /* Space between major sections */
+}
+
+/* Hero block at top of inner pages */
+.page-hero {
+  max-width: 720px; /* Limit hero line length */
+}
+
+/* Small label above hero headline */
+.page-hero__eyebrow {
+  margin-bottom: 0.5rem; /* Space below eyebrow */
+  color: var(--accent); /* Golden orange accent label */
+  font-size: 0.9rem; /* Smaller supporting label */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold eyebrow text */
+  letter-spacing: 0.08em; /* Spaced caps-like feel */
+  text-transform: uppercase; /* Uppercase section label */
+}
+
+/* Large hero headline on inner pages */
+.page-hero__title {
+  margin-bottom: 1rem; /* Space below headline */
+  font-size: clamp(2rem, 5vw, 3rem); /* Responsive hero size */
+  line-height: 1.15; /* Tight headline leading */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold hero title */
+  color: var(--accent); /* Golden orange headline */
+}
+
+/* Hero supporting paragraph */
+.page-hero__lead {
+  margin-bottom: 1.5rem; /* Space before hero actions */
+  color: var(--text-muted); /* Muted lead copy */
+  font-size: 1.1rem; /* Slightly larger body text */
+  max-width: 560px; /* Comfortable reading width */
+}
+
+/* Hero action button row */
+.page-hero__actions {
+  display: flex; /* Lay out CTA buttons in a row */
+  flex-wrap: wrap; /* Wrap buttons on narrow screens */
+  gap: 0.75rem 1rem; /* Space between hero buttons */
+}
+
+/* Reusable content section on inner pages */
+.page-section {
+  max-width: 900px; /* Section content width */
+}
+
+/* Section heading */
+.page-section__title {
+  margin-bottom: 0.75rem; /* Space below section title */
+  font-size: clamp(1.5rem, 3vw, 2rem); /* Responsive section title */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold section heading */
+  color: var(--accent); /* Golden orange section title */
+}
+
+/* Section supporting copy */
+.page-section__lead {
+  margin-bottom: 2rem; /* Space before section content */
+  color: var(--text-muted); /* Muted section intro */
+  max-width: 640px; /* Readable line length */
+}
+
+/* Numbered pillar grid (Flyward-style value props) */
+.pillar-grid {
+  display: grid; /* Responsive pillar layout */
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* Stack on small screens */
+  gap: 1.5rem; /* Space between pillars */
+}
+
+/* Single numbered pillar card */
+.pillar {
+  padding: 1.5rem; /* Inner card spacing */
+  background-color: var(--surface); /* Theme-aware card background */
+  border: 1px solid var(--border); /* Theme-aware border */
+  border-radius: 8px; /* Rounded card corners */
+}
+
+/* Large pillar number */
+.pillar__number {
+  display: block; /* Number on its own line */
+  margin-bottom: 0.75rem; /* Space below number */
+  font-size: 2rem; /* Prominent step number */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold number */
+  color: var(--accent); /* Golden orange number */
+  line-height: 1; /* Tight number line height */
+}
+
+/* Pillar title */
+.pillar__title {
+  margin-bottom: 0.5rem; /* Space below title */
+  font-size: 1.1rem; /* Pillar heading size */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold pillar title */
+  color: var(--text); /* Theme-aware title text */
+}
+
+/* Pillar body copy */
+.pillar__text {
+  color: var(--text-muted); /* Muted pillar description */
+}
+
+/* Principle/value card grid */
+.principle-grid {
+  display: grid; /* Responsive principles layout */
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Wrap on small screens */
+  gap: 1.25rem; /* Space between principle cards */
+}
+
+/* Single principle card */
+.principle {
+  padding: 1.25rem 1.5rem; /* Inner card spacing */
+  background-color: var(--surface); /* Theme-aware card background */
+  border: 1px solid var(--border); /* Theme-aware border */
+  border-radius: 8px; /* Rounded card corners */
+}
+
+/* Principle card title */
+.principle__title {
+  margin-bottom: 0.5rem; /* Space below title */
+  font-size: 1.05rem; /* Principle heading size */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold principle title */
+  color: var(--text); /* Theme-aware title text */
+}
+
+/* Principle card body */
+.principle__text {
+  color: var(--text-muted); /* Muted principle description */
+}
+
+/* FAQ list on about page */
+.faq-list {
+  display: flex; /* Stack FAQ items vertically */
+  flex-direction: column; /* One question per row */
+  gap: 1rem; /* Space between FAQ cards */
+}
+
+/* Single FAQ item card */
+.faq-item {
+  padding: 1.25rem 1.5rem; /* Inner FAQ spacing */
+  background-color: var(--surface); /* Theme-aware FAQ background */
+  border: 1px solid var(--border); /* Theme-aware border */
+  border-radius: 8px; /* Rounded FAQ corners */
+}
+
+/* FAQ question text */
+.faq-item__question {
+  margin-bottom: 0.5rem; /* Space before answer */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold question */
+  color: var(--text); /* Theme-aware question text */
+}
+
+/* FAQ answer text */
+.faq-item__answer {
+  color: var(--text-muted); /* Muted answer copy */
+}
+
+/* Closing CTA band at bottom of inner pages */
+.page-cta {
+  padding: 2.5rem 2rem; /* Generous CTA padding */
+  text-align: center; /* Center CTA copy and button */
+  background-color: var(--surface); /* Theme-aware CTA panel */
+  border: 1px solid var(--border); /* Theme-aware border */
+  border-radius: 8px; /* Rounded CTA panel */
+}
+
+/* CTA headline */
+.page-cta__title {
+  margin-bottom: 0.75rem; /* Space below CTA title */
+  font-size: clamp(1.5rem, 3vw, 2rem); /* Responsive CTA title */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold CTA heading */
+  color: var(--accent); /* Golden orange CTA title */
+}
+
+/* CTA supporting line */
+.page-cta__text {
+  margin-bottom: 1.25rem; /* Space before CTA button */
+  color: var(--text-muted); /* Muted CTA copy */
+  max-width: 480px; /* Readable CTA width */
+  margin-left: auto; /* Center CTA text block */
+  margin-right: auto; /* Center CTA text block */
+}
+
+/* Secondary button variant (outline style) */
+.btn--ghost {
+  background-color: transparent; /* No fill on ghost button */
+  color: var(--accent); /* Golden orange text */
+  border: 1px solid var(--accent); /* Accent outline */
+}
+
+/* Ghost button hover */
+.btn--ghost:hover {
+  background-color: var(--accent); /* Fill on hover */
+  color: var(--btn-text); /* Dark text on gold fill */
+}
+
+/* Collapsible staff note on events page */
+.calendar-setup-details {
+  max-width: 900px; /* Match section width */
+  padding: 1rem 1.25rem; /* Compact details padding */
+  background-color: var(--surface); /* Theme-aware panel */
+  border: 1px solid var(--border); /* Theme-aware border */
+  border-radius: 8px; /* Rounded corners */
+}
+
+/* Summary line for collapsible staff note */
+.calendar-setup-details summary {
+  cursor: pointer; /* Pointer on clickable summary */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold summary label */
+  color: var(--accent); /* Golden orange summary text */
+}
+
+/* Staff note content inside details */
+.calendar-setup-details .calendar-setup-note__text,
+.calendar-setup-details .calendar-setup-note__steps {
+  margin-top: 0.75rem; /* Space below summary when open */
+}
+
+/* Home page hero above category cards */
+.home-hero {
+  max-width: 760px; /* Limit hero width */
+  margin: 0 auto; /* Center hero block */
+  padding: 10rem 2rem 0; /* Top padding clears logo tab; no bottom padding */
+  text-align: center; /* Center hero copy */
+}
+
+/* Home hero eyebrow label */
+.home-hero__eyebrow {
+  margin-bottom: 0.5rem; /* Space below eyebrow */
+  color: var(--accent); /* Golden orange label */
+  font-size: 0.9rem; /* Small label size */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold eyebrow */
+  letter-spacing: 0.08em; /* Spaced label */
+  text-transform: uppercase; /* Uppercase eyebrow */
+}
+
+/* Home hero headline */
+.home-hero__title {
+  margin-bottom: 1rem; /* Space below title */
+  font-size: clamp(2rem, 5vw, 3rem); /* Responsive headline */
+  line-height: 1.15; /* Tight leading */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold title */
+  color: var(--accent); /* Golden orange headline */
+}
+
+/* Home hero lead paragraph */
+.home-hero__lead {
+  margin: 0 auto 1.5rem; /* Center and space below lead */
+  color: var(--text-muted); /* Muted lead text */
+  font-size: 1.1rem; /* Slightly larger body */
+  max-width: 520px; /* Readable line length */
+}
+
+/* Home hero CTA row */
+.home-hero__actions {
+  display: flex; /* Button row */
+  flex-wrap: wrap; /* Wrap on small screens */
+  justify-content: center; /* Center hero buttons */
+  gap: 0.75rem 1rem; /* Space between buttons */
+  margin-bottom: 2rem; /* Space before category cards */
+}
+
+/* In-content text links on inner pages */
+.page-flow a:not(.btn):not(.calendar-add-link):not(.calendar-open-link):not(.location-address__link) {
+  color: var(--accent); /* Golden orange in-content links */
+  text-decoration: none; /* Remove default underline */
+}
+
+/* Underline in-content links on hover */
+.page-flow a:not(.btn):not(.calendar-add-link):not(.calendar-open-link):not(.location-address__link):hover {
+  text-decoration: underline; /* Hover affordance */
+}
+
+/* Location page address panel */
+.location-details {
+  max-width: 600px; /* Keep location content readable width */
+  padding: 1.25rem 1.5rem; /* Inner spacing for address panel */
+  background-color: var(--surface); /* Theme-aware panel background */
+  border: 1px solid var(--border); /* Theme-aware border */
+  border-radius: 8px; /* Rounded panel corners */
+}
+
+/* Location section heading */
+.location-details__title {
+  margin-bottom: 0.75rem; /* Space below heading */
+  font-size: 1.25rem; /* Slightly larger section title */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold heading */
+  color: var(--accent); /* Golden orange heading */
+}
+
+/* Semantic address element reset */
+.location-address {
+  font-style: normal; /* Address tag defaults to italic; use normal for clean display */
+  margin-bottom: 1rem; /* Space before hours note */
+}
+
+/* Clickable store address link */
+.location-address__link {
+  display: inline-block; /* Allow line breaks inside link */
+  color: var(--text); /* Theme-aware address text */
+  font-size: 1.1rem; /* Slightly larger address text */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold address lines */
+  text-decoration: none; /* Remove default underline */
+  line-height: 1.5; /* Comfortable spacing between address lines */
+}
+
+/* Hover state for address link */
+.location-address__link:hover {
+  color: var(--accent); /* Golden orange on hover */
+  text-decoration: underline; /* Underline on hover for affordance */
+}
+
+/* Hours placeholder note below address */
+.location-hours-note {
+  color: var(--text-muted); /* Muted secondary text */
 }
 
 /* Wrapper around the Google Calendar iframe */
@@ -209,13 +528,18 @@ h1 {
   color: var(--cream); /* Light text on maroon hover */
 }
 
-/* Upcoming events panel above embed */
+/* Upcoming events panel on events page */
 .events-upcoming-panel {
-  margin-bottom: 2rem; /* Space before setup note and embed */
   padding: 1.25rem 1.5rem; /* Inner spacing for panel */
   background-color: var(--surface); /* Theme-aware panel background */
   border: 1px solid var(--border); /* Theme-aware border */
   border-radius: 8px; /* Rounded panel corners */
+}
+
+/* Staff action links below upcoming list */
+.events-upcoming-panel .calendar-actions {
+  margin-top: 1.25rem; /* Space above staff action links */
+  margin-bottom: 0; /* Panel handles outer spacing */
 }
 
 /* Upcoming events section heading */
@@ -323,13 +647,41 @@ h1 {
 }
 
 /* Style the page footer */
-footer {
-  text-align: center; /* Center footer text */
-  padding: 2rem; /* Space around footer content */
+footer,
+.site-footer {
+  text-align: center; /* Center footer content */
+  padding: 2.5rem 2rem; /* Space around footer content */
   color: var(--text-muted); /* Theme-aware footer text */
   font-size: 0.85rem; /* Smaller footer text */
   border-top: 1px solid var(--border); /* Theme-aware top border separating footer */
   margin-top: 2rem; /* Space above footer */
+}
+
+/* Footer navigation links */
+.site-footer__nav {
+  display: flex; /* Lay out footer links in a row */
+  flex-wrap: wrap; /* Wrap links on narrow screens */
+  justify-content: center; /* Center footer nav */
+  gap: 1.25rem 2rem; /* Space between footer links */
+  margin-bottom: 1rem; /* Space above copyright */
+}
+
+/* Individual footer nav link */
+.site-footer__nav a {
+  color: var(--text); /* Theme-aware footer link */
+  text-decoration: none; /* Remove underline */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold footer links */
+  transition: color 0.2s; /* Smooth hover transition */
+}
+
+/* Footer link hover */
+.site-footer__nav a:hover {
+  color: var(--accent); /* Golden orange on hover */
+}
+
+/* Footer copyright line */
+.site-footer__copy {
+  color: var(--text-muted); /* Muted copyright text */
 }
 
 /* Hero section on the home page */
@@ -634,7 +986,9 @@ body.home .header-bar {
 /* Scrolling events and tasks announcement bar */
 .site-header .events-ticker {
   display: block; /* Full-width bar below header controls */
-  width: 100%; /* Span header width */
+  width: 100vw; /* Span entire viewport width */
+  max-width: 100vw; /* Prevent overflow past screen edges */
+  margin-left: calc(50% - 50vw); /* Break out to true full-bleed from centered header */
   background-color: var(--gold); /* Golden announcement bar */
   color: var(--charcoal); /* Dark text on gold background */
   text-decoration: none; /* Remove underline from link wrapper */
@@ -642,23 +996,33 @@ body.home .header-bar {
   z-index: 15; /* Below logo tab, above page content */
 }
 
-/* Viewport clipping scrolling ticker text */
+/* Viewport clipping scrolling ticker text with edge fade */
 .site-header .events-ticker-viewport {
   overflow: hidden; /* Hide text outside visible bar */
   width: 100%; /* Fill announcement bar width */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%); /* Safari edge fade */
+  mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%); /* Fade text off screen sides */
 }
 
 /* Horizontal track animated for marquee effect */
 .site-header .events-ticker-track {
   display: flex; /* Place duplicate text spans side by side */
   width: max-content; /* Shrink-wrap to combined text width */
-  animation: events-ticker-scroll 35s linear infinite; /* Continuous scroll speed */
+  animation: events-ticker-scroll 22s linear infinite; /* Faster default scroll; JS may tune further */
+  will-change: transform; /* Smoother continuous motion across full screen */
 }
 
 /* Pause ticker motion when user prefers reduced motion */
 @media (prefers-reduced-motion: reduce) {
+  .site-header .events-ticker-viewport {
+    -webkit-mask-image: none; /* No fade needed for static text */
+    mask-image: none; /* No fade needed for static text */
+  }
+
   .site-header .events-ticker-track {
     animation: none; /* Stop scrolling animation */
+    width: 100%; /* Fill bar for centered static message */
+    justify-content: center; /* Center static ticker copy */
   }
 
   .site-header .events-ticker-text + .events-ticker-text {
@@ -669,7 +1033,8 @@ body.home .header-bar {
 /* One segment of scrolling announcement text */
 .site-header .events-ticker-text {
   flex: 0 0 auto; /* Do not shrink text segments */
-  padding: 0.35rem 2rem; /* Compact vertical padding; horizontal inset */
+  padding: 0.45rem 0; /* Slightly taller bar for readability */
+  padding-right: 3rem; /* Wide gap between repeated phrases as they cross the screen */
   font-size: 0.85rem; /* Small announcement text */
   font-variation-settings: "wght" var(--font-wght-bold); /* Medium-bold ticker copy */
   letter-spacing: 0.03em; /* Slight spacing for readability in motion */
@@ -743,7 +1108,7 @@ body.home .home-cards {
   gap: 2.5rem; /* Space between cards */
   max-width: 1400px; /* Wider grid for larger cards on big screens */
   margin: 0 auto; /* Center grid horizontally */
-  padding: 12rem 3rem 4rem; /* Top padding clears overlapping logo tab */
+  padding: 4rem 3rem 4rem; /* Reduced top padding; home-hero clears logo tab */
 }
 
 /* Individual feature card container */
@@ -1024,14 +1389,19 @@ body.home .gallery-item:focus-within .gallery-desc {
 @media (max-width: 900px) {
   body.home .home-cards {
     grid-template-columns: repeat(2, 1fr); /* Two columns on medium screens */
-    padding: 9.5rem 2rem 3rem; /* Slightly reduced padding */
+    padding: 2rem 2rem 3rem; /* Hero section handles logo clearance */
+  }
+
+  .home-hero {
+    padding: 9.5rem 1.5rem 0; /* Clear logo tab on tablet */
   }
 }
 
 /* Mobile: single column and smaller sizing */
 @media (max-width: 600px) {
   .site-header .events-ticker-text {
-    padding: 0.35rem 1.25rem; /* Match mobile header inset */
+    padding: 0.4rem 0; /* Slightly shorter bar on mobile */
+    padding-right: 2rem; /* Tighter phrase spacing on small screens */
     font-size: 0.8rem; /* Slightly smaller ticker on mobile */
   }
 
@@ -1080,7 +1450,11 @@ body.home .gallery-item:focus-within .gallery-desc {
   body.home .home-cards {
     grid-template-columns: 1fr; /* Stack cards vertically on mobile */
     gap: 3rem; /* Extra gap when stacked */
-    padding: 9rem 1.25rem 2rem; /* Reduced outer padding */
+    padding: 1.5rem 1.25rem 2rem; /* Hero section handles logo clearance */
+  }
+
+  .home-hero {
+    padding: 8.5rem 1.25rem 0; /* Clear logo tab on mobile */
   }
 
   body.home .card-image-frame {
