@@ -1,0 +1,109 @@
+(function (root) { // Shared calendar event loading for ticker and events list
+  function getConfig() { // Read global calendar settings
+    return root.CigarClubCalendar || {}; // Fall back to empty object
+  }
+
+  function resolveDataUrl(relativePath) { // Build absolute URL for JSON files from script location
+    var script = document.querySelector("script[src*=\"calendar-config.js\"]"); // Find config script tag
+    if (!script || !script.src) { return relativePath; } // Fall back to relative path
+    var base = script.src.replace(/js\/calendar-config\.js(\?.*)?$/, ""); // Site root from script URL
+    return base + relativePath; // Absolute URL that works on GitHub Pages subpaths
+  }
+
+  function normalizeItem(raw) { // Convert stored JSON item to in-memory shape
+    return { // Shared item object used across calendar UI
+      summary: raw.summary || "", // Event or task title
+      description: raw.description || "", // Optional description text
+      categories: raw.categories || "", // Optional iCal categories
+      start: raw.start ? new Date(raw.start) : null, // Parsed start datetime
+      allDay: Boolean(raw.allDay), // All-day flag from sync script
+      isTodo: Boolean(raw.isTodo), // Task flag from VTODO or markers
+    };
+  }
+
+  function itemsFromPayload(payload) { // Extract normalized items array from JSON payload
+    if (Array.isArray(payload)) { return payload.map(normalizeItem); } // Plain array file
+    return (payload.items || []).map(normalizeItem); // Object wrapper with items array
+  }
+
+  function fetchJson(relativePath) { // Fetch one JSON file with cache busting
+    var url = resolveDataUrl(relativePath); // Resolve absolute URL from site root
+    var cacheBust = url + (url.indexOf("?") === -1 ? "?" : "&") + "ts=" + Date.now(); // Avoid stale browser cache
+    return fetch(cacheBust, { cache: "no-store" }).then(function (response) { // Request JSON file
+      if (!response.ok) { throw new Error("Missing " + relativePath); } // Fail when file is absent
+      return response.json(); // Parse JSON payload
+    });
+  }
+
+  function mergeItems(lists) { // Combine multiple item arrays without duplicates
+    var combined = []; // Accumulated unique items
+    var seen = {}; // Track summary+start keys
+    lists.forEach(function (list) { // Walk each source list
+      list.forEach(function (item) { // Walk each item in source
+        var key = (item.summary || "") + "|" + (item.start ? item.start.toISOString() : ""); // Unique key
+        if (seen[key]) { return; } // Skip duplicate entry
+        seen[key] = true; // Mark key as seen
+        combined.push(item); // Keep unique item
+      });
+    });
+    return combined; // Return merged list
+  }
+
+  function fetchFromApi(calendarId, apiKey) { // Load events live via Google Calendar API
+    var now = new Date().toISOString(); // Current time in ISO format for timeMin
+    var encodedId = encodeURIComponent(calendarId); // URL-safe calendar id
+    var url = "https://www.googleapis.com/calendar/v3/calendars/" + encodedId + "/events?key=" + encodeURIComponent(apiKey) + "&timeMin=" + encodeURIComponent(now) + "&maxResults=50&singleEvents=true&orderBy=startTime"; // API request URL
+    return fetch(url).then(function (response) { // Request upcoming events
+      if (!response.ok) { throw new Error("Calendar API request failed"); } // Fail on HTTP errors
+      return response.json(); // Parse JSON payload
+    }).then(function (data) { // Map API events to shared item shape
+      return (data.items || []).map(function (event) { // Normalize each API event
+        var startField = event.start || {}; // API start object
+        var allDay = Boolean(startField.date && !startField.dateTime); // All-day when only date is present
+        var startValue = startField.dateTime || startField.date; // Pick datetime or date string
+        var start = allDay ? new Date(startValue + "T12:00:00.000Z") : new Date(startValue); // Parse start date
+        return normalizeItem({ summary: event.summary, description: event.description, start: start.toISOString(), allDay: allDay, isTodo: false }); // Normalized row
+      });
+    });
+  }
+
+  function fetchAllFromApi() { // Load events from every configured calendar via API
+    var config = getConfig(); // Read calendar settings
+    if (!config.apiKey) { return Promise.reject(new Error("No API key")); } // Skip without credentials
+    var ids = config.embedCalendarIds || [config.calendarId]; // All calendar IDs to query
+    return Promise.all(ids.map(function (id) { // Query each calendar in parallel
+      return fetchFromApi(id, config.apiKey).catch(function () { return []; }); // Ignore one failed calendar
+    })).then(function (results) { // Merge API results
+      return mergeItems(results); // Combined unique items
+    });
+  }
+
+  function loadEvents() { // Load events from API, synced JSON, and manual JSON
+    var config = getConfig(); // Read calendar settings
+    var jsonPath = config.jsonPath || "data/calendar-events.json"; // Auto-synced JSON path
+    var manualPath = config.manualPath || "data/events-manual.json"; // Manual events JSON path
+    return fetchAllFromApi().catch(function () { // Try live API first when key is configured
+      return Promise.all([ // Load both JSON files in parallel
+        fetchJson(jsonPath).then(itemsFromPayload).catch(function () { return []; }), // Synced events (optional)
+        fetchJson(manualPath).then(itemsFromPayload).catch(function () { return []; }), // Manual events (optional)
+      ]).then(function (results) { // Merge JSON sources
+        return mergeItems(results); // Combined synced + manual items
+      });
+    });
+  }
+
+  function upcomingItems(items) { // Filter and sort future events/tasks
+    var now = Date.now() - 60000; // Include events starting within the last minute
+    return items.filter(function (item) { // Keep only upcoming items
+      return item.start && item.start.getTime() >= now; // Start time is now or later
+    }).sort(function (a, b) { // Sort soonest first
+      return a.start.getTime() - b.start.getTime(); // Ascending by start time
+    });
+  }
+
+  root.CigarClubEventsLoader = { // Public loader API for ticker and events list
+    loadEvents: loadEvents, // Fetch merged event data
+    upcomingItems: upcomingItems, // Filter to future items sorted by date
+    normalizeItem: normalizeItem, // Expose item normalizer
+  };
+})(typeof globalThis !== "undefined" ? globalThis : window);

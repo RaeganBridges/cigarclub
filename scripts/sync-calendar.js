@@ -5,11 +5,17 @@ const path = require("path"); // Resolve paths relative to repo root
 const ical = require("../js/ical-utils.js"); // Shared iCal parser
 
 const calendarConfig = { // Calendar feed settings (matches js/calendar-config.js)
-  calendarId: "9d624c02bc316b9c422aa30a1f3f580a11b1a85b2412df9d30bf675adfcdf607@group.calendar.google.com", // Club Google Calendar ID
-  icalUrl: "https://calendar.google.com/calendar/ical/9d624c02bc316b9c422aa30a1f3f580a11b1a85b2412df9d30bf675adfcdf607%40group.calendar.google.com/public/basic.ics", // Public iCal URL
+  calendarId: "9d624c02bc316b9c422aa30a1f3f580a11b1a85b2412df9d30bf675adfcdf607@group.calendar.google.com", // Primary club calendar ID
+  embedCalendarIds: [ // Every calendar synced to data/calendar-events.json
+    "9d624c02bc316b9c422aa30a1f3f580a11b1a85b2412df9d30bf675adfcdf607@group.calendar.google.com", // The Cigar Club calendar
+  ],
   timeZone: "America/Chicago", // Club timezone label stored in JSON
   manualPath: path.join(__dirname, "../data/events-manual.json"), // Optional manual events file
 };
+
+function buildIcalUrl(calendarId) { // Build public iCal URL from a calendar ID
+  return "https://calendar.google.com/calendar/ical/" + encodeURIComponent(calendarId) + "/public/basic.ics"; // Public basic feed
+}
 
 function fetchText(url) { // Download URL body as UTF-8 text
   return new Promise(function (resolve, reject) { // Wrap callback API in a Promise
@@ -25,10 +31,10 @@ function fetchText(url) { // Download URL body as UTF-8 text
   });
 }
 
-function fetchFromApi(apiKey) { // Load events via Google Calendar API (most reliable)
+function fetchFromApi(calendarId, apiKey) { // Load events via Google Calendar API for one calendar
   var now = new Date().toISOString(); // Current time for timeMin filter
-  var calendarId = encodeURIComponent(calendarConfig.calendarId); // URL-safe calendar id
-  var url = "https://www.googleapis.com/calendar/v3/calendars/" + calendarId + "/events?key=" + encodeURIComponent(apiKey) + "&timeMin=" + encodeURIComponent(now) + "&maxResults=50&singleEvents=true&orderBy=startTime"; // API request URL
+  var encodedId = encodeURIComponent(calendarId); // URL-safe calendar id
+  var url = "https://www.googleapis.com/calendar/v3/calendars/" + encodedId + "/events?key=" + encodeURIComponent(apiKey) + "&timeMin=" + encodeURIComponent(now) + "&maxResults=50&singleEvents=true&orderBy=startTime"; // API request URL
   return fetch(url).then(function (response) { // Request upcoming events from Google
     if (!response.ok) { throw new Error("Calendar API HTTP " + response.status); } // Fail on HTTP errors
     return response.json(); // Parse JSON payload
@@ -50,8 +56,8 @@ function fetchFromApi(apiKey) { // Load events via Google Calendar API (most rel
   });
 }
 
-function fetchFromIcal() { // Load events via public iCal feed (fallback when no API key)
-  return fetchText(calendarConfig.icalUrl).then(ical.parseIcalFeedIso); // Parse iCal into JSON items
+function fetchFromIcal(calendarId) { // Load events via public iCal feed for one calendar
+  return fetchText(buildIcalUrl(calendarId)).then(ical.parseIcalFeedIso); // Parse iCal into JSON items
 }
 
 function loadManualEvents() { // Read optional hand-edited events from repo JSON file
@@ -65,23 +71,31 @@ function loadManualEvents() { // Read optional hand-edited events from repo JSON
   }
 }
 
-function mergeItems(googleItems, manualItems) { // Combine Google and manual events without duplicates
-  var combined = googleItems.concat(manualItems); // Concatenate both sources
+function mergeItems(itemGroups) { // Combine multiple event arrays without duplicates
+  var combined = []; // Accumulated unique items
   var seen = {}; // Track unique keys to avoid duplicate rows
-  return combined.filter(function (item) { // Filter duplicate summary+start pairs
-    var key = (item.summary || "") + "|" + (item.start || ""); // Unique key per event
-    if (seen[key]) { return false; } // Skip duplicate entry
-    seen[key] = true; // Mark key as seen
-    return true; // Keep unique item
+  itemGroups.forEach(function (group) { // Walk each source group
+    group.forEach(function (item) { // Walk each item in group
+      var key = (item.summary || "") + "|" + (item.start || ""); // Unique key per event
+      if (seen[key]) { return; } // Skip duplicate entry
+      seen[key] = true; // Mark key as seen
+      combined.push(item); // Keep unique item
+    });
   });
+  return combined; // Return merged list
 }
 
-function loadGoogleEvents() { // Prefer API when key is available, otherwise iCal
+function loadGoogleEvents() { // Fetch all configured calendars via API or iCal
   var apiKey = process.env.GOOGLE_CALENDAR_API_KEY || ""; // API key from GitHub Actions secret
-  if (apiKey) { // Use Calendar API when credentials are configured
-    return fetchFromApi(apiKey).catch(function () { return fetchFromIcal(); }); // Fall back to iCal on API failure
-  }
-  return fetchFromIcal(); // Use public iCal feed when no API key is set
+  var calendarIds = calendarConfig.embedCalendarIds || [calendarConfig.calendarId]; // All calendar IDs to sync
+  return Promise.all(calendarIds.map(function (calendarId) { // Query each calendar in parallel
+    if (apiKey) { // Use Calendar API when credentials are configured
+      return fetchFromApi(calendarId, apiKey).catch(function () { return fetchFromIcal(calendarId); }); // Fall back to iCal on API failure
+    }
+    return fetchFromIcal(calendarId); // Use public iCal feed when no API key is set
+  })).then(function (results) { // Merge all calendar results
+    return mergeItems(results); // Combined unique items
+  });
 }
 
 loadGoogleEvents() // Fetch events from Google Calendar
@@ -90,7 +104,7 @@ loadGoogleEvents() // Fetch events from Google Calendar
       updatedAt: new Date().toISOString(), // Timestamp of last successful sync
       timeZone: calendarConfig.timeZone, // Club timezone for client formatting
       source: process.env.GOOGLE_CALENDAR_API_KEY ? "api" : "ical", // Record which sync source was used
-      items: mergeItems(googleItems, loadManualEvents()), // Combined Google + manual events
+      items: mergeItems([googleItems, loadManualEvents()]), // Combined Google + manual events
     };
     process.stdout.write(JSON.stringify(payload, null, 2)); // Print pretty JSON to stdout
   })

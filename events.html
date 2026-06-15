@@ -48,18 +48,29 @@
   <main> <!-- Main page content -->
     <h1>Upcoming Events</h1> <!-- Page title -->
     <p class="page-intro"> <!-- Short description below the title -->
-      Join us for tastings, lounge nights, and special releases. Our calendar updates automatically when events are added to <strong>The Cigar Club</strong> calendar in Google Calendar.
-      <a href="https://calendar.google.com/calendar/embed?src=9d624c02bc316b9c422aa30a1f3f580a11b1a85b2412df9d30bf675adfcdf607%40group.calendar.google.com" class="calendar-open-link">Open full calendar in Google</a> <!-- Fallback link if embed does not load -->
+      Join us for tastings, lounge nights, and special releases. Events added to <strong>The Cigar Club</strong> calendar in Google Calendar appear here automatically.
     </p>
+
+    <div class="calendar-actions"> <!-- Quick links for staff to manage club calendar -->
+      <a href="https://calendar.google.com/calendar/u/0/r/eventedit?cid=OWQ2MjRjMDJiYzMxNmI5YzQyMmFhMzBhMWYzZjU4MGExMWIxYTg1YjI0MTJkZjlkMzBiZjY3NWFkZmNkZjYwN0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t" class="calendar-add-link">Add event to club calendar</a> <!-- Opens Google event editor on The Cigar Club calendar -->
+      <a href="https://calendar.google.com/calendar/u/0/r?cid=OWQ2MjRjMDJiYzMxNmI5YzQyMmFhMzBhMWYzZjU4MGExMWIxYTg1YjI0MTJkZjlkMzBiZjY3NWFkZmNkZjYwN0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t" class="calendar-open-link">Open in Google Calendar</a> <!-- Opens full club calendar in Google -->
+    </div>
+
+    <section class="events-upcoming-panel"> <!-- Native upcoming events list synced from Google -->
+      <h2 class="events-upcoming-panel__title">Upcoming</h2> <!-- Section heading above event list -->
+      <div class="events-upcoming"> <!-- Populated by js/events-list.js -->
+        <p class="events-upcoming__loading">Loading events…</p> <!-- Placeholder until events load -->
+      </div>
+    </section>
 
     <aside class="calendar-setup-note"> <!-- Help staff publish events to the correct calendar -->
       <h2 class="calendar-setup-note__title">Events not showing?</h2> <!-- Setup note heading -->
-      <p class="calendar-setup-note__text">When you create an event in Google Calendar, choose <strong>The Cigar Club</strong> in the calendar dropdown—not your personal calendar. Only events on that calendar appear here.</p> <!-- Main troubleshooting step -->
+      <p class="calendar-setup-note__text">Google only publishes events that are saved on <strong>The Cigar Club</strong> calendar with <strong>public</strong> visibility. Tasks and private events will not appear on the website.</p> <!-- Main troubleshooting step -->
       <ol class="calendar-setup-note__steps"> <!-- Numbered setup checklist -->
-        <li>In Google Calendar, confirm <strong>The Cigar Club</strong> is checked in the left sidebar.</li> <!-- Step 1 -->
-        <li>Click the <strong>+</strong> button → Event, then set the calendar dropdown to <strong>The Cigar Club</strong> before saving.</li> <!-- Step 2 -->
-        <li>Open calendar <strong>Settings → Access permissions</strong> and enable <strong>Make available to public</strong> with <strong>See all event details</strong>.</li> <!-- Step 3 -->
-        <li>If your events live on a different calendar, add that calendar ID to <code>embedCalendarIds</code> in <code>js/calendar-config.js</code>.</li> <!-- Step 4 for wrong calendar ID -->
+        <li>Click <strong>Add event to club calendar</strong> above (do not use your personal calendar).</li> <!-- Step 1 -->
+        <li>When editing an event, set visibility to <strong>Public</strong> (not Private).</li> <!-- Step 2 -->
+        <li>In calendar settings, enable <strong>Make available to public</strong> → <strong>See all event details</strong>.</li> <!-- Step 3 -->
+        <li>If events are on another calendar, add its ID to <code>embedCalendarIds</code> in <code>js/calendar-config.js</code>.</li> <!-- Step 4 for wrong calendar ID -->
       </ol>
     </aside>
 
@@ -67,7 +78,7 @@
       <!-- Google Calendar embed: src is set by js/calendar-embed.js from js/calendar-config.js -->
       <iframe
         class="calendar-embed"
-        src="about:blank"
+        src="https://calendar.google.com/calendar/embed?height=700&amp;wkst=1&amp;bgcolor=%23fdfddc&amp;ctz=America%2FChicago&amp;mode=AGENDA&amp;showTitle=0&amp;showNav=1&amp;showDate=1&amp;showPrint=0&amp;showTabs=1&amp;showCalendars=0&amp;src=9d624c02bc316b9c422aa30a1f3f580a11b1a85b2412df9d30bf675adfcdf607%40group.calendar.google.com"
         style="border: 0"
         width="800"
         height="700"
@@ -83,7 +94,9 @@
   </footer>
 
   <script src="js/calendar-config.js"></script> <!-- Google Calendar ID and optional API key -->
+  <script src="js/calendar-events-loader.js"></script> <!-- Shared event loading for ticker and list -->
   <script src="js/calendar-embed.js"></script> <!-- Build calendar iframe URL from config -->
+  <script src="js/events-list.js"></script> <!-- Upcoming events list on this page -->
   <script src="js/events-ticker.js"></script> <!-- Scrolling events and tasks announcement -->
   <script src="js/theme.js"></script> <!-- Theme toggle logic and persistence -->
   <script src="js/nav-expand.js"></script> <!-- Expandable header navigation panel -->
