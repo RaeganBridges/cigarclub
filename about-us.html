@@ -1,0 +1,68 @@
+<!DOCTYPE html> <!-- Tell the browser this is an HTML5 document -->
+<html lang="en"> <!-- Root element; lang helps screen readers and search engines -->
+<head> <!-- Document metadata section (not visible on page) -->
+  <meta charset="UTF-8"> <!-- Use UTF-8 character encoding for special characters -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Make layout responsive on mobile -->
+  <title>About Us | The Cigar Club Nashville</title> <!-- Text shown in browser tab -->
+  <script>
+    (function () { var s = localStorage.getItem("theme"); var t = s || (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark"); document.documentElement.setAttribute("data-theme", t); })();
+  </script> <!-- Apply saved theme before paint to prevent flash -->
+  <link rel="preconnect" href="https://use.typekit.net"> <!-- Speed up Adobe Fonts connection -->
+  <link rel="preconnect" href="https://p.typekit.net" crossorigin> <!-- Speed up Adobe Fonts files -->
+  <link rel="stylesheet" href="https://use.typekit.net/end7yej.css"> <!-- Adobe Fonts: Sarvatrik Latin Variable -->
+  <link rel="stylesheet" href="css/styles.css"> <!-- Load shared site styles -->
+</head>
+<body class="tk-sarvatrik-latin-variable"> <!-- Sarvatrik via Adobe Fonts kit end7yej -->
+
+  <header class="site-header site-header--page"> <!-- Sticky header with expandable navigation -->
+    <div class="header-bar"> <!-- Maroon navigation bar -->
+      <button type="button" class="nav-expand-toggle" aria-expanded="false" aria-controls="header-nav-panel"> <!-- Expand/collapse site navigation -->
+        <span class="nav-expand-icon" aria-hidden="true"></span> <!-- Hamburger icon; animates when open -->
+        <span class="nav-expand-label">Menu</span> <!-- Visible label for menu button -->
+      </button>
+      <a href="index.html" class="header-page-logo">The Cigar Club Nashville</a> <!-- Text logo link back to home -->
+      <button type="button" class="theme-toggle" aria-label="Switch to light mode"> <!-- Toggle light/dark mode -->
+        <span class="theme-toggle-icon theme-toggle-icon--light" aria-hidden="true">☀</span> <!-- Sun icon shown in light mode -->
+        <span class="theme-toggle-icon theme-toggle-icon--dark" aria-hidden="true">☾</span> <!-- Moon icon shown in dark mode -->
+      </button>
+    </div>
+    <div class="header-nav-panel" id="header-nav-panel" hidden> <!-- Collapsible bar with page links -->
+      <nav aria-label="Site"> <!-- Navigation landmark for screen readers -->
+        <ul class="header-nav-links"> <!-- Horizontal list of header links -->
+          <li><a href="events.html"><img src="images/ICON-10.png" alt="" class="header-nav-icon" width="40" height="40"><span>Events</span></a></li> <!-- Calendar icon for events -->
+          <li><a href="about-us.html" class="active"><img src="images/ICON-09.png" alt="" class="header-nav-icon" width="40" height="40"><span>About Us</span></a></li> <!-- Person icon for about us -->
+          <li><a href="location.html"><img src="images/ICON-08.png" alt="" class="header-nav-icon" width="40" height="40"><span>Location</span></a></li> <!-- House icon for location -->
+        </ul>
+      </nav>
+    </div>
+    <a href="events.html" class="events-ticker" hidden> <!-- Scrolling next-event and task announcement -->
+      <div class="events-ticker-viewport"> <!-- Clips scrolling text at bar edges -->
+        <div class="events-ticker-track"> <!-- Animated row duplicated for seamless loop -->
+          <span class="events-ticker-text"></span> <!-- Primary scrolling announcement copy -->
+          <span class="events-ticker-text" aria-hidden="true"></span> <!-- Duplicate for infinite marquee loop -->
+        </div>
+      </div>
+    </a>
+  </header>
+
+  <main> <!-- Main page content -->
+    <h1>About Us</h1> <!-- Page title -->
+    <p class="page-intro"> <!-- Short description below the title -->
+      The Cigar Club Nashville is a gathering place for enthusiasts who appreciate fine cigars, pipes, and the company of fellow aficionados.
+    </p>
+    <p>
+      Whether you are new to the hobby or a seasoned collector, our lounge offers a welcoming atmosphere, curated selections, and regular events to explore the craft.
+    </p>
+  </main>
+
+  <footer> <!-- Site footer -->
+    <p>&copy; 2026 The Cigar Club Nashville. All rights reserved.</p> <!-- Copyright notice -->
+  </footer>
+
+  <script src="js/calendar-config.js"></script> <!-- Google Calendar ID and optional API key -->
+  <script src="js/events-ticker.js"></script> <!-- Scrolling events and tasks announcement -->
+  <script src="js/theme.js"></script> <!-- Theme toggle logic and persistence -->
+  <script src="js/nav-expand.js"></script> <!-- Expandable header navigation panel -->
+
+</body>
+</html>

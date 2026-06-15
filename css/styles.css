@@ -1,3 +1,72 @@
+/* Engria regular weight — place Engria-Regular.woff2 or .otf in fonts/ */
+@font-face {
+  font-family: "Engria"; /* Custom brand typeface */
+  src: url("../fonts/Engria-Regular.woff2") format("woff2"), /* Preferred web format */
+       url("../fonts/Engria-Regular.otf") format("opentype"); /* Desktop format fallback */
+  font-weight: 400; /* Regular weight */
+  font-style: normal; /* Upright style */
+  font-display: swap; /* Show fallback text until font loads */
+}
+
+/* Engria bold weight — place Engria-Bold.woff2 or .otf in fonts/ */
+@font-face {
+  font-family: "Engria"; /* Custom brand typeface */
+  src: url("../fonts/Engria-Bold.woff2") format("woff2"), /* Preferred web format */
+       url("../fonts/Engria-Bold.otf") format("opentype"); /* Desktop format fallback */
+  font-weight: 700; /* Bold weight */
+  font-style: normal; /* Upright style */
+  font-display: swap; /* Show fallback text until font loads */
+}
+
+/* Brand color palette — only these six hex codes are used site-wide */
+:root {
+  --font-zeitung: "sarvatrik-latin-variable", sans-serif; /* Adobe Fonts: Sarvatrik Latin Variable */
+  --font-gallery: "sarvatrik-latin-variable", sans-serif; /* Adobe Fonts: Sarvatrik for gallery hover text */
+  --font-wght-regular: 400; /* Regular weight axis value */
+  --font-wght-bold: 700; /* Bold weight axis value */
+  --maroon: #9E2A2B; /* Deep red */
+  --gold: #E09F3E; /* Golden orange */
+  --pale-yellow: #FFF3B0; /* Pale yellow */
+  --cream: #FDFDDC; /* Off-white cream */
+  --teal: #335C67; /* Dark teal */
+  --charcoal: #1C1C1C; /* Near-black */
+}
+
+/* Dark mode semantic color roles */
+:root,
+[data-theme="dark"] {
+  --bg: var(--charcoal); /* Page background */
+  --text: var(--cream); /* Primary text */
+  --text-muted: var(--pale-yellow); /* Secondary / muted text */
+  --header-bg: var(--maroon); /* Header bar background */
+  --accent: var(--gold); /* Links, headings, buttons */
+  --accent-hover: var(--maroon); /* Hover state for accent buttons */
+  --surface: var(--teal); /* Cards, panels, calendar wrapper */
+  --border: var(--teal); /* Borders and dividers */
+  --frame-bg: var(--pale-yellow); /* Image placeholder frames */
+  --notch-bg: var(--charcoal); /* Card notch cutout matches page bg */
+  --logo-tab-bg: var(--header-bg); /* Logo tab matches maroon header */
+  --btn-text: var(--charcoal); /* Text on gold buttons */
+  --pill-hover: var(--pale-yellow); /* Nav pill hover */
+}
+
+/* Light mode semantic color roles */
+[data-theme="light"] {
+  --bg: var(--cream); /* Page background */
+  --text: var(--charcoal); /* Primary text */
+  --text-muted: var(--teal); /* Secondary / muted text */
+  --header-bg: var(--maroon); /* Header bar background */
+  --accent: var(--gold); /* Links, headings, buttons */
+  --accent-hover: var(--maroon); /* Hover state for accent buttons */
+  --surface: var(--pale-yellow); /* Cards, panels, calendar wrapper */
+  --border: var(--maroon); /* Borders and dividers */
+  --frame-bg: var(--pale-yellow); /* Image placeholder frames */
+  --notch-bg: var(--cream); /* Card notch cutout matches page bg */
+  --logo-tab-bg: var(--header-bg); /* Logo tab matches maroon header */
+  --btn-text: var(--charcoal); /* Text on gold buttons */
+  --pill-hover: var(--pale-yellow); /* Nav pill hover */
+}
+
 /* Reset default browser margin and padding on all elements */
 * {
   margin: 0; /* Remove outer spacing */
@@ -7,17 +76,26 @@
 
 /* Set base typography and page background */
 body {
-  font-family: Georgia, "Times New Roman", serif; /* Classic serif font for a cigar lounge feel */
-  background-color: #1a1410; /* Dark brown background */
-  color: #e8dcc8; /* Warm cream text color */
+  font-family: var(--font-zeitung); /* Sarvatrik Latin Variable via Adobe Fonts */
+  font-style: normal; /* Upright Sarvatrik from kit end7yej */
+  font-variation-settings: "wght" var(--font-wght-regular); /* Variable font weight axis */
+  background-color: var(--bg); /* Theme-aware page background */
+  color: var(--text); /* Theme-aware text color */
   line-height: 1.6; /* Comfortable reading line spacing */
   min-height: 100vh; /* Ensure page fills at least the full viewport height */
+  transition: background-color 0.25s, color 0.25s; /* Smooth theme transition */
+}
+
+/* Bold text using Zeitung weight axis */
+strong,
+b {
+  font-variation-settings: "wght" var(--font-wght-bold); /* Heavier weight */
 }
 
 /* Style the top navigation bar */
 header {
-  background-color: #0f0b08; /* Darker header background */
-  border-bottom: 1px solid #3d2e1f; /* Subtle bottom border */
+  background-color: var(--header-bg); /* Theme-aware header background */
+  border-bottom: 1px solid var(--border); /* Theme-aware bottom border */
   padding: 1rem 2rem; /* Vertical and horizontal padding */
 }
 
@@ -33,8 +111,8 @@ nav {
 /* Style the site name / logo link */
 .logo {
   font-size: 1.4rem; /* Slightly larger site title */
-  font-weight: bold; /* Emphasize the brand name */
-  color: #c9a96e; /* Gold accent color */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold Shantell weight */
+  color: var(--accent); /* Golden orange accent color */
   text-decoration: none; /* Remove underline from link */
   letter-spacing: 0.05em; /* Slight spacing between letters */
 }
@@ -48,7 +126,7 @@ nav {
 
 /* Style individual navigation links */
 .nav-links a {
-  color: #e8dcc8; /* Cream link color */
+  color: var(--text); /* Theme-aware link color */
   text-decoration: none; /* Remove underline */
   font-size: 0.95rem; /* Slightly smaller nav text */
   letter-spacing: 0.03em; /* Subtle letter spacing */
@@ -58,7 +136,7 @@ nav {
 /* Highlight nav link on hover */
 .nav-links a:hover,
 .nav-links a.active {
-  color: #c9a96e; /* Gold color when hovered or active */
+  color: var(--accent); /* Golden orange when hovered or active */
 }
 
 /* Style the main content area */
@@ -71,13 +149,14 @@ main {
 /* Style page headings */
 h1 {
   font-size: 2.2rem; /* Large page title */
-  color: #c9a96e; /* Gold heading color */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold Shantell weight */
+  color: var(--accent); /* Golden orange heading color */
   margin-bottom: 0.75rem; /* Space below heading */
 }
 
 /* Style introductory paragraph under headings */
 .page-intro {
-  color: #b0a090; /* Muted text for descriptions */
+  color: var(--text-muted); /* Theme-aware muted description text */
   margin-bottom: 2rem; /* Space before calendar section */
   max-width: 600px; /* Keep intro text readable width */
 }
@@ -86,8 +165,8 @@ h1 {
 .calendar-wrapper {
   max-width: 100%; /* Prevent overflow on small screens */
   overflow-x: auto; /* Allow horizontal scroll if calendar is wider than screen */
-  background-color: #241c14; /* Slightly lighter panel behind calendar */
-  border: 1px solid #3d2e1f; /* Subtle border around calendar area */
+  background-color: var(--surface); /* Theme-aware panel behind calendar */
+  border: 1px solid var(--border); /* Theme-aware border around calendar area */
   border-radius: 6px; /* Rounded corners */
   padding: 1rem; /* Inner spacing around iframe */
 }
@@ -106,9 +185,9 @@ h1 {
 footer {
   text-align: center; /* Center footer text */
   padding: 2rem; /* Space around footer content */
-  color: #6b5c4e; /* Muted footer text */
+  color: var(--text-muted); /* Theme-aware footer text */
   font-size: 0.85rem; /* Smaller footer text */
-  border-top: 1px solid #3d2e1f; /* Top border separating footer */
+  border-top: 1px solid var(--border); /* Theme-aware top border separating footer */
   margin-top: 2rem; /* Space above footer */
 }
 
@@ -126,7 +205,7 @@ footer {
 
 /* Style the hero tagline */
 .hero p {
-  color: #b0a090; /* Muted tagline color */
+  color: var(--text-muted); /* Theme-aware tagline color */
   font-size: 1.1rem; /* Slightly larger body text */
   max-width: 500px; /* Limit tagline width */
   margin: 0 auto 2rem; /* Center and add space below */
@@ -135,8 +214,8 @@ footer {
 /* Style the call-to-action button on home page */
 .btn {
   display: inline-block; /* Allow padding and sizing */
-  background-color: #c9a96e; /* Gold button background */
-  color: #1a1410; /* Dark text on gold button */
+  background-color: var(--accent); /* Golden orange button background */
+  color: var(--btn-text); /* Charcoal text on gold button */
   padding: 0.75rem 1.75rem; /* Button inner spacing */
   text-decoration: none; /* Remove underline */
   border-radius: 4px; /* Slightly rounded button corners */
@@ -147,64 +226,331 @@ footer {
 
 /* Darken button on hover */
 .btn:hover {
-  background-color: #b8944f; /* Darker gold on hover */
+  background-color: var(--accent-hover); /* Maroon button background on hover */
+}
+
+/* Theme toggle button shared styles */
+.theme-toggle {
+  display: inline-flex; /* Center icon inside button */
+  align-items: center; /* Vertically center icon */
+  justify-content: center; /* Horizontally center icon */
+  background-color: var(--accent); /* Golden orange button background */
+  color: var(--btn-text); /* Charcoal icon color */
+  border: none; /* Remove default button border */
+  cursor: pointer; /* Show pointer on hover */
+  font-size: 1.1rem; /* Icon size */
+  line-height: 1; /* Tight line height for icon */
+  transition: background-color 0.2s; /* Smooth hover transition */
+}
+
+/* Maroon background on theme toggle hover */
+.theme-toggle:hover {
+  background-color: var(--accent-hover); /* Maroon on hover */
+}
+
+/* Hide sun icon in dark mode (show moon to switch to light) */
+[data-theme="dark"] .theme-toggle-icon--light {
+  display: none; /* Sun hidden in dark mode */
+}
+
+/* Hide moon icon in light mode (show sun to switch to dark) */
+[data-theme="light"] .theme-toggle-icon--dark {
+  display: none; /* Moon hidden in light mode */
+}
+
+/* Events page: theme toggle in nav row */
+.nav-actions {
+  display: flex; /* Place toggle beside nav links */
+  align-items: center; /* Vertically align toggle and links */
+  gap: 1.5rem; /* Space between toggle and links */
+}
+
+/* Events page: compact theme toggle button */
+header .theme-toggle {
+  width: 42px; /* Fixed toggle width */
+  height: 38px; /* Fixed toggle height */
+  border-radius: 14px; /* Rounded pill shape */
 }
 
 /* ===== Home page (mockup layout) ===== */
 
-/* Black background for the home page only */
+/* Theme-aware background for home page */
 body.home {
-  background-color: #000000; /* Solid black main area per mockup */
-  color: #e8dcc8; /* Cream text color */
+  background-color: var(--bg); /* Theme-aware main area background */
+  color: var(--text); /* Theme-aware text color */
+  --header-bar-height: 48px; /* Fixed maroon header bar height */
+  --logo-height-expanded: 130px; /* Large logo height at top of page */
+  --logo-height-compact: 40px; /* Logo height when shrunk into header */
+  --notch-size: 260px; /* Full diameter of bottom notch circle */
+  --notch-radius: calc(var(--notch-size) / 2); /* Half diameter; center sits on frame bottom */
+  --card-icon-size: 130px; /* Card category icon dimensions */
+  --card-image-tint: color-mix(in srgb, var(--teal) 42%, transparent); /* Teal overlay on card photos */
+  --gallery-item-width: 300px; /* Width of each gallery image card */
+  --gallery-item-height: 380px; /* Height of each gallery image card */
+  --gallery-radius: 48px; /* Rounded corners on gallery cards */
+  --gallery-gap: 1.25rem; /* Space between gallery cards */
 }
 
-/* Maroon header container with room for overlapping logo */
+/* Sticky maroon header container with overlapping logo */
 body.home .site-header {
-  position: relative; /* Anchor absolutely positioned logo tab */
-  z-index: 10; /* Keep header above card content */
+  position: sticky; /* Stay at top while scrolling */
+  top: 0; /* Pin to viewport top */
+  z-index: 100; /* Keep header above page content */
+  padding: 0; /* Override global header padding */
+  border-bottom: none; /* No border; maroon bar is self-contained */
 }
 
 /* Full-width maroon navigation bar */
 body.home .header-bar {
-  display: flex; /* Lay out left nav and right CTA in a row */
-  justify-content: space-between; /* Push nav groups to opposite sides */
-  align-items: center; /* Vertically center nav pills */
-  height: 64px; /* Fixed header bar height */
-  padding: 0 3rem; /* Horizontal padding inside header */
-  background-color: #7a2222; /* Maroon header color from mockup */
+  display: flex; /* Lay out header contents in a row */
+  justify-content: space-between; /* Menu toggle left, theme toggle right */
+  align-items: center; /* Vertically center header items */
+  height: var(--header-bar-height); /* Compact header bar height */
+  padding: 0 2rem; /* Horizontal padding inside header */
+  background-color: var(--header-bg); /* Theme-aware header bar */
 }
 
-/* Left group of three small nav pills */
-body.home .nav-left {
-  display: flex; /* Arrange pills in a horizontal row */
-  gap: 1.25rem; /* Space between left nav pills */
+/* Expandable navigation — shared across home and inner pages */
+.site-header .nav-expand-toggle {
+  display: inline-flex; /* Align icon and label horizontally */
+  align-items: center; /* Vertically center icon and label */
+  gap: 0.5rem; /* Space between hamburger icon and Menu label */
+  height: 32px; /* Match home theme toggle height */
+  padding: 0 0.85rem; /* Horizontal padding inside menu button */
+  background-color: var(--accent); /* Golden orange button background */
+  color: var(--btn-text); /* Charcoal icon and label color */
+  border: none; /* Remove default button border */
+  border-radius: 12px; /* Rounded pill shape */
+  cursor: pointer; /* Show pointer on hover */
+  font-family: inherit; /* Match site typeface */
+  font-size: 0.85rem; /* Compact menu label size */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Medium-bold menu label */
+  letter-spacing: 0.04em; /* Slight letter spacing on label */
+  transition: background-color 0.2s; /* Smooth hover transition */
 }
 
-/* Base style for tan rounded navigation pills */
-body.home .nav-pill {
-  display: block; /* Give pills explicit width and height */
-  background-color: #c4a57b; /* Tan/gold pill color */
-  border-radius: 14px; /* Rounded rectangle shape */
-  text-decoration: none; /* Remove underline if pill is a link */
-  transition: background-color 0.2s; /* Smooth hover color change */
+/* Maroon background on menu button hover */
+.site-header .nav-expand-toggle:hover {
+  background-color: var(--accent-hover); /* Maroon on hover */
 }
 
-/* Slightly darken nav pill on hover */
-body.home .nav-pill:hover {
-  background-color: #b89460; /* Darker tan on hover */
+/* Three-line hamburger icon inside menu button */
+.site-header .nav-expand-icon {
+  position: relative; /* Anchor pseudo-element bars */
+  display: block; /* Fixed-size icon box */
+  width: 16px; /* Hamburger icon width */
+  height: 2px; /* Middle bar thickness */
+  background-color: currentColor; /* Icon matches button text color */
+  transition: background-color 0.2s ease; /* Smooth fade when morphing to X */
 }
 
-/* Small nav pill size (left side) */
-body.home .nav-pill--sm {
-  width: 58px; /* Small pill width */
-  height: 38px; /* Small pill height */
+/* Top bar of hamburger icon */
+.site-header .nav-expand-icon::before {
+  content: ""; /* Draw top bar */
+  position: absolute; /* Position relative to icon box */
+  left: 0; /* Align with icon width */
+  top: -5px; /* Offset above middle bar */
+  width: 100%; /* Full icon width */
+  height: 2px; /* Bar thickness */
+  background-color: currentColor; /* Match icon color */
+  transition: transform 0.2s ease, top 0.2s ease; /* Smooth morph to X */
 }
 
-/* Large nav pill size (right CTA) */
-body.home .nav-pill--lg {
-  width: 130px; /* Larger CTA pill width */
-  height: 46px; /* Larger CTA pill height */
-  border-radius: 18px; /* Slightly more rounded on large pill */
+/* Bottom bar of hamburger icon */
+.site-header .nav-expand-icon::after {
+  content: ""; /* Draw bottom bar */
+  position: absolute; /* Position relative to icon box */
+  left: 0; /* Align with icon width */
+  top: 5px; /* Offset below middle bar */
+  width: 100%; /* Full icon width */
+  height: 2px; /* Bar thickness */
+  background-color: currentColor; /* Match icon color */
+  transition: transform 0.2s ease, top 0.2s ease; /* Smooth morph to X */
+}
+
+/* Hide middle bar when menu is open */
+.site-header.is-nav-open .nav-expand-icon {
+  background-color: transparent; /* Middle bar disappears for X shape */
+}
+
+/* Rotate top bar into X when menu is open */
+.site-header.is-nav-open .nav-expand-icon::before {
+  top: 0; /* Move to center before rotating */
+  transform: rotate(45deg); /* Form upper leg of X */
+}
+
+/* Rotate bottom bar into X when menu is open */
+.site-header.is-nav-open .nav-expand-icon::after {
+  top: 0; /* Move to center before rotating */
+  transform: rotate(-45deg); /* Form lower leg of X */
+}
+
+/* Collapsible link bar below header row */
+.site-header .header-nav-panel {
+  max-height: 0; /* Collapsed by default */
+  overflow: hidden; /* Hide links while collapsed */
+  background-color: var(--teal); /* Teal bar contrasts with maroon header */
+  opacity: 0; /* Fade out when collapsed */
+  transition: max-height 0.3s ease, opacity 0.25s ease; /* Smooth expand/collapse */
+}
+
+/* Expanded navigation panel */
+.site-header.is-nav-open .header-nav-panel {
+  max-height: 3.25rem; /* Compact single-row height */
+  opacity: 1; /* Fully visible when open */
+}
+
+/* Override global nav centering inside expand panel */
+.site-header .header-nav-panel nav {
+  width: 100%; /* Span full width of expand bar */
+  max-width: none; /* Remove global 1100px nav cap */
+  margin: 0; /* Remove global auto centering on nav */
+  display: block; /* Let link list control flex layout */
+}
+
+/* Horizontal link list inside expand panel */
+.site-header .header-nav-links {
+  list-style: none; /* Remove bullet points */
+  display: flex; /* Lay out links in a row */
+  flex-wrap: wrap; /* Wrap on very narrow screens */
+  justify-content: flex-start; /* Align links to left edge of page */
+  align-items: center; /* Vertically center link text */
+  width: 100%; /* Fill expand bar so flex-start anchors to left */
+  gap: 0.25rem 1.5rem; /* Tighter spacing between links */
+  padding: 0.3rem 2rem; /* Minimal vertical padding in expand bar */
+}
+
+/* Individual expand bar links */
+.site-header .header-nav-links a {
+  display: inline-flex; /* Align icon and label horizontally */
+  align-items: center; /* Vertically center icon with text */
+  gap: 0.35rem; /* Tight gap between icon and label */
+  color: var(--cream); /* Cream text on teal background */
+  text-decoration: none; /* Remove underline */
+  font-size: 0.85rem; /* Slightly smaller nav label */
+  letter-spacing: 0.04em; /* Subtle letter spacing */
+  transition: color 0.2s; /* Smooth hover color change */
+}
+
+/* Nav link icons in expand bar */
+.site-header .header-nav-icon {
+  display: block; /* Remove inline image gap */
+  width: 40px; /* Compact icon width */
+  height: 40px; /* Compact icon height */
+  object-fit: contain; /* Preserve icon aspect ratio */
+  flex-shrink: 0; /* Do not shrink icon when space is tight */
+}
+
+/* Gold highlight on expand bar link hover or current page */
+.site-header .header-nav-links a:hover,
+.site-header .header-nav-links a.active {
+  color: var(--gold); /* Golden orange on hover or active page */
+}
+
+/* Inner pages: sticky header without overlapping logo tab */
+.site-header--page {
+  position: sticky; /* Stay at top while scrolling */
+  top: 0; /* Pin to viewport top */
+  z-index: 100; /* Keep header above page content */
+  padding: 0; /* Override global header padding */
+  border-bottom: none; /* No border; maroon bar is self-contained */
+}
+
+/* Inner page header row: menu, logo, theme toggle */
+.site-header--page .header-bar {
+  display: grid; /* Three-column header layout */
+  grid-template-columns: 1fr auto 1fr; /* Side columns flex; logo centered */
+  align-items: center; /* Vertically center header items */
+  height: 56px; /* Taller bar for text logo on inner pages */
+  padding: 0 2rem; /* Horizontal padding inside header */
+  background-color: var(--header-bg); /* Theme-aware header bar */
+}
+
+/* Pin menu button to left column */
+.site-header--page .nav-expand-toggle {
+  justify-self: start; /* Align menu button left */
+}
+
+/* Centered text logo on inner pages */
+.site-header--page .header-page-logo {
+  justify-self: center; /* Center logo between menu and theme toggle */
+  font-size: 1.05rem; /* Compact site title size */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold site title */
+  color: var(--accent); /* Golden orange logo text */
+  text-decoration: none; /* Remove underline from logo link */
+  letter-spacing: 0.05em; /* Slight spacing between letters */
+  text-align: center; /* Center multi-line title if needed */
+}
+
+/* Pin theme toggle to right column */
+.site-header--page .theme-toggle {
+  justify-self: end; /* Align theme toggle right */
+  width: 42px; /* Fixed toggle width */
+  height: 38px; /* Fixed toggle height */
+  border-radius: 14px; /* Rounded pill shape */
+}
+
+/* Scrolling events and tasks announcement bar */
+.site-header .events-ticker {
+  display: block; /* Full-width bar below header controls */
+  width: 100%; /* Span header width */
+  background-color: var(--gold); /* Golden announcement bar */
+  color: var(--charcoal); /* Dark text on gold background */
+  text-decoration: none; /* Remove underline from link wrapper */
+  overflow: hidden; /* Clip scrolling text at bar edges */
+  z-index: 15; /* Below logo tab, above page content */
+}
+
+/* Viewport clipping scrolling ticker text */
+.site-header .events-ticker-viewport {
+  overflow: hidden; /* Hide text outside visible bar */
+  width: 100%; /* Fill announcement bar width */
+}
+
+/* Horizontal track animated for marquee effect */
+.site-header .events-ticker-track {
+  display: flex; /* Place duplicate text spans side by side */
+  width: max-content; /* Shrink-wrap to combined text width */
+  animation: events-ticker-scroll 35s linear infinite; /* Continuous scroll speed */
+}
+
+/* Pause ticker motion when user prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .site-header .events-ticker-track {
+    animation: none; /* Stop scrolling animation */
+  }
+
+  .site-header .events-ticker-text + .events-ticker-text {
+    display: none; /* Hide duplicate loop copy when not animating */
+  }
+}
+
+/* One segment of scrolling announcement text */
+.site-header .events-ticker-text {
+  flex: 0 0 auto; /* Do not shrink text segments */
+  padding: 0.35rem 2rem; /* Compact vertical padding; horizontal inset */
+  font-size: 0.85rem; /* Small announcement text */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Medium-bold ticker copy */
+  letter-spacing: 0.03em; /* Slight spacing for readability in motion */
+  white-space: nowrap; /* Keep each segment on one line */
+}
+
+/* Marquee keyframes: move track left by half (one duplicate width) */
+@keyframes events-ticker-scroll {
+  from { transform: translateX(0); } /* Start at first copy */
+  to { transform: translateX(-50%); } /* End when second copy reaches start */
+}
+
+/* Gold bar darkens slightly on hover */
+.site-header .events-ticker:hover {
+  background-color: var(--pale-yellow); /* Lighter gold hover feedback */
+}
+
+/* Theme toggle uses nav pill sizing on home page */
+body.home .theme-toggle {
+  width: 44px; /* Compact theme toggle width */
+  height: 32px; /* Compact theme toggle height */
+  border-radius: 12px; /* Match smaller header scale */
 }
 
 /* Centered logo tab overlapping header and content */
@@ -216,18 +562,37 @@ body.home .logo-tab {
   display: flex; /* Center the logo image inside the tab */
   align-items: center; /* Vertically center logo */
   justify-content: center; /* Horizontally center logo */
-  padding: 10px 2rem 28px; /* Inner spacing; extra bottom for curved tab */
-  background-color: #000000; /* Black background matches logo artwork */
-  border-radius: 0 0 90px 90px; /* Curved bottom edge of logo tab */
+  padding: 10px 2.5rem 32px; /* Compact inner spacing for logo tab */
+  background-color: var(--logo-tab-bg); /* Maroon tab matching header bar */
+  border-radius: 0 0 100px 100px; /* Smaller curved bottom edge of logo tab */
   text-decoration: none; /* Remove underline from logo link */
   z-index: 20; /* Keep logo above header bar and cards */
+  transition: padding 0.35s ease, border-radius 0.35s ease; /* Smooth shrink animation */
 }
 
 /* Full brand logo image inside logo tab */
 body.home .logo-img {
   display: block; /* Remove inline image gap */
-  height: 52px; /* Logo display height */
+  height: var(--logo-height-expanded); /* Large logo at top of page */
   width: auto; /* Preserve logo aspect ratio */
+  transition: height 0.35s ease; /* Smooth logo shrink on scroll */
+}
+
+/* Compact header: logo shrinks to fit inside maroon bar */
+body.home.is-header-compact .logo-tab {
+  padding: 2px 2rem 4px; /* Room for larger logo inside maroon tab */
+  border-radius: 0 0 32px 32px; /* Slightly larger curve when compact */
+}
+
+body.home.is-header-compact .logo-img {
+  height: var(--logo-height-compact); /* Small logo inside header bar */
+}
+
+/* Main content wrapper on home page */
+body.home .home-main {
+  max-width: none; /* Allow full-width gallery below cards */
+  margin: 0; /* Remove default main centering */
+  padding: 0; /* Sections handle their own padding */
 }
 
 /* Three-column card grid on home page */
@@ -235,9 +600,9 @@ body.home .home-cards {
   display: grid; /* CSS grid for three equal columns */
   grid-template-columns: repeat(3, 1fr); /* Three equal-width columns */
   gap: 2.5rem; /* Space between cards */
-  max-width: 1200px; /* Limit grid width on large screens */
+  max-width: 1400px; /* Wider grid for larger cards on big screens */
   margin: 0 auto; /* Center grid horizontally */
-  padding: 5.5rem 3rem 4rem; /* Top padding clears overlapping logo tab */
+  padding: 12rem 3rem 4rem; /* Top padding clears overlapping logo tab */
 }
 
 /* Individual feature card container */
@@ -246,124 +611,366 @@ body.home .feature-card {
   display: flex; /* Stack card surface and action area */
   flex-direction: column; /* Vertical card layout */
   align-items: center; /* Center card contents horizontally */
+  padding-bottom: var(--notch-radius); /* Room for bottom half of circle below frame */
 }
 
-/* Gray image frame with rounded top corners (placeholder until photos are added) */
+/* Single link wrapping image and icon so they click and hover as one unit */
+body.home .card-link {
+  display: block; /* Fill card column width */
+  width: 100%; /* Match feature card width */
+  text-decoration: none; /* Remove underline from card link */
+  color: inherit; /* Inherit text color from page */
+  cursor: pointer; /* Pointer cursor over entire card link */
+}
+
+/* Gray image frame with rounded top corners */
 body.home .card-image-frame {
   width: 100%; /* Fill column width */
-  min-height: 420px; /* Tall frame height matching mockup */
+  height: 560px; /* Fixed frame height so photos always fill the box */
   margin: 0; /* Remove default figure margin */
-  background-color: #c8c8c8; /* Light gray placeholder until image loads */
-  border-radius: 70px 70px 0 0; /* Large rounded top corners */
-  position: relative; /* Anchor the bottom notch pseudo-element */
-  overflow: hidden; /* Clip future images to the frame shape */
+  background-color: var(--frame-bg); /* Theme-aware placeholder until image loads */
+  border-radius: 85px 85px 0 0; /* Large rounded top corners scaled to card size */
+  position: relative; /* Anchor notch circle and icon overlay */
+  overflow: visible; /* Allow notch and icons to extend below frame */
 }
 
-/* Image inside frame: fills area and crops to fit */
+/* Teal tint overlay on card photos; fades out on hover */
+body.home .card-image-frame::before {
+  content: ""; /* Create tint layer above photo */
+  position: absolute; /* Cover the image area only */
+  inset: 0; /* Stretch to frame edges */
+  border-radius: 85px 85px 0 0; /* Match frame rounded top corners */
+  background-color: var(--card-image-tint); /* Semi-transparent teal tint */
+  z-index: 1; /* Sit above photo, below notch and icons */
+  pointer-events: none; /* Allow hover to reach image beneath */
+  opacity: 1; /* Visible by default */
+  transition: opacity 0.3s ease; /* Smooth fade when hover removes tint */
+}
+
+/* Remove tint when hovering anywhere on the linked card unit */
+body.home .card-link:hover .card-image-frame::before {
+  opacity: 0; /* Fade tint away on image or icon hover */
+}
+
+/* Photo inside frame */
 body.home .card-image {
   display: block; /* Remove inline gap below image */
-  width: 100%; /* Stretch image to frame width */
-  height: 100%; /* Stretch image to frame height */
-  min-height: 420px; /* Match frame minimum height */
-  object-fit: cover; /* Crop image to fill frame without distortion */
-  border-radius: 70px 70px 0 0; /* Match frame rounded top corners */
+  width: 100%; /* Fill frame width */
+  height: 100%; /* Fill fixed frame height */
+  object-fit: cover; /* Crop photo to fill frame */
+  object-position: center; /* Center photo in frame */
+  border-radius: 85px 85px 0 0; /* Match frame rounded top corners */
+}
+
+/* Cigars and accessories photos: anchor to bottom so image reaches frame edge */
+body.home .feature-card:nth-child(2) .card-image,
+body.home .feature-card:nth-child(3) .card-image {
+  object-position: center bottom; /* Keep bottom of photo flush with frame bottom */
 }
 
 /* Semi-circular cutout at bottom center of each image frame */
 body.home .card-image-frame::after {
   content: ""; /* Create decorative notch element */
   position: absolute; /* Position at bottom of card */
-  bottom: -36px; /* Overlap into black background below */
+  bottom: calc(var(--notch-radius) * -1); /* Circle center aligns with frame bottom */
   left: 50%; /* Center horizontally */
   transform: translateX(-50%); /* Perfect horizontal centering */
-  width: 110px; /* Notch circle width */
-  height: 110px; /* Notch circle height */
-  background-color: #000000; /* Black matches page bg to create cutout */
+  width: var(--notch-size); /* Notch circle width */
+  height: var(--notch-size); /* Notch circle height */
+  background-color: var(--notch-bg); /* Matches page bg to create cutout */
   border-radius: 50%; /* Circular notch shape */
   z-index: 1; /* Layer above card, below button */
 }
 
-/* Container for tan button and line in card notch */
+/* Icon and label container aligned to the circular notch */
 body.home .card-action {
-  position: relative; /* Stack button above decorative line */
-  z-index: 2; /* Place button above notch cutout */
-  margin-top: -18px; /* Pull button into the notch area */
-  display: flex; /* Stack button and line vertically */
-  flex-direction: column; /* Vertical layout */
-  align-items: center; /* Center button and line */
+  position: absolute; /* Overlay the notch circle and label area */
+  top: 100%; /* Anchor to bottom edge of image frame */
+  margin-top: calc(var(--notch-radius) * -1 + (var(--notch-size) - var(--card-icon-size)) / 2); /* Center icon image on frame bottom */
+  left: 50%; /* Center horizontally on card */
+  transform: translateX(-50%); /* Perfect horizontal centering */
+  width: var(--notch-size); /* Match notch circle diameter */
+  z-index: 2; /* Place icons above notch cutout */
+  display: flex; /* Stack icon and label vertically */
+  flex-direction: column; /* Label sits below icon */
+  align-items: center; /* Center icon and label horizontally */
+  overflow: visible; /* Allow hover label to show below icon */
 }
 
-/* Tan rounded-square icon button at bottom of each card */
+/* Icon button area centered in the circular notch */
 body.home .card-btn {
-  display: block; /* Give button explicit dimensions */
-  width: 52px; /* Square button width */
-  height: 52px; /* Square button height */
-  background-color: #c4a57b; /* Tan/gold button color */
-  border-radius: 14px; /* Rounded square corners */
-  text-decoration: none; /* Remove underline from link button */
-  transition: background-color 0.2s; /* Smooth hover transition */
+  display: flex; /* Flexbox for centering image */
+  align-items: center; /* Center icon vertically */
+  justify-content: center; /* Center icon horizontally */
+  width: var(--notch-size); /* Match notch circle width for click area */
+  height: auto; /* Shrink to icon height so label sits directly below */
+  background: none; /* No solid placeholder background */
+  flex-shrink: 0; /* Prevent icon area from shrinking */
 }
 
-/* Darken card button on hover */
-body.home .card-btn:hover {
-  background-color: #b89460; /* Darker tan on hover */
+/* Category label hidden until card hover */
+body.home .card-label {
+  position: absolute; /* Float below icon without shifting layout */
+  top: 100%; /* Sit directly under the icon button */
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%); /* Perfect horizontal centering */
+  margin-top: 0.15rem; /* Small gap below icon on hover */
+  line-height: 1.1; /* Compact label line height */
+  font-size: 1.15rem; /* Label text size */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold Shantell variable font */
+  color: var(--accent); /* Golden orange label color */
+  text-align: center; /* Center label text */
+  letter-spacing: 0.04em; /* Slight letter spacing */
+  white-space: nowrap; /* Keep label on one line */
+  opacity: 0; /* Hidden by default */
+  visibility: hidden; /* Hidden until hover */
+  transition: opacity 0.2s ease, visibility 0.2s ease; /* Smooth fade in */
+  pointer-events: none; /* Label does not block icon clicks */
 }
 
-/* Small decorative line under each card button */
-body.home .card-line {
-  display: block; /* Allow width and height */
-  width: 36px; /* Short horizontal line width */
-  height: 3px; /* Thin line thickness */
-  margin-top: 0.5rem; /* Space between button and line */
-  background-color: #c4a57b; /* Tan line color matching buttons */
-  border-radius: 2px; /* Slightly rounded line ends */
+/* Show label when hovering the linked card unit */
+body.home .card-link:hover .card-label {
+  opacity: 1; /* Fade label in */
+  visibility: visible; /* Show label */
 }
 
-/* Tablet: two columns */
+/* Icon image inside card button */
+body.home .card-btn-icon {
+  display: block; /* Remove inline gap below image */
+  width: var(--card-icon-size); /* Icon size inside circle */
+  height: var(--card-icon-size); /* Fixed height for consistent centering */
+  object-fit: contain; /* Scale icon without cropping */
+  object-position: center; /* Center artwork within icon box */
+  margin: 0; /* Remove any default image margin */
+  transition: filter 0.2s ease; /* Smooth brightness change on hover */
+}
+
+/* Brighten icon when hovering the linked card unit */
+body.home .card-link:hover .card-btn-icon {
+  filter: brightness(1.35); /* Make icon brighter when image or icon is hovered */
+}
+
+/* Horizontally scrollable gallery below feature cards */
+body.home .gallery-scroll {
+  overflow-x: auto; /* Scroll left and right through image rows */
+  overflow-y: hidden; /* Prevent vertical scroll inside gallery */
+  -webkit-overflow-scrolling: touch; /* Momentum scroll on iOS */
+  padding: 2rem 2rem 4rem; /* Vertical spacing; side padding on outer edges only */
+  padding-right: calc(2rem + (var(--gallery-item-width) + var(--gallery-gap)) / 2); /* Room for stagger row overflow */
+}
+
+/* Vertical stack of staggered gallery rows */
+body.home .gallery-brick {
+  display: inline-block; /* Shrink-wrap to widest row */
+  width: max-content; /* Fit exactly to card rows */
+  padding: 0 0 1rem; /* Bottom padding only; rows meet flush at loop seam */
+}
+
+/* Single row of gallery cards */
+body.home .gallery-row {
+  display: flex; /* Horizontal row of cards */
+  flex-wrap: nowrap; /* Keep cards in one scrollable line */
+  gap: var(--gallery-gap); /* Space between cards */
+  margin-bottom: var(--gallery-gap); /* Space between top and bottom rows */
+  width: max-content; /* Row grows with duplicated cards */
+}
+
+/* Bottom row visual offset without changing row width or loop seam */
+body.home .gallery-row--stagger {
+  transform: translateX(calc((var(--gallery-item-width) + var(--gallery-gap)) / 2)); /* Half-tile brick offset */
+}
+
+/* Individual gallery card column */
+body.home .gallery-item {
+  position: relative; /* Anchor floating description over card */
+  flex: 0 0 var(--gallery-item-width); /* Fixed width; do not shrink */
+  width: var(--gallery-item-width); /* Explicit card width */
+  overflow: visible; /* Allow description to float outside image frame */
+}
+
+/* Rounded image frame with hover description */
+body.home .gallery-card {
+  position: relative; /* Anchor tint overlay and description */
+  width: 100%; /* Fill gallery item width */
+  height: var(--gallery-item-height); /* Fixed card height */
+  background-color: var(--frame-bg); /* Gray placeholder behind photo */
+  border-radius: var(--gallery-radius); /* Large rounded corners per mockup */
+  overflow: hidden; /* Clip image to rounded frame */
+}
+
+/* Teal tint overlay on gallery photos; appears on hover */
+body.home .gallery-card::before {
+  content: ""; /* Create tint layer above photo */
+  position: absolute; /* Cover the image area */
+  inset: 0; /* Stretch to card edges */
+  border-radius: inherit; /* Match card rounded corners */
+  background-color: var(--card-image-tint); /* Semi-transparent teal tint */
+  z-index: 1; /* Sit above photo, below description */
+  pointer-events: none; /* Allow hover to reach card beneath */
+  opacity: 0; /* Hidden until hover */
+  transition: opacity 0.3s ease; /* Smooth fade when hover adds tint */
+}
+
+/* Show tint when hovering a gallery card */
+body.home .gallery-item:hover .gallery-card::before,
+body.home .gallery-item:focus-within .gallery-card::before {
+  opacity: 1; /* Fade tint in on hover */
+}
+
+/* Photo inside gallery card */
+body.home .gallery-image {
+  display: block; /* Remove inline gap below image */
+  width: 100%; /* Fill card width */
+  height: 100%; /* Fill card height */
+  object-fit: cover; /* Crop photo to fill frame */
+  object-position: center; /* Center photo in frame */
+  border-radius: inherit; /* Match card rounded corners */
+}
+
+/* Transparent description text at bottom of image on hover */
+body.home .gallery-desc {
+  position: absolute; /* Float over the image frame */
+  top: auto; /* Reset vertical center */
+  bottom: 1.25rem; /* Anchor to bottom of image */
+  left: 0; /* Span full card width */
+  right: 0; /* Span full card width */
+  width: 100%; /* Match image width */
+  max-width: none; /* No narrow text column */
+  padding: 0 1.25rem; /* Side inset keeps text off rounded corners */
+  box-sizing: border-box; /* Include padding in width */
+  background-color: transparent; /* No background box */
+  color: var(--charcoal); /* Dark grey text in light mode */
+  border-radius: 0; /* No box shape */
+  box-shadow: none; /* No box shadow */
+  text-shadow: none; /* No outer glow */
+  text-align: center; /* Center-align description text */
+  font-family: var(--font-gallery); /* Sarvatrik Latin Variable from Adobe Fonts kit end7yej */
+  font-style: normal; /* Upright (non-italic) Sarvatrik */
+  font-variation-settings: "wght" 500; /* Medium weight for gallery descriptions */
+  transform: none; /* Full-width block; no horizontal offset */
+  z-index: 3; /* Sit above tint and photo */
+  opacity: 0; /* Hidden by default */
+  visibility: hidden; /* Hidden until hover */
+  transition: opacity 0.3s ease, visibility 0.3s ease; /* Smooth reveal */
+  pointer-events: none; /* Description does not block scrolling */
+}
+
+/* Light cream text on gallery hover descriptions in dark mode */
+[data-theme="dark"] body.home .gallery-desc {
+  color: var(--cream); /* Light text over tinted photos in dark mode */
+}
+
+/* Description text inside hover label */
+body.home .gallery-desc p {
+  margin: 0; /* Remove default paragraph margin */
+  font-size: 1rem; /* Clear readable size over image */
+  line-height: 1.5; /* Comfortable reading line spacing */
+  letter-spacing: 0.03em; /* Subtle letter spacing for clarity */
+  text-align: center; /* Center-align paragraph text */
+  font-family: inherit; /* Match Sarvatrik on parent .gallery-desc */
+  font-style: inherit; /* Match upright style on parent */
+  font-variation-settings: inherit; /* Match weight on parent */
+}
+
+/* Show description when hovering a gallery item */
+body.home .gallery-item:hover .gallery-desc,
+body.home .gallery-item:focus-within .gallery-desc {
+  opacity: 1; /* Fade description in */
+  visibility: visible; /* Show floating text */
+}
+
+/* Tablet: two columns for category cards */
 @media (max-width: 900px) {
   body.home .home-cards {
     grid-template-columns: repeat(2, 1fr); /* Two columns on medium screens */
-    padding: 5rem 2rem 3rem; /* Slightly reduced padding */
+    padding: 9.5rem 2rem 3rem; /* Slightly reduced padding */
   }
 }
 
-/* Mobile: single column and smaller header padding */
+/* Mobile: single column and smaller sizing */
 @media (max-width: 600px) {
+  .site-header .events-ticker-text {
+    padding: 0.35rem 1.25rem; /* Match mobile header inset */
+    font-size: 0.8rem; /* Slightly smaller ticker on mobile */
+  }
+
+  .site-header .header-nav-links {
+    flex-direction: column; /* Stack links vertically on mobile */
+    align-items: flex-start; /* Left-align stacked links on mobile */
+    gap: 0.5rem; /* Tighter vertical gap on mobile */
+    padding: 0.5rem 1.25rem; /* Compact expand bar padding on mobile */
+  }
+
+.site-header.is-nav-open .header-nav-panel {
+  max-height: 9rem; /* Compact stacked links on mobile */
+}
+
   body.home .header-bar {
     padding: 0 1.25rem; /* Tighter header padding on mobile */
   }
 
-  body.home .nav-pill--sm {
-    width: 44px; /* Smaller nav pills on mobile */
-    height: 32px; /* Smaller nav pill height */
+  .site-header--page .header-bar {
+    padding: 0 1.25rem; /* Tighter header padding on mobile */
   }
 
-  body.home .nav-pill--lg {
-    width: 90px; /* Smaller CTA pill on mobile */
-    height: 38px; /* Smaller CTA height */
+  .site-header--page .header-page-logo {
+    font-size: 0.85rem; /* Smaller centered title on mobile */
+  }
+
+  body.home {
+    --card-icon-size: 100px; /* Smaller icons on mobile */
+    --gallery-item-width: 240px; /* Narrower gallery cards on mobile */
+    --gallery-item-height: 300px; /* Shorter gallery cards on mobile */
+    --gallery-radius: 36px; /* Slightly smaller radius on mobile */
+    --logo-height-expanded: 88px; /* Smaller expanded logo on mobile */
+    --logo-height-compact: 34px; /* Larger compact logo on mobile */
   }
 
   body.home .logo-tab {
-    padding: 8px 1.25rem 22px; /* Compact logo tab on mobile */
+    padding: 8px 1.75rem 26px; /* Compact logo tab on mobile */
+    border-radius: 0 0 80px 80px; /* Smaller curve on mobile */
   }
 
-  body.home .logo-img {
-    height: 40px; /* Smaller logo on mobile */
+  body.home.is-header-compact .logo-tab {
+    padding: 2px 1.5rem 4px; /* Room for larger logo on mobile */
+    border-radius: 0 0 26px 26px; /* Compact curve on mobile */
   }
 
   body.home .home-cards {
     grid-template-columns: 1fr; /* Stack cards vertically on mobile */
     gap: 3rem; /* Extra gap when stacked */
-    padding: 4.5rem 1.25rem 2rem; /* Reduced outer padding */
+    padding: 9rem 1.25rem 2rem; /* Reduced outer padding */
   }
 
   body.home .card-image-frame {
-    min-height: 320px; /* Shorter frames on mobile */
-    border-radius: 50px 50px 0 0; /* Slightly smaller top radius */
+    height: 420px; /* Fixed frame height on mobile */
+    border-radius: 60px 60px 0 0; /* Scaled top radius on mobile */
+  }
+
+  body.home .card-image-frame::before {
+    border-radius: 60px 60px 0 0; /* Match mobile frame corners on tint */
   }
 
   body.home .card-image {
-    min-height: 320px; /* Match shorter mobile frame height */
-    border-radius: 50px 50px 0 0; /* Match mobile frame corners */
+    border-radius: 60px 60px 0 0; /* Match mobile frame corners */
+  }
+
+  body.home .gallery-scroll {
+    padding-left: 1.25rem; /* Outer side inset on mobile */
+    padding-right: calc(1.25rem + (var(--gallery-item-width) + var(--gallery-gap)) / 2); /* Stagger overflow on mobile */
+  }
+
+  body.home .gallery-brick {
+    padding-bottom: 1rem; /* Bottom padding only on mobile */
+  }
+
+  body.home .gallery-desc {
+    bottom: 1rem; /* Slightly tighter bottom inset on mobile */
+    padding: 0 1rem; /* Side inset on mobile */
+  }
+
+  body.home .gallery-desc p {
+    font-size: 0.9rem; /* Slightly smaller text on mobile */
+    line-height: 1.45; /* Readable on narrow cards */
   }
 }

@@ -4,56 +4,204 @@
   <meta charset="UTF-8"> <!-- Use UTF-8 character encoding for special characters -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Make layout responsive on mobile -->
   <title>Cigar Club</title> <!-- Text shown in browser tab -->
+  <script>
+    (function () { var s = localStorage.getItem("theme"); var t = s || (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark"); document.documentElement.setAttribute("data-theme", t); })();
+  </script> <!-- Apply saved theme before paint to prevent flash -->
+  <link rel="preconnect" href="https://use.typekit.net"> <!-- Speed up Adobe Fonts connection -->
+  <link rel="preconnect" href="https://p.typekit.net" crossorigin> <!-- Speed up Adobe Fonts files -->
+  <link rel="stylesheet" href="https://use.typekit.net/end7yej.css"> <!-- Adobe Fonts: Sarvatrik Latin Variable -->
   <link rel="stylesheet" href="css/styles.css"> <!-- Load shared site styles -->
 </head>
-<body class="home"> <!-- Home page body; black background applied via .home class -->
+<body class="home tk-sarvatrik-latin-variable"> <!-- Home page; Sarvatrik via Adobe Fonts kit end7yej -->
 
   <header class="site-header"> <!-- Full-width maroon header with overlapping logo tab -->
     <div class="header-bar"> <!-- Maroon navigation bar -->
-      <nav class="nav-left" aria-label="Primary navigation"> <!-- Left group of nav pill links -->
-        <a href="index.html" class="nav-pill nav-pill--sm" aria-label="Home"></a> <!-- Small tan nav pill: home -->
-        <a href="#" class="nav-pill nav-pill--sm" aria-label="About"></a> <!-- Small tan nav pill: about (placeholder) -->
-        <a href="events.html" class="nav-pill nav-pill--sm" aria-label="Events"></a> <!-- Small tan nav pill: events -->
-      </nav>
-      <a href="#" class="nav-pill nav-pill--lg" aria-label="Join"></a> <!-- Large tan CTA pill on the right -->
+      <button type="button" class="nav-expand-toggle" aria-expanded="false" aria-controls="header-nav-panel"> <!-- Expand/collapse site navigation -->
+        <span class="nav-expand-icon" aria-hidden="true"></span> <!-- Hamburger icon; animates when open -->
+        <span class="nav-expand-label">Menu</span> <!-- Visible label for menu button -->
+      </button>
+      <button type="button" class="theme-toggle" aria-label="Switch to light mode"> <!-- Toggle light/dark mode -->
+        <span class="theme-toggle-icon theme-toggle-icon--light" aria-hidden="true">☀</span> <!-- Sun icon shown in light mode -->
+        <span class="theme-toggle-icon theme-toggle-icon--dark" aria-hidden="true">☾</span> <!-- Moon icon shown in dark mode -->
+      </button>
     </div>
+    <div class="header-nav-panel" id="header-nav-panel" hidden> <!-- Collapsible bar with page links -->
+      <nav aria-label="Site"> <!-- Navigation landmark for screen readers -->
+        <ul class="header-nav-links"> <!-- Horizontal list of header links -->
+          <li><a href="events.html"><img src="images/ICON-10.png" alt="" class="header-nav-icon" width="40" height="40"><span>Events</span></a></li> <!-- Calendar icon for events -->
+          <li><a href="about-us.html"><img src="images/ICON-09.png" alt="" class="header-nav-icon" width="40" height="40"><span>About Us</span></a></li> <!-- Person icon for about us -->
+          <li><a href="location.html"><img src="images/ICON-08.png" alt="" class="header-nav-icon" width="40" height="40"><span>Location</span></a></li> <!-- House icon for location -->
+        </ul>
+      </nav>
+    </div>
+    <a href="events.html" class="events-ticker" hidden> <!-- Scrolling next-event and task announcement -->
+      <div class="events-ticker-viewport"> <!-- Clips scrolling text at bar edges -->
+        <div class="events-ticker-track"> <!-- Animated row duplicated for seamless loop -->
+          <span class="events-ticker-text"></span> <!-- Primary scrolling announcement copy -->
+          <span class="events-ticker-text" aria-hidden="true"></span> <!-- Duplicate for infinite marquee loop -->
+        </div>
+      </div>
+    </a>
     <a href="index.html" class="logo-tab"> <!-- Centered logo tab overlapping header and content -->
       <img src="images/LOGO_01.png" alt="Cigar Club" class="logo-img"> <!-- Full brand logo image -->
     </a>
   </header>
 
-  <main class="home-cards"> <!-- Main area with three feature cards on black background -->
-    <article class="feature-card"> <!-- First card column -->
-      <figure class="card-image-frame"> <!-- Gray frame placeholder for a future image -->
-        <!-- Uncomment and set src when image is ready: -->
-        <!-- <img src="images/card-1.jpg" alt="Describe this image" class="card-image"> -->
-      </figure>
-      <div class="card-action"> <!-- Bottom notch area with icon button -->
-        <a href="events.html" class="card-btn" aria-label="View events"></a> <!-- Tan square button linking to events -->
-        <span class="card-line"></span> <!-- Decorative line beneath the button -->
+  <main class="home-main"> <!-- Main scrollable content area -->
+    <section class="home-cards" aria-label="Shop categories"> <!-- Original three feature cards -->
+      <article class="feature-card"> <!-- First card column -->
+        <a href="events.html" class="card-link" aria-label="Pipes"> <!-- Image and icon link together as one unit -->
+          <figure class="card-image-frame"> <!-- Image frame with filler artwork -->
+            <img src="images/IMG_4334.JPG" alt="" class="card-image"> <!-- Filler photo for pipes -->
+            <div class="card-action"> <!-- Icon and label below frame -->
+              <span class="card-btn" aria-hidden="true"> <!-- Icon area (link is on parent) -->
+                <img src="images/ICON-04.png" alt="" class="card-btn-icon" width="130" height="130"> <!-- Pipe icon -->
+              </span>
+              <span class="card-label">Pipes</span> <!-- Category label under icon -->
+            </div>
+          </figure>
+        </a>
+      </article>
+      <article class="feature-card"> <!-- Second card column -->
+        <a href="#" class="card-link" aria-label="Cigars"> <!-- Image and icon link together as one unit -->
+          <figure class="card-image-frame"> <!-- Image frame with filler artwork -->
+            <img src="images/IMG_4338.JPG" alt="" class="card-image"> <!-- Filler photo for cigars -->
+            <div class="card-action"> <!-- Icon and label below frame -->
+              <span class="card-btn" aria-hidden="true"> <!-- Icon area (link is on parent) -->
+                <img src="images/ICON-05.png" alt="" class="card-btn-icon" width="130" height="130"> <!-- Cigar icon -->
+              </span>
+              <span class="card-label">Cigars</span> <!-- Category label under icon -->
+            </div>
+          </figure>
+        </a>
+      </article>
+      <article class="feature-card"> <!-- Third card column -->
+        <a href="#" class="card-link" aria-label="Accessories"> <!-- Image and icon link together as one unit -->
+          <figure class="card-image-frame"> <!-- Image frame with filler artwork -->
+            <img src="images/IMG_4341.JPG" alt="" class="card-image"> <!-- Filler photo for accessories -->
+            <div class="card-action"> <!-- Icon and label below frame -->
+              <span class="card-btn" aria-hidden="true"> <!-- Icon area (link is on parent) -->
+                <img src="images/ICON-07.png" alt="" class="card-btn-icon" width="130" height="130"> <!-- Accessories icon -->
+              </span>
+              <span class="card-label">Accessories</span> <!-- Category label under icon -->
+            </div>
+          </figure>
+        </a>
+      </article>
+    </section>
+
+    <section class="gallery-scroll" aria-label="Featured collection"> <!-- Horizontally scrollable gallery below cards -->
+      <div class="gallery-brick"> <!-- Staggered two-row brick layout -->
+        <div class="gallery-row"> <!-- Top row of image cards -->
+          <article class="gallery-item">
+            <div class="gallery-card">
+              <img src="images/IMG_4334.JPG" alt="" class="gallery-image">
+            </div>
+            <div class="gallery-desc"><p>Hand-crafted pipes from master artisans around the world.</p></div>
+          </article>
+          <article class="gallery-item">
+            <div class="gallery-card">
+              <img src="images/IMG_4338.JPG" alt="" class="gallery-image">
+            </div>
+            <div class="gallery-desc"><p>Premium cigars curated for the discerning enthusiast.</p></div>
+          </article>
+          <article class="gallery-item">
+            <div class="gallery-card">
+              <img src="images/IMG_4341.JPG" alt="" class="gallery-image">
+            </div>
+            <div class="gallery-desc"><p>Essential accessories to complete your smoking ritual.</p></div>
+          </article>
+          <article class="gallery-item">
+            <div class="gallery-card">
+              <img src="images/IMG_4334.JPG" alt="" class="gallery-image">
+            </div>
+            <div class="gallery-desc"><p>Estate pipes restored and ready for your collection.</p></div>
+          </article>
+          <article class="gallery-item">
+            <div class="gallery-card">
+              <img src="images/IMG_4338.JPG" alt="" class="gallery-image">
+            </div>
+            <div class="gallery-desc"><p>Limited releases from boutique cigar makers.</p></div>
+          </article>
+          <article class="gallery-item">
+            <div class="gallery-card">
+              <img src="images/IMG_4341.JPG" alt="" class="gallery-image">
+            </div>
+            <div class="gallery-desc"><p>Cutters, lighters, and humidors built to last.</p></div>
+          </article>
+          <article class="gallery-item">
+            <div class="gallery-card">
+              <img src="images/IMG_4334.JPG" alt="" class="gallery-image">
+            </div>
+            <div class="gallery-desc"><p>Vintage briar and meerschaum pieces worth discovering.</p></div>
+          </article>
+          <article class="gallery-item">
+            <div class="gallery-card">
+              <img src="images/IMG_4338.JPG" alt="" class="gallery-image">
+            </div>
+            <div class="gallery-desc"><p>Weekly tastings and pairing events at the club.</p></div>
+          </article>
+        </div>
+        <div class="gallery-row gallery-row--stagger"> <!-- Bottom row offset for brick pattern -->
+          <article class="gallery-item">
+            <div class="gallery-card">
+              <img src="images/IMG_4338.JPG" alt="" class="gallery-image">
+            </div>
+            <div class="gallery-desc"><p>Connecticut wrappers and bold maduro blends.</p></div>
+          </article>
+          <article class="gallery-item">
+            <div class="gallery-card">
+              <img src="images/IMG_4341.JPG" alt="" class="gallery-image">
+            </div>
+            <div class="gallery-desc"><p>Travel cases and leather goods for the road.</p></div>
+          </article>
+          <article class="gallery-item">
+            <div class="gallery-card">
+              <img src="images/IMG_4334.JPG" alt="" class="gallery-image">
+            </div>
+            <div class="gallery-desc"><p>Pipe tobacco blends from classic English houses.</p></div>
+          </article>
+          <article class="gallery-item">
+            <div class="gallery-card">
+              <img src="images/IMG_4338.JPG" alt="" class="gallery-image">
+            </div>
+            <div class="gallery-desc"><p>Box-pressed figurados and perfecto shapes.</p></div>
+          </article>
+          <article class="gallery-item">
+            <div class="gallery-card">
+              <img src="images/IMG_4341.JPG" alt="" class="gallery-image">
+            </div>
+            <div class="gallery-desc"><p>Ashtrays, pipe stands, and display pieces.</p></div>
+          </article>
+          <article class="gallery-item">
+            <div class="gallery-card">
+              <img src="images/IMG_4334.JPG" alt="" class="gallery-image">
+            </div>
+            <div class="gallery-desc"><p>Freehand shapes from independent pipe makers.</p></div>
+          </article>
+          <article class="gallery-item">
+            <div class="gallery-card">
+              <img src="images/IMG_4338.JPG" alt="" class="gallery-image">
+            </div>
+            <div class="gallery-desc"><p>Seasonal samplers and club-exclusive bundles.</p></div>
+          </article>
+          <article class="gallery-item">
+            <div class="gallery-card">
+              <img src="images/IMG_4341.JPG" alt="" class="gallery-image">
+            </div>
+            <div class="gallery-desc"><p>Gift sets for newcomers and seasoned members.</p></div>
+          </article>
+        </div>
       </div>
-    </article>
-    <article class="feature-card"> <!-- Second card column -->
-      <figure class="card-image-frame"> <!-- Gray frame placeholder for a future image -->
-        <!-- Uncomment and set src when image is ready: -->
-        <!-- <img src="images/card-2.jpg" alt="Describe this image" class="card-image"> -->
-      </figure>
-      <div class="card-action"> <!-- Bottom notch area with icon button -->
-        <a href="#" class="card-btn" aria-label="Learn more"></a> <!-- Tan square button (placeholder link) -->
-        <span class="card-line"></span> <!-- Decorative line beneath the button -->
-      </div>
-    </article>
-    <article class="feature-card"> <!-- Third card column -->
-      <figure class="card-image-frame"> <!-- Gray frame placeholder for a future image -->
-        <!-- Uncomment and set src when image is ready: -->
-        <!-- <img src="images/card-3.jpg" alt="Describe this image" class="card-image"> -->
-      </figure>
-      <div class="card-action"> <!-- Bottom notch area with icon button -->
-        <a href="#" class="card-btn" aria-label="Explore lounge"></a> <!-- Tan square button (placeholder link) -->
-        <span class="card-line"></span> <!-- Decorative line beneath the button -->
-      </div>
-    </article>
+    </section>
   </main>
+
+  <script src="js/calendar-config.js"></script> <!-- Google Calendar ID and optional API key -->
+  <script src="js/events-ticker.js"></script> <!-- Scrolling events and tasks announcement -->
+  <script src="js/theme.js"></script> <!-- Theme toggle logic and persistence -->
+  <script src="js/nav-expand.js"></script> <!-- Expandable header navigation panel -->
+  <script src="js/home-scroll.js"></script> <!-- Logo shrink animation on scroll -->
+  <script src="js/gallery-loop.js?v=5"></script> <!-- Infinite horizontal loop for gallery grid -->
 
 </body>
 </html>
