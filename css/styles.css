@@ -171,12 +171,66 @@ h1 {
   padding: 1rem; /* Inner spacing around iframe */
 }
 
+/* Intro link to open Google Calendar directly */
+.calendar-open-link {
+  display: inline-block; /* Place link on its own line below intro text */
+  margin-top: 0.75rem; /* Space above fallback calendar link */
+  color: var(--accent); /* Golden orange link color */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold link text */
+  text-decoration: none; /* Remove underline */
+}
+
+/* Underline calendar open link on hover */
+.calendar-open-link:hover {
+  text-decoration: underline; /* Hover affordance */
+}
+
+/* Staff setup note when calendar events are missing */
+.calendar-setup-note {
+  margin-bottom: 2rem; /* Space before calendar embed */
+  padding: 1.25rem 1.5rem; /* Inner spacing for setup note */
+  background-color: var(--surface); /* Theme-aware panel background */
+  border: 1px solid var(--border); /* Theme-aware border */
+  border-radius: 8px; /* Rounded note corners */
+}
+
+/* Setup note heading */
+.calendar-setup-note__title {
+  margin-bottom: 0.5rem; /* Space below heading */
+  font-size: 1.1rem; /* Slightly larger than body text */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold heading */
+  color: var(--accent); /* Golden orange heading */
+}
+
+/* Setup note paragraph text */
+.calendar-setup-note__text {
+  margin-bottom: 0.75rem; /* Space before numbered steps */
+  color: var(--text); /* Theme-aware body text */
+}
+
+/* Numbered setup steps list */
+.calendar-setup-note__steps {
+  margin-left: 1.25rem; /* Indent ordered list */
+  color: var(--text-muted); /* Muted step text */
+}
+
+/* Individual setup step spacing */
+.calendar-setup-note__steps li {
+  margin-bottom: 0.35rem; /* Space between steps */
+}
+
+/* Inline code in setup note */
+.calendar-setup-note code {
+  font-size: 0.9em; /* Slightly smaller monospace text */
+  color: var(--text); /* Theme-aware code text */
+}
+
 /* Style the embedded Google Calendar iframe */
 .calendar-wrapper iframe {
   display: block; /* Remove inline gap below iframe */
   width: 100%; /* Fill available container width */
   max-width: 800px; /* Cap width at Google embed default size */
-  height: 600px; /* Fixed calendar height */
+  height: 700px; /* Taller embed for week view */
   border: 0; /* Remove iframe border */
   margin: 0 auto; /* Center iframe in wrapper */
 }

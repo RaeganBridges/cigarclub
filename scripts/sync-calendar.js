@@ -1,9 +1,14 @@
 #!/usr/bin/env node
 const https = require("https"); // Node HTTPS client for iCal fetch
+const fs = require("fs"); // Read optional manual events file
+const path = require("path"); // Resolve paths relative to repo root
+const ical = require("../js/ical-utils.js"); // Shared iCal parser
 
 const calendarConfig = { // Calendar feed settings (matches js/calendar-config.js)
-  icalUrl: "https://calendar.google.com/calendar/ical/9d624c02bc316b9c422aa30a1f3f580a11b1a85b2412df9d30bf675adfcdf607%40group.calendar.google.com/public/basic.ics", // Public club iCal URL
+  calendarId: "9d624c02bc316b9c422aa30a1f3f580a11b1a85b2412df9d30bf675adfcdf607@group.calendar.google.com", // Club Google Calendar ID
+  icalUrl: "https://calendar.google.com/calendar/ical/9d624c02bc316b9c422aa30a1f3f580a11b1a85b2412df9d30bf675adfcdf607%40group.calendar.google.com/public/basic.ics", // Public iCal URL
   timeZone: "America/Chicago", // Club timezone label stored in JSON
+  manualPath: path.join(__dirname, "../data/events-manual.json"), // Optional manual events file
 };
 
 function fetchText(url) { // Download URL body as UTF-8 text
@@ -20,63 +25,82 @@ function fetchText(url) { // Download URL body as UTF-8 text
   });
 }
 
-function parseIcalDate(value, isDateOnly) { // Parse iCal DTSTART into ISO string
-  if (!value) { return null; } // Skip empty values
-  if (isDateOnly || value.length === 8) { // DATE format YYYYMMDD
-    var y = value.slice(0, 4); // Year digits
-    var m = value.slice(4, 6); // Month digits
-    var d = value.slice(6, 8); // Day digits
-    return y + "-" + m + "-" + d + "T12:00:00.000Z"; // Noon UTC for all-day stability
-  }
-  if (value.endsWith("Z")) { // UTC datetime with Z suffix
-    var clean = value.replace("Z", ""); // Remove trailing Z
-    var yy = clean.slice(0, 4); // Year
-    var mm = clean.slice(4, 6); // Month
-    var dd = clean.slice(6, 8); // Day
-    var hh = clean.slice(9, 11); // Hour
-    var mi = clean.slice(11, 13); // Minute
-    var ss = clean.slice(13, 15) || "00"; // Seconds
-    return new Date(Date.UTC(Number(yy), Number(mm) - 1, Number(dd), Number(hh), Number(mi), Number(ss))).toISOString(); // UTC ISO string
-  }
-  return new Date(value).toISOString(); // Fallback Date parsing
-}
-
-function parseIcalFeed(raw) { // Parse VEVENT and VTODO entries from iCal text
-  var items = []; // Normalized calendar items for JSON export
-  var blocks = raw.split(/BEGIN:(VEVENT|VTODO)/); // Split into event/task blocks
-  blocks.forEach(function (block) { // Walk each block
-    if (block.indexOf("END:VEVENT") === -1 && block.indexOf("END:VTODO") === -1) { return; } // Skip non-event chunks
-    var isTodo = block.indexOf("END:VTODO") !== -1; // Detect Google Tasks / VTODO rows
-    var summary = ""; // Title field
-    var description = ""; // Description field
-    var categories = ""; // Categories field
-    var dtstart = ""; // Raw DTSTART value
-    var dateOnly = false; // Whether DTSTART is DATE not DATE-TIME
-    block.split(/\r?\n/).forEach(function (line) { // Parse line-based iCal properties
-      if (line.indexOf("SUMMARY:") === 0) { summary = line.slice(8); } // Read SUMMARY
-      if (line.indexOf("DESCRIPTION:") === 0) { description = line.slice(12); } // Read DESCRIPTION
-      if (line.indexOf("CATEGORIES:") === 0) { categories = line.slice(11); } // Read CATEGORIES
-      if (line.indexOf("DTSTART;VALUE=DATE:") === 0) { dtstart = line.slice(19); dateOnly = true; } // All-day start
-      if (line.indexOf("DTSTART:") === 0 && !dtstart) { dtstart = line.slice(8); } // Timed start
+function fetchFromApi(apiKey) { // Load events via Google Calendar API (most reliable)
+  var now = new Date().toISOString(); // Current time for timeMin filter
+  var calendarId = encodeURIComponent(calendarConfig.calendarId); // URL-safe calendar id
+  var url = "https://www.googleapis.com/calendar/v3/calendars/" + calendarId + "/events?key=" + encodeURIComponent(apiKey) + "&timeMin=" + encodeURIComponent(now) + "&maxResults=50&singleEvents=true&orderBy=startTime"; // API request URL
+  return fetch(url).then(function (response) { // Request upcoming events from Google
+    if (!response.ok) { throw new Error("Calendar API HTTP " + response.status); } // Fail on HTTP errors
+    return response.json(); // Parse JSON payload
+  }).then(function (data) { // Map API events to shared JSON item shape
+    return (data.items || []).map(function (event) { // Normalize each API event
+      var startField = event.start || {}; // API start object
+      var allDay = Boolean(startField.date && !startField.dateTime); // All-day when only date is present
+      var startValue = startField.dateTime || startField.date; // Pick datetime or date string
+      var start = allDay ? new Date(startValue + "T12:00:00.000Z") : new Date(startValue); // Parse start date
+      return { // JSON-safe item row
+        summary: event.summary || "", // Event title
+        description: event.description || "", // Event description
+        categories: "", // API does not expose iCal categories here
+        start: start.toISOString(), // ISO datetime string
+        allDay: allDay, // All-day flag
+        isTodo: false, // Regular API events are not VTODO rows
+      };
     });
-    var startIso = parseIcalDate(dtstart, dateOnly); // Convert start to ISO string
-    if (!startIso) { return; } // Skip invalid entries
-    items.push({ summary: summary, description: description, categories: categories, start: startIso, allDay: dateOnly, isTodo: isTodo }); // Store normalized row
   });
-  return items; // Return all parsed items
 }
 
-fetchText(calendarConfig.icalUrl) // Download public iCal feed
-  .then(parseIcalFeed) // Parse into normalized items
-  .then(function (items) { // Build JSON payload for static site
+function fetchFromIcal() { // Load events via public iCal feed (fallback when no API key)
+  return fetchText(calendarConfig.icalUrl).then(ical.parseIcalFeedIso); // Parse iCal into JSON items
+}
+
+function loadManualEvents() { // Read optional hand-edited events from repo JSON file
+  try { // Manual file is optional
+    var raw = fs.readFileSync(calendarConfig.manualPath, "utf8"); // Read manual events file
+    var parsed = JSON.parse(raw); // Parse JSON array or object wrapper
+    if (Array.isArray(parsed)) { return parsed; } // Plain array of event rows
+    return parsed.items || []; // Object wrapper with items array
+  } catch (error) { // Missing or invalid manual file is OK
+    return []; // No manual events to merge
+  }
+}
+
+function mergeItems(googleItems, manualItems) { // Combine Google and manual events without duplicates
+  var combined = googleItems.concat(manualItems); // Concatenate both sources
+  var seen = {}; // Track unique keys to avoid duplicate rows
+  return combined.filter(function (item) { // Filter duplicate summary+start pairs
+    var key = (item.summary || "") + "|" + (item.start || ""); // Unique key per event
+    if (seen[key]) { return false; } // Skip duplicate entry
+    seen[key] = true; // Mark key as seen
+    return true; // Keep unique item
+  });
+}
+
+function loadGoogleEvents() { // Prefer API when key is available, otherwise iCal
+  var apiKey = process.env.GOOGLE_CALENDAR_API_KEY || ""; // API key from GitHub Actions secret
+  if (apiKey) { // Use Calendar API when credentials are configured
+    return fetchFromApi(apiKey).catch(function () { return fetchFromIcal(); }); // Fall back to iCal on API failure
+  }
+  return fetchFromIcal(); // Use public iCal feed when no API key is set
+}
+
+loadGoogleEvents() // Fetch events from Google Calendar
+  .then(function (googleItems) { // Merge with optional manual events
     var payload = { // JSON document written to data/calendar-events.json
       updatedAt: new Date().toISOString(), // Timestamp of last successful sync
       timeZone: calendarConfig.timeZone, // Club timezone for client formatting
-      items: items, // Upcoming events and tasks from iCal feed
+      source: process.env.GOOGLE_CALENDAR_API_KEY ? "api" : "ical", // Record which sync source was used
+      items: mergeItems(googleItems, loadManualEvents()), // Combined Google + manual events
     };
     process.stdout.write(JSON.stringify(payload, null, 2)); // Print pretty JSON to stdout
   })
-  .catch(function (error) { // Handle fetch/parse failures in CI
-    console.error(error); // Log error for GitHub Actions logs
-    process.exit(1); // Fail workflow when sync cannot complete
+  .catch(function (error) { // Still write manual events if Google fetch fails completely
+    var payload = { // JSON document with manual events only
+      updatedAt: new Date().toISOString(), // Timestamp of fallback write
+      timeZone: calendarConfig.timeZone, // Club timezone for client formatting
+      source: "manual", // Indicate Google fetch failed
+      items: loadManualEvents(), // Manual events only
+      error: String(error.message || error), // Store sync error for debugging
+    };
+    process.stdout.write(JSON.stringify(payload, null, 2)); // Print fallback JSON to stdout
   });

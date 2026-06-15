@@ -1,12 +1,11 @@
 name: Sync calendar events
 
 on:
-  schedule:
-    - cron: "0 * * * *"
-  workflow_dispatch:
   push:
-    paths:
-      - "scripts/sync-calendar.js"
+    branches: [main]
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
 
 jobs:
   sync:
@@ -19,6 +18,8 @@ jobs:
         with:
           node-version: "20"
       - name: Fetch calendar and write JSON
+        env:
+          GOOGLE_CALENDAR_API_KEY: ${{ secrets.GOOGLE_CALENDAR_API_KEY }}
         run: node scripts/sync-calendar.js > data/calendar-events.json
       - name: Commit updated events
         run: |

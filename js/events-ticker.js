@@ -5,6 +5,7 @@
 
   var textEls = ticker.querySelectorAll(".events-ticker-text"); // Duplicate text nodes for seamless loop
   var fallbackText = "View upcoming events on our calendar \u2192"; // Default message when no events are loaded
+  var loadingText = "Loading upcoming events\u2026"; // Shown while event data is being fetched
   var dateFormatter = new Intl.DateTimeFormat("en-US", { // Format event dates for ticker copy
     weekday: "short", // Short day name (e.g. Sat)
     month: "short", // Short month name (e.g. Jun)
@@ -19,6 +20,13 @@
     day: "numeric", // Day of month
     timeZone: config.timeZone || "America/Chicago", // Club timezone from config
   });
+
+  function resolveDataUrl(relativePath) { // Build absolute URL for JSON files from script location
+    var script = document.querySelector("script[src*=\"calendar-config.js\"]"); // Find config script tag
+    if (!script || !script.src) { return relativePath; } // Fall back to relative path
+    var base = script.src.replace(/js\/calendar-config\.js(\?.*)?$/, ""); // Site root from script URL
+    return base + relativePath; // Absolute URL that works on GitHub Pages subpaths
+  }
 
   function isTask(item) { // Detect calendar items marked as tasks
     var title = (item.summary || "").trim(); // Event or task title text
@@ -74,56 +82,7 @@
     textEls.forEach(function (el) { // Update each duplicated span
       el.textContent = message; // Set scrolling announcement copy
     });
-    ticker.hidden = false; // Reveal ticker once content is ready
-  }
-
-  function parseIcalDate(value, isDateOnly) { // Parse iCal DTSTART values into Date objects
-    if (!value) { return null; } // Skip empty values
-    if (isDateOnly || value.length === 8) { // DATE format YYYYMMDD
-      var y = value.slice(0, 4); // Year digits
-      var m = value.slice(4, 6); // Month digits
-      var d = value.slice(6, 8); // Day digits
-      return new Date(y + "-" + m + "-" + d + "T12:00:00"); // Noon local avoids DST edge cases
-    }
-    if (value.indexOf("T") === -1) { return new Date(value); // Pass through ISO-like strings
-    }
-    var clean = value.replace("Z", ""); // Strip UTC suffix for manual parsing
-    if (clean.indexOf("T") !== -1 && clean.length >= 15) { // Compact UTC datetime YYYYMMDDTHHMMSS
-      var yy = clean.slice(0, 4); // Year
-      var mm = clean.slice(4, 6); // Month
-      var dd = clean.slice(6, 8); // Day
-      var hh = clean.slice(9, 11); // Hour
-      var mi = clean.slice(11, 13); // Minute
-      var ss = clean.slice(13, 15) || "00"; // Seconds
-      if (value.indexOf("Z") !== -1) { return new Date(Date.UTC(Number(yy), Number(mm) - 1, Number(dd), Number(hh), Number(mi), Number(ss))); } // UTC datetime
-      return new Date(yy + "-" + mm + "-" + dd + "T" + hh + ":" + mi + ":" + ss); // Floating local datetime
-    }
-    return new Date(value); // Last-resort Date parsing
-  }
-
-  function parseIcalFeed(raw) { // Parse VEVENT and VTODO blocks from iCal text
-    var items = []; // Normalized upcoming calendar items
-    var blocks = raw.split(/BEGIN:(VEVENT|VTODO)/); // Split feed into event/task blocks
-    blocks.forEach(function (block) { // Walk each parsed block
-      if (block.indexOf("END:VEVENT") === -1 && block.indexOf("END:VTODO") === -1) { return; } // Skip non-event chunks
-      var isTodo = block.indexOf("END:VTODO") !== -1; // Detect task entries
-      var summary = ""; // Event/task title
-      var description = ""; // Event/task description
-      var categories = ""; // Optional iCal categories
-      var dtstart = ""; // Raw DTSTART value
-      var dateOnly = false; // Whether DTSTART uses DATE not DATE-TIME
-      block.split(/\r?\n/).forEach(function (line) { // Parse line-based iCal fields
-        if (line.indexOf("SUMMARY:") === 0) { summary = line.slice(8); } // Read title
-        if (line.indexOf("DESCRIPTION:") === 0) { description = line.slice(12); } // Read description
-        if (line.indexOf("CATEGORIES:") === 0) { categories = line.slice(11); } // Read categories
-        if (line.indexOf("DTSTART;VALUE=DATE:") === 0) { dtstart = line.slice(19); dateOnly = true; } // All-day start
-        if (line.indexOf("DTSTART:") === 0 && !dtstart) { dtstart = line.slice(8); } // Timed start
-      });
-      var start = parseIcalDate(dtstart, dateOnly); // Convert DTSTART to Date
-      if (!start) { return; } // Skip blocks without a valid start
-      items.push({ summary: summary, description: description, categories: categories, start: start, allDay: dateOnly, isTodo: isTodo }); // Store normalized item
-    });
-    return items; // Return parsed items
+    ticker.hidden = false; // Ensure ticker is visible after content is set
   }
 
   function normalizeItem(raw) { // Convert stored JSON item to in-memory shape
@@ -137,65 +96,75 @@
     };
   }
 
-  function fetchFromJson() { // Load pre-synced events from same-origin JSON file
-    return fetch("data/calendar-events.json").then(function (response) { // Request static JSON feed
-      if (!response.ok) { throw new Error("Events JSON missing"); } // Fail when file is absent
+  function fetchJson(relativePath) { // Fetch one JSON file with cache busting
+    var url = resolveDataUrl(relativePath); // Resolve absolute URL from site root
+    var cacheBust = url + (url.indexOf("?") === -1 ? "?" : "&") + "ts=" + Date.now(); // Avoid stale browser cache
+    return fetch(cacheBust, { cache: "no-store" }).then(function (response) { // Request JSON file
+      if (!response.ok) { throw new Error("Missing " + relativePath); } // Fail when file is absent
       return response.json(); // Parse JSON payload
-    }).then(function (payload) { // Map stored items to normalized shape
-      return (payload.items || []).map(normalizeItem); // Convert each stored row
     });
   }
 
-  function normalizeApiEvent(event) { // Convert Google Calendar API event to shared shape
-    var startField = event.start || {}; // API start object
-    var allDay = Boolean(startField.date && !startField.dateTime); // All-day when only date is present
-    var startValue = startField.dateTime || startField.date; // Pick datetime or date string
-    var start = allDay ? parseIcalDate(startValue.replace(/-/g, ""), true) : new Date(startValue); // Parse start date
-    return { // Normalized item used by ticker builder
-      summary: event.summary || "", // Event title from API
-      description: event.description || "", // Event description from API
-      categories: (event.colorId ? "" : ""), // API has no direct categories string
-      start: start, // Parsed start date
-      allDay: allDay, // All-day flag
-      isTodo: false, // API calendar events are not VTODO
-    };
+  function itemsFromPayload(payload) { // Extract normalized items array from JSON payload
+    if (Array.isArray(payload)) { return payload.map(normalizeItem); } // Plain array file
+    return (payload.items || []).map(normalizeItem); // Object wrapper with items array
   }
 
-  function fetchFromApi() { // Load events via Google Calendar API when apiKey is set
+  function fetchFromApi() { // Load events live via Google Calendar API when apiKey is set
     if (!config.apiKey) { return Promise.reject(new Error("No API key")); } // Skip without credentials
     var now = new Date().toISOString(); // Current time in ISO format for timeMin
     var calendarId = encodeURIComponent(config.calendarId); // URL-safe calendar id
-    var url = "https://www.googleapis.com/calendar/v3/calendars/" + calendarId + "/events?key=" + encodeURIComponent(config.apiKey) + "&timeMin=" + encodeURIComponent(now) + "&maxResults=25&singleEvents=true&orderBy=startTime"; // API request URL
+    var url = "https://www.googleapis.com/calendar/v3/calendars/" + calendarId + "/events?key=" + encodeURIComponent(config.apiKey) + "&timeMin=" + encodeURIComponent(now) + "&maxResults=50&singleEvents=true&orderBy=startTime"; // API request URL
     return fetch(url).then(function (response) { // Request upcoming events
       if (!response.ok) { throw new Error("Calendar API request failed"); } // Fail on HTTP errors
       return response.json(); // Parse JSON payload
     }).then(function (data) { // Map API events to shared item shape
-      return (data.items || []).map(normalizeApiEvent); // Normalize each API event
-    });
-  }
-
-  function fetchFromIcal() { // Load events via public iCal feed through CORS proxy
-    var icalUrl = config.icalUrl; // Public iCal URL from config
-    if (!icalUrl) { return Promise.reject(new Error("No iCal URL")); } // Skip without feed URL
-    var proxy = config.corsProxy || ""; // Optional CORS proxy prefix
-    var fetchUrl = proxy ? proxy + encodeURIComponent(icalUrl) : icalUrl; // Build proxied URL for browser fetch
-    return fetch(fetchUrl).then(function (response) { // Request iCal text
-      if (!response.ok) { throw new Error("iCal request failed"); } // Fail on HTTP errors
-      return response.text(); // Read iCal body
-    }).then(parseIcalFeed); // Parse iCal into normalized items
-  }
-
-  function loadEvents() { // Try synced JSON first, then API, then iCal fallback
-    return fetchFromJson().catch(function () { // Prefer same-origin JSON from GitHub Action sync
-      return fetchFromApi().catch(function () { // Attempt live API when key is configured
-        return fetchFromIcal(); // Last resort: proxied iCal feed
+      return (data.items || []).map(function (event) { // Normalize each API event
+        var startField = event.start || {}; // API start object
+        var allDay = Boolean(startField.date && !startField.dateTime); // All-day when only date is present
+        var startValue = startField.dateTime || startField.date; // Pick datetime or date string
+        var start = allDay ? new Date(startValue + "T12:00:00.000Z") : new Date(startValue); // Parse start date
+        return normalizeItem({ summary: event.summary, description: event.description, start: start.toISOString(), allDay: allDay, isTodo: false }); // Normalized row
       });
     });
   }
 
-  loadEvents().then(function (items) { // Fetch and render ticker content
-    showMessage(buildTickerMessage(items)); // Build and display announcement text
-  }).catch(function () { // Handle fetch/parse failures gracefully
-    showMessage(fallbackText); // Show generic calendar link message
-  });
+  function mergeItems(lists) { // Combine multiple item arrays without duplicates
+    var combined = []; // Accumulated unique items
+    var seen = {}; // Track summary+start keys
+    lists.forEach(function (list) { // Walk each source list
+      list.forEach(function (item) { // Walk each item in source
+        var key = (item.summary || "") + "|" + (item.start ? item.start.toISOString() : ""); // Unique key
+        if (seen[key]) { return; } // Skip duplicate entry
+        seen[key] = true; // Mark key as seen
+        combined.push(item); // Keep unique item
+      });
+    });
+    return combined; // Return merged list
+  }
+
+  function loadEvents() { // Load events from API, synced JSON, and manual JSON
+    var jsonPath = config.jsonPath || "data/calendar-events.json"; // Auto-synced JSON path
+    var manualPath = config.manualPath || "data/events-manual.json"; // Manual events JSON path
+    return fetchFromApi().catch(function () { // Try live API first when key is configured
+      return Promise.all([ // Load both JSON files in parallel
+        fetchJson(jsonPath).then(itemsFromPayload).catch(function () { return []; }), // Synced events (optional)
+        fetchJson(manualPath).then(itemsFromPayload).catch(function () { return []; }), // Manual events (optional)
+      ]).then(function (results) { // Merge JSON sources
+        return mergeItems(results); // Combined synced + manual items
+      });
+    });
+  }
+
+  function refreshTicker() { // Fetch latest calendar data and update ticker text
+    loadEvents().then(function (items) { // Fetch from best available source
+      showMessage(buildTickerMessage(items)); // Build and display announcement text
+    }).catch(function () { // Handle fetch/parse failures gracefully
+      showMessage(fallbackText); // Show generic calendar link message
+    });
+  }
+
+  showMessage(loadingText); // Show loading state immediately so bar is visible
+  refreshTicker(); // Initial ticker load on page open
+  setInterval(refreshTicker, config.refreshMs || 300000); // Poll for calendar updates every 5 minutes
 })();
