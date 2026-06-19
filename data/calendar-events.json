@@ -1,21 +1,21 @@
 {
-  "updatedAt": "2026-06-19T18:26:36.556Z",
+  "updatedAt": "2026-06-19T20:12:54.531Z",
   "timeZone": "America/Chicago",
   "source": "ical",
   "items": [
-    {
-      "summary": "TEST",
-      "description": "",
-      "categories": "",
-      "start": "2026-06-18T19:00:00.000Z",
-      "allDay": false,
-      "isTodo": false
-    },
     {
       "summary": "Showcase 1",
       "description": "",
       "categories": "",
       "start": "2026-06-16T19:00:00.000Z",
+      "allDay": false,
+      "isTodo": false
+    },
+    {
+      "summary": "TEST",
+      "description": "",
+      "categories": "",
+      "start": "2026-06-18T19:00:00.000Z",
       "allDay": false,
       "isTodo": false
     }
