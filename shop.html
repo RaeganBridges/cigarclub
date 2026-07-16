@@ -25,11 +25,19 @@
         <span class="nav-expand-icon" aria-hidden="true"></span> <!-- Hamburger icon; animates when open -->
         <span class="nav-expand-label">Menu</span> <!-- Visible label for menu button -->
       </button>
-      <a href="index.html" class="header-page-logo"><img src="images/LOGO_02.png" alt="Cigar Club" class="header-page-logo-img"></a> <!-- Horizontal brand logo links back to home -->
       <button type="button" class="theme-toggle" aria-label="Switch to light mode"> <!-- Toggle light/dark mode -->
-        <span class="theme-toggle-icon theme-toggle-icon--light" aria-hidden="true">☀</span> <!-- Sun icon shown in light mode -->
-        <span class="theme-toggle-icon theme-toggle-icon--dark" aria-hidden="true">☾</span> <!-- Moon icon shown in dark mode -->
+        <svg class="theme-toggle-icon theme-toggle-icon--light" viewBox="0 0 24 24" aria-hidden="true" focusable="false"> <!-- Sun icon shown in light mode -->
+          <circle cx="12" cy="12" r="3.6" fill="none" stroke="currentColor" stroke-width="1.8"></circle> <!-- Centered sun core -->
+          <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"> <!-- Centered sun rays -->
+            <path d="M12 3.2v1.8M12 19v1.8M3.2 12h1.8M19 12h1.8M6.1 6.1l1.3 1.3M16.6 16.6l1.3 1.3M6.1 17.9l1.3-1.3M16.6 7.4l1.3-1.3"></path>
+          </g>
+        </svg>
+        <svg class="theme-toggle-icon theme-toggle-icon--dark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"> <!-- Moon icon shown in dark mode -->
+          <path d="M13.2 3.4a8.6 8.6 0 1 0 7.4 13.1 6.7 6.7 0 1 1-7.4-13.1Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path> <!-- Centered crescent moon -->
+        </svg>
       </button>
+      <a href="index.html" class="header-page-logo"><img src="images/LOGO_02.png" alt="Cigar Club" class="header-page-logo-img"></a> <!-- Horizontal brand logo links back to home -->
+      <a href="location.html" class="header-visit">Visit Us</a> <!-- Right-side link to the location page -->
     </div>
     <div class="header-nav-panel" id="header-nav-panel" hidden> <!-- Collapsible bar with page links -->
       <nav aria-label="Site"> <!-- Navigation landmark for screen readers -->

@@ -11,8 +11,12 @@
   var reviews = []; // Loaded review items
   var activeIndex = 0; // Currently visible review index
   var timerId = null; // Auto-advance interval handle
-  var intervalMs = 6000; // Seconds between automatic review changes
+  var intervalMs = 5500; // Seconds between automatic review changes
   var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches; // Respect motion preference
+  var pointerStartX = null; // Track pointer drag start X position
+  var pointerStartY = null; // Track pointer drag start Y position
+  var pointerStartScrollLeft = 0; // Track scroll position at drag start
+  var scrollFrameId = null; // Batch scroll-to-dot updates with animation frames
 
   var fallbackReviews = [ // Embedded reviews when JSON fetch fails
     { quote: "There's nothing comparable in middle TN to the Cigar Club. They are always stocked full, the crew is amazing, and they have the best sticks in town. The cigar packs are always awesome and I'm constantly finding a reason to stop by. This place is special and I highly recommend it!", author: "Jordan Young" },
@@ -55,25 +59,51 @@
     return Array.prototype.slice.call(dotsEl.querySelectorAll(".reviews-carousel__dot")); // NodeList to array
   }
 
-  function showReview(index) { // Switch to a specific review by index
-    if (!reviews.length) { return; } // Skip when no reviews loaded
-    activeIndex = (index + reviews.length) % reviews.length; // Wrap index inside review count
-    getSlides().forEach(function (slide, slideIndex) { // Update slide visibility
-      slide.classList.toggle("is-active", slideIndex === activeIndex); // Fade active slide in
-    });
-    getDots().forEach(function (dot, dotIndex) { // Update dot selected state
+  function updateDots() { // Sync dot selected state with the active slide
+    getDots().forEach(function (dot, dotIndex) { // Update every dot button
       var isActive = dotIndex === activeIndex; // Whether this dot matches active slide
       dot.classList.toggle("is-active", isActive); // Highlight active dot
       dot.setAttribute("aria-selected", isActive ? "true" : "false"); // Expose state to assistive tech
     });
   }
 
+  function updateSlides() { // Sync slide state with the active index
+    getSlides().forEach(function (slide, slideIndex) { // Update every slide card
+      slide.classList.toggle("is-active", slideIndex === activeIndex); // Highlight the current review card
+    });
+  }
+
+  function setActiveReview(index) { // Store and render the active review index
+    if (!reviews.length) { return; } // Skip before reviews load
+    activeIndex = (index + reviews.length) % reviews.length; // Wrap index inside review count
+    updateSlides(); // Refresh active slide class
+    updateDots(); // Refresh active dot class
+  }
+
+  function scrollToActiveReview() { // Move the viewport to the active review
+    var slides = getSlides(); // Current slide elements
+    var activeSlide = slides[activeIndex]; // Slide that should be visible
+    if (!activeSlide) { return; } // Abort when the target slide is missing
+    viewport.scrollTo({ // Scroll the row to the selected review
+      left: activeSlide.offsetLeft, // Align target slide with the viewport start
+      behavior: reducedMotion ? "auto" : "smooth", // Respect reduced-motion preference
+    });
+  }
+
+  function showReview(index) { // Switch to a specific review by scrolling
+    if (!reviews.length) { return; } // Skip empty lists
+    var nextIndex = (index + reviews.length) % reviews.length; // Wrap index inside review count
+    if (nextIndex === activeIndex) { return; } // Ignore no-op selections
+    setActiveReview(nextIndex); // Update active slide and dot immediately
+    scrollToActiveReview(); // Move the visible viewport to that slide
+  }
+
   function nextReview() { // Advance to the next review
-    showReview(activeIndex + 1); // Move one slide forward
+    showReview(activeIndex + 1, 1); // Move forward with a leftward exit
   }
 
   function prevReview() { // Go back to the previous review
-    showReview(activeIndex - 1); // Move one slide backward
+    showReview(activeIndex - 1, -1); // Move backward with a rightward exit
   }
 
   function stopAutoPlay() { // Clear automatic rotation timer
@@ -89,15 +119,25 @@
     timerId = window.setInterval(nextReview, intervalMs); // Rotate on interval
   }
 
-  function bindControls() { // Wire prev, next, and dot button interactions
+  function pulseButton(button) { // Add a quick press bounce to arrow buttons
+    if (!button || reducedMotion) { return; } // Skip when motion is reduced
+    button.classList.remove("is-pressed"); // Restart animation if already playing
+    void button.offsetWidth; // Force reflow so the class can retrigger
+    button.classList.add("is-pressed"); // Play the press bounce
+    window.setTimeout(function () { button.classList.remove("is-pressed"); }, 280); // Clear after the bounce
+  }
+
+  function bindControls() { // Wire prev, next, dots, and swipe interactions
     if (prevBtn) { // Previous button exists in markup
       prevBtn.addEventListener("click", function () { // Manual previous navigation
+        pulseButton(prevBtn); // Bounce the pressed arrow
         prevReview(); // Show prior review
         startAutoPlay(); // Restart timer after manual jump
       });
     }
     if (nextBtn) { // Next button exists in markup
       nextBtn.addEventListener("click", function () { // Manual next navigation
+        pulseButton(nextBtn); // Bounce the pressed arrow
         nextReview(); // Show next review
         startAutoPlay(); // Restart timer after manual jump
       });
@@ -105,7 +145,8 @@
     dotsEl.addEventListener("click", function (event) { // Dot navigation clicks
       var dot = event.target.closest("[data-review-dot]"); // Find clicked dot button
       if (!dot) { return; } // Ignore clicks outside dots
-      showReview(Number(dot.getAttribute("data-review-dot"))); // Jump to chosen review
+      var target = Number(dot.getAttribute("data-review-dot")); // Destination review index
+      showReview(target); // Jump to the selected review
       startAutoPlay(); // Restart timer after manual jump
     });
     root.addEventListener("mouseenter", stopAutoPlay); // Pause while pointer is over carousel
@@ -113,6 +154,65 @@
     root.addEventListener("focusin", stopAutoPlay); // Pause while a control has focus
     root.addEventListener("focusout", function (event) { // Resume when focus leaves carousel
       if (!root.contains(event.relatedTarget)) { startAutoPlay(); } // Only resume when focus exits root
+    });
+
+    function syncActiveFromScroll() { // Match active dot to the scrolled review
+      var slides = getSlides(); // Current slide elements
+      if (!slides.length) { return; } // Skip when slides are missing
+      var viewportCenter = viewport.scrollLeft + (viewport.clientWidth / 2); // Find center of visible area
+      var closestIndex = activeIndex; // Start with the current active slide
+      var closestDistance = Infinity; // Track the nearest slide distance
+      slides.forEach(function (slide, slideIndex) { // Compare each slide to the viewport center
+        var slideCenter = slide.offsetLeft + (slide.offsetWidth / 2); // Find center of this slide
+        var distance = Math.abs(slideCenter - viewportCenter); // Measure distance from viewport center
+        if (distance < closestDistance) { // Use the nearest slide so far
+          closestDistance = distance; // Store the smaller distance
+          closestIndex = slideIndex; // Store the nearest slide index
+        }
+      });
+      if (closestIndex !== activeIndex) { // Only update when the nearest slide changes
+        setActiveReview(closestIndex); // Sync active slide and dot to scroll position
+      }
+    }
+
+    function queueScrollSync() { // Throttle scroll updates to animation frames
+      if (scrollFrameId !== null) { return; } // Skip when an update is already queued
+      scrollFrameId = window.requestAnimationFrame(function () { // Run after browser scrolls
+        scrollFrameId = null; // Clear queued frame handle
+        syncActiveFromScroll(); // Update active state from scroll position
+      });
+    }
+
+    viewport.addEventListener("scroll", function () { // Detect touch, wheel, and trackpad scrolling
+      queueScrollSync(); // Sync dots after scroll movement
+    }, { passive: true }); // Keep scrolling smooth
+    viewport.addEventListener("pointerdown", function (event) { // Start mouse drag scrolling
+      if (event.pointerType === "mouse" && event.button !== 0) { return; } // Only left-click for mouse drag
+      pointerStartX = event.clientX; // Store drag start X position
+      pointerStartY = event.clientY; // Store drag start Y position
+      pointerStartScrollLeft = viewport.scrollLeft; // Store current horizontal scroll position
+      stopAutoPlay(); // Pause while the user interacts
+      if (viewport.setPointerCapture) { viewport.setPointerCapture(event.pointerId); } // Keep receiving move/up events
+    });
+    viewport.addEventListener("pointermove", function (event) { // Scroll the row during mouse drag
+      if (pointerStartX === null || pointerStartY === null) { return; } // Ignore moves without a drag start
+      var deltaX = event.clientX - pointerStartX; // Measure horizontal pointer travel
+      var deltaY = event.clientY - pointerStartY; // Measure vertical pointer travel
+      if (Math.abs(deltaX) > 4 && Math.abs(deltaX) > Math.abs(deltaY)) { // Treat clear horizontal movement as a drag
+        viewport.scrollLeft = pointerStartScrollLeft - deltaX; // Move content opposite the pointer travel
+        if (event.cancelable) { event.preventDefault(); } // Avoid text selection while dragging
+      }
+    }, { passive: false }); // Allow preventDefault once a horizontal swipe is locked
+    viewport.addEventListener("pointerup", function () { // Finish mouse drag scrolling
+      pointerStartX = null; // Clear drag start X
+      pointerStartY = null; // Clear drag start Y
+      syncActiveFromScroll(); // Snap active state to final position
+      startAutoPlay(); // Resume auto-play after interaction
+    });
+    viewport.addEventListener("pointercancel", function () { // Abort interrupted gestures
+      pointerStartX = null; // Clear drag start X
+      pointerStartY = null; // Clear drag start Y
+      startAutoPlay(); // Resume auto-play
     });
   }
 

@@ -25,14 +25,22 @@
         <span class="nav-expand-icon" aria-hidden="true"></span> <!-- Hamburger icon; animates when open -->
         <span class="nav-expand-label">Menu</span> <!-- Visible label for menu button -->
       </button>
+      <button type="button" class="theme-toggle" aria-label="Switch to light mode"> <!-- Toggle light/dark mode -->
+        <svg class="theme-toggle-icon theme-toggle-icon--light" viewBox="0 0 24 24" aria-hidden="true" focusable="false"> <!-- Sun icon shown in light mode -->
+          <circle cx="12" cy="12" r="3.6" fill="none" stroke="currentColor" stroke-width="1.8"></circle> <!-- Centered sun core -->
+          <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"> <!-- Centered sun rays -->
+            <path d="M12 3.2v1.8M12 19v1.8M3.2 12h1.8M19 12h1.8M6.1 6.1l1.3 1.3M16.6 16.6l1.3 1.3M6.1 17.9l1.3-1.3M16.6 7.4l1.3-1.3"></path>
+          </g>
+        </svg>
+        <svg class="theme-toggle-icon theme-toggle-icon--dark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"> <!-- Moon icon shown in dark mode -->
+          <path d="M13.2 3.4a8.6 8.6 0 1 0 7.4 13.1 6.7 6.7 0 1 1-7.4-13.1Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path> <!-- Centered crescent moon -->
+        </svg>
+      </button>
       <a href="index.html" class="logo-tab"> <!-- Centered logo; hangs as a tab when expanded, sits flush when compact -->
         <img src="images/LOGO_01.png" alt="Cigar Club" class="logo-img logo-img--full"> <!-- Full brand logo at top of page -->
         <img src="images/LOGO_02.png" alt="" class="logo-img logo-img--compact" aria-hidden="true"> <!-- Horizontal wordmark for compact header -->
       </a>
-      <button type="button" class="theme-toggle" aria-label="Switch to light mode"> <!-- Toggle light/dark mode -->
-        <span class="theme-toggle-icon theme-toggle-icon--light" aria-hidden="true">☀</span> <!-- Sun icon shown in light mode -->
-        <span class="theme-toggle-icon theme-toggle-icon--dark" aria-hidden="true">☾</span> <!-- Moon icon shown in dark mode -->
-      </button>
+      <a href="location.html" class="header-visit">Visit Us</a> <!-- Right-side link to the location page -->
     </div>
     <div class="header-nav-panel" id="header-nav-panel" hidden> <!-- Collapsible bar with page links -->
       <nav aria-label="Site"> <!-- Navigation landmark for screen readers -->
@@ -220,9 +228,7 @@
       <div class="reviews-carousel" id="reviews-carousel"> <!-- Auto-flipping review carousel -->
         <div class="reviews-carousel__viewport" aria-live="polite"></div> <!-- Review slides injected by JS -->
         <div class="reviews-carousel__controls"> <!-- Manual carousel navigation -->
-          <button type="button" class="reviews-carousel__btn reviews-carousel__btn--prev" aria-label="Previous review">‹</button> <!-- Go to previous review -->
           <div class="reviews-carousel__dots" role="tablist" aria-label="Choose review"></div> <!-- Dot indicators built by JS -->
-          <button type="button" class="reviews-carousel__btn reviews-carousel__btn--next" aria-label="Next review">›</button> <!-- Go to next review -->
         </div>
       </div>
     </section>

@@ -52,22 +52,40 @@
 
 /* Light mode semantic color roles */
 [data-theme="light"] {
-  --bg: var(--cream); /* Page background */
+  --bg: color-mix(in srgb, var(--pale-yellow) 38%, var(--cream)); /* Slightly darker warm page wash */
+  --bg-deep: color-mix(in srgb, var(--teal) 6%, var(--cream)); /* Soft, restrained blue band for atmosphere */
   --text: var(--charcoal); /* Primary text */
-  --text-muted: var(--teal); /* Secondary / muted text */
+  --text-muted: color-mix(in srgb, var(--teal) 60%, var(--charcoal)); /* Teal muted text with stronger readability */
   --header-bg: var(--maroon); /* Header bar background */
   --accent: var(--gold); /* Buttons and warm highlights */
   --accent-hover: var(--maroon); /* Hover state for accent buttons */
-  --surface: var(--pale-yellow); /* Warm cards and panels on cream */
-  --border: color-mix(in srgb, var(--teal) 22%, var(--pale-yellow)); /* Soft teal borders */
-  --frame-bg: var(--pale-yellow); /* Image placeholder frames */
-  --notch-bg: var(--cream); /* Card notch cutout matches page bg */
+  --surface: var(--cream); /* Clean cream boxes against the warmer page wash */
+  --surface-strong: color-mix(in srgb, var(--cream) 90%, var(--pale-yellow)); /* Soft raised panel, not loud yellow */
+  --border: color-mix(in srgb, var(--teal) 24%, var(--cream)); /* Soft teal edge on cream cards */
+  --border-strong: color-mix(in srgb, var(--teal) 36%, var(--cream)); /* Clearer card edges without heavy blue */
+  --frame-bg: color-mix(in srgb, var(--cream) 85%, var(--pale-yellow)); /* Soft warm image frames */
+  --notch-bg: var(--bg); /* Card notch cutout matches page bg */
   --logo-tab-bg: var(--header-bg); /* Logo tab matches maroon header */
   --btn-text: var(--charcoal); /* Text on gold buttons */
   --pill-hover: var(--pale-yellow); /* Nav pill hover */
+  --shadow-soft: color-mix(in srgb, var(--charcoal) 10%, transparent); /* Soft neutral depth under cards */
 }
 
-/* Light mode refinements: maroon headlines, teal supporting accents, gold actions */
+/* Light mode page atmosphere instead of a flat cream wash */
+[data-theme="light"] body {
+  background-color: var(--bg); /* Soft warm page fill */
+  background-image: none; /* Keep a solid page color so notch circles can match exactly */
+}
+
+/* Force home cutouts and card section onto the same solid light background */
+[data-theme="light"] body.home .home-main,
+[data-theme="light"] body.home .home-hero,
+[data-theme="light"] body.home .home-cards,
+[data-theme="light"] body.home .card-image-frame::after {
+  background-color: var(--bg); /* Match circle cutouts to the page wash */
+}
+
+/* Light mode refinements: blue headlines, teal supporting accents, gold actions */
 [data-theme="light"] h1,
 [data-theme="light"] .page-hero__title,
 [data-theme="light"] .page-section__title,
@@ -76,7 +94,7 @@
 [data-theme="light"] .location-details__title,
 [data-theme="light"] .events-upcoming-panel__title,
 [data-theme="light"] .reviews-section__title {
-  color: var(--maroon); /* Brand red for major headlines */
+  color: var(--teal); /* Blue-teal for major headlines in light mode */
 }
 
 [data-theme="light"] .page-hero__eyebrow,
@@ -88,7 +106,7 @@
 
 [data-theme="light"] .page-flow a:not(.btn):not(.calendar-add-link):not(.calendar-open-link):not(.location-address__link):not(.location-phone__link):not(.location-email__link):not(.location-instagram__link):not(.location-x__link),
 [data-theme="light"] .calendar-open-link {
-  color: var(--maroon); /* Maroon in-content links */
+  color: var(--teal); /* Blue-teal in-content links */
 }
 
 [data-theme="light"] .page-flow a:not(.btn):not(.calendar-add-link):not(.calendar-open-link):not(.location-address__link):not(.location-phone__link):not(.location-email__link):not(.location-instagram__link):not(.location-x__link):hover,
@@ -98,17 +116,83 @@
 }
 
 [data-theme="light"] .site-footer__nav a:hover {
-  color: var(--maroon); /* Maroon footer link hover */
+  color: var(--teal); /* Blue footer link hover */
 }
 
 [data-theme="light"] .btn--ghost {
-  color: var(--maroon); /* Maroon outline button text */
-  border-color: color-mix(in srgb, var(--maroon) 40%, var(--pale-yellow)); /* Soft maroon outline */
+  color: var(--teal); /* Blue outline button text */
+  border-color: color-mix(in srgb, var(--teal) 55%, var(--cream)); /* Clearer blue outline on cream */
 }
 
 [data-theme="light"] .btn--ghost:hover {
-  background-color: var(--maroon); /* Maroon fill on ghost hover */
-  color: var(--cream); /* Cream text on maroon */
+  background-color: var(--teal); /* Blue fill on ghost hover */
+  color: var(--cream); /* Cream text on blue */
+}
+
+/* Stronger gold buttons on light backgrounds */
+[data-theme="light"] .btn {
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--charcoal) 8%, transparent); /* Tiny lift so gold reads as a control */
+}
+
+[data-theme="light"] .btn:hover {
+  color: var(--cream); /* Cream text when the gold button fills maroon on hover */
+}
+
+/* Product switcher: clearer inactive/active contrast in light mode */
+[data-theme="light"] .product-switcher__link {
+  color: var(--teal); /* Blue-teal inactive labels on cream */
+}
+
+[data-theme="light"] .product-switcher__link:hover {
+  color: var(--maroon); /* Red hover keeps a warm interactive accent */
+}
+
+[data-theme="light"] .product-switcher__link.is-active {
+  color: var(--teal); /* Blue active section fits the light palette */
+}
+
+/* Catalog tiles and panels get clearer edges in light mode */
+[data-theme="light"] .pipes-item,
+[data-theme="light"] .pillar,
+[data-theme="light"] .location-details,
+[data-theme="light"] .page-cta,
+[data-theme="light"] .events-upcoming-panel,
+[data-theme="light"] .faq-item {
+  background-color: var(--surface); /* Cream cards stand apart from the warmer page wash */
+  border-color: var(--border-strong); /* Soft teal edge definition */
+  box-shadow: 0 10px 28px var(--shadow-soft); /* Soft depth without heavy glow */
+}
+
+[data-theme="light"] .page-cta {
+  background-color: var(--surface-strong); /* Soft raised CTA band */
+}
+
+[data-theme="light"] .pipes-filter.is-active {
+  color: var(--teal); /* Blue active filter on cream */
+  border-bottom-color: var(--teal); /* Match underline to active blue */
+}
+
+[data-theme="light"] .pipes-item__price,
+[data-theme="light"] .pipes-item__badge--limited {
+  color: var(--teal); /* Blue price/status for stronger light-mode cohesion */
+}
+
+[data-theme="light"] .product-panel__bg-icon {
+  opacity: 0.22; /* Keep icons present but quieter on cream */
+  filter: blur(0.4px); /* Slightly sharper than dark-mode wash */
+}
+
+[data-theme="light"] .site-footer {
+  border-top-color: var(--border-strong); /* Clearer footer separator */
+  background-color: color-mix(in srgb, var(--cream) 82%, var(--pale-yellow)); /* Soft cream footer band */
+}
+
+[data-theme="light"] body.home .card-label {
+  color: var(--teal); /* Blue category labels under home cards */
+}
+
+[data-theme="light"] .home-hero__lead {
+  color: color-mix(in srgb, var(--charcoal) 78%, var(--teal)); /* Darker supporting line for stronger contrast */
 }
 
 /* Reset default browser margin and padding on all elements */
@@ -443,11 +527,6 @@ h1 {
   pointer-events: none; /* Decorative only; do not block clicks */
   z-index: 0; /* Sit under the foreground content */
   user-select: none; /* Prevent accidental selection of the artwork */
-}
-
-/* Soften product background icons a bit more in light mode */
-[data-theme="light"] .product-panel__bg-icon {
-  opacity: 0.28; /* Keep icons visible in light mode too */
 }
 
 /* Product switcher link */
@@ -853,37 +932,80 @@ h1 {
 
 /* Viewport showing one review at a time */
 .reviews-carousel__viewport {
-  position: relative; /* Stack review slides in same box */
+  position: relative; /* Anchor slide offsets to this scroll container */
+  display: flex; /* Lay review slides side by side for horizontal scrolling */
+  gap: 1rem; /* Keep a small gutter between swipe panels */
   min-height: clamp(12rem, 28vw, 16rem); /* Scale with screen while holding longer quotes */
+  overflow-x: auto; /* Allow users to scroll reviews left and right */
+  overflow-y: hidden; /* Keep vertical overflow contained inside the card row */
+  scroll-behavior: smooth; /* Smooth dot, autoplay, and keyboard-driven movement */
+  scroll-snap-type: x mandatory; /* Snap each review cleanly into view */
+  scrollbar-width: none; /* Hide Firefox scrollbar for a cleaner card */
+  -webkit-overflow-scrolling: touch; /* Use momentum scrolling on iOS */
+  touch-action: pan-x pan-y; /* Allow horizontal review swipes and vertical page scroll */
+  cursor: grab; /* Show that the review card can be dragged */
+  user-select: none; /* Avoid selecting quote text while swiping */
+}
+
+/* Hide WebKit carousel scrollbar */
+.reviews-carousel__viewport::-webkit-scrollbar {
+  display: none; /* Hide Chrome and Safari scrollbar */
+}
+
+/* Grabbing cursor while a swipe/drag is in progress */
+.reviews-carousel__viewport:active {
+  cursor: grabbing; /* Pressed drag affordance */
 }
 
 /* Single review slide */
 .reviews-carousel__slide {
-  position: absolute; /* Layer slides for crossfade */
-  inset: 0; /* Fill viewport area */
+  display: flex; /* Center review text inside each card */
+  flex-direction: column; /* Stack quote and author vertically */
+  justify-content: center; /* Center content vertically in the box */
+  align-items: center; /* Center content horizontally in the box */
+  flex: 0 0 100%; /* Make each review occupy one viewport width */
   margin: 0; /* Reset blockquote default margin */
   padding: 2rem 2.25rem; /* Inner card spacing */
   background-color: var(--surface); /* Theme-aware review card background */
   border: 1px solid var(--border); /* Theme-aware card border */
   border-radius: 12px; /* Rounded review card corners */
-  opacity: 0; /* Hidden until active */
-  visibility: hidden; /* Remove inactive slide from accessibility tree */
-  transition: opacity 0.45s ease, visibility 0.45s ease; /* Smooth crossfade between reviews */
+  scroll-snap-align: center; /* Snap the whole card into the viewport */
+  scroll-snap-stop: always; /* Avoid skipping reviews on quick swipes */
 }
 
 /* Visible active review slide */
 .reviews-carousel__slide.is-active {
-  position: relative; /* Restore flow height for active slide */
-  opacity: 1; /* Fade active review in */
-  visibility: visible; /* Expose active review to screen readers */
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--border)); /* Subtly mark the current review */
+}
+
+/* Next slide starts just off the right edge */
+.reviews-carousel__slide.is-entering-right {
+  transform: none; /* Disable old transform animation for native scrolling */
+}
+
+/* Previous slide starts just off the left edge */
+.reviews-carousel__slide.is-entering-left {
+  transform: none; /* Disable old transform animation for native scrolling */
+}
+
+/* Active slide exits to the left on next */
+.reviews-carousel__slide.is-leaving-left {
+  transform: none; /* Disable old transform animation for native scrolling */
+}
+
+/* Active slide exits to the right on previous */
+.reviews-carousel__slide.is-leaving-right {
+  transform: none; /* Disable old transform animation for native scrolling */
 }
 
 /* Review quote text */
 .reviews-carousel__quote {
-  margin: 0 0 1.25rem; /* Space before author line */
+  margin: 0 0 0.5rem; /* Tighter space before the author line */
+  max-width: 58rem; /* Keep long reviews readable while centered */
   color: var(--text); /* Theme-aware quote text */
   font-size: 1.15rem; /* Slightly larger quote size */
   line-height: 1.65; /* Comfortable quote leading */
+  text-align: center; /* Center quote text in the review box */
 }
 
 /* Review author attribution */
@@ -891,36 +1013,16 @@ h1 {
   color: var(--text-muted); /* Muted author name */
   font-size: 1rem; /* Author line size */
   font-variation-settings: "wght" var(--font-wght-bold); /* Bold author name */
+  text-align: center; /* Center author under the quote */
 }
 
-/* Row of prev button, dots, and next button */
+/* Row of review dots under the card */
 .reviews-carousel__controls {
   display: flex; /* Lay out controls in a row */
   align-items: center; /* Vertically center controls */
-  justify-content: center; /* Center controls under review card */
+  justify-content: center; /* Center dots under review card */
   gap: 1rem; /* Space between controls */
   margin-top: 1.5rem; /* Space below review card */
-}
-
-/* Previous and next review buttons */
-.reviews-carousel__btn {
-  width: 2.5rem; /* Circular control button width */
-  height: 2.5rem; /* Circular control button height */
-  border: 1px solid var(--border); /* Theme-aware button border */
-  border-radius: 50%; /* Circular button shape */
-  background-color: var(--surface); /* Theme-aware button background */
-  color: var(--text); /* Theme-aware arrow color */
-  font-size: 1.5rem; /* Large arrow glyph */
-  line-height: 1; /* Tight arrow line height */
-  cursor: pointer; /* Pointer on hover */
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s; /* Smooth hover transition */
-}
-
-/* Hover state for carousel arrow buttons */
-.reviews-carousel__btn:hover {
-  background-color: var(--accent); /* Gold fill on hover */
-  border-color: var(--accent); /* Match border to fill */
-  color: var(--btn-text); /* Dark text on gold */
 }
 
 /* Dot navigation group */
@@ -936,26 +1038,30 @@ h1 {
   height: 0.65rem; /* Dot diameter */
   padding: 0; /* Remove default button padding */
   border: none; /* Remove default button border */
-  border-radius: 50%; /* Circular dot shape */
+  border-radius: 999px; /* Pill-ready round shape */
   background-color: color-mix(in srgb, var(--text-muted) 45%, transparent); /* Muted inactive dot */
   cursor: pointer; /* Pointer on hover */
-  transition: background-color 0.2s, transform 0.2s; /* Smooth dot state change */
+  transition: background-color 0.25s ease, transform 0.25s ease, width 0.25s ease; /* Smooth playful dot motion */
 }
 
-/* Active review dot */
+/* Hover inactive dots slightly larger */
+.reviews-carousel__dot:hover {
+  transform: scale(1.15); /* Soft enlarge on hover */
+}
+
+/* Active review dot stretches into a playful pill */
 .reviews-carousel__dot.is-active {
+  width: 1.45rem; /* Stretch into a pill while active */
   background-color: var(--accent); /* Gold active dot */
-  transform: scale(1.2); /* Slightly enlarge active dot */
+  transform: scale(1); /* Keep pill grounded */
 }
 
-/* Pause crossfade when user prefers reduced motion */
+/* Pause motion when user prefers reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .reviews-carousel__slide {
-    transition: none; /* Instant review change without fade */
-  }
-
+  .reviews-carousel__slide,
   .reviews-carousel__dot {
-    transition: none; /* Instant dot state without animation */
+    transition: none; /* Instant review change without motion */
+    animation: none; /* Disable leftover motion */
   }
 }
 
@@ -1350,11 +1456,11 @@ h1 {
 /* Style the embedded Google Calendar iframe */
 .calendar-wrapper iframe {
   display: block; /* Remove inline gap below iframe */
-  width: 100%; /* Fill available container width */
-  max-width: 800px; /* Cap width at Google embed default size */
+  width: 100%; /* Fill the same width as the other event panels */
+  max-width: none; /* Do not keep the calendar narrower than sibling boxes */
   height: clamp(420px, 75vh, 700px); /* Shorter calendar on phones, full height on desktop */
   border: 0; /* Remove iframe border */
-  margin: 0 auto; /* Center iframe in wrapper */
+  margin: 0; /* Align flush with the panel edges */
 }
 
 /* Style the page footer */
@@ -1439,18 +1545,36 @@ footer,
   display: inline-flex; /* Center icon inside button */
   align-items: center; /* Vertically center icon */
   justify-content: center; /* Horizontally center icon */
+  padding: 0; /* Remove default button padding that throws off centering */
+  box-sizing: border-box; /* Keep width/height exact for the circle */
   background-color: var(--accent); /* Golden orange button background */
-  color: var(--btn-text); /* Charcoal icon color */
+  color: var(--charcoal); /* Dark icon on gold for clear contrast */
   border: none; /* Remove default button border */
   cursor: pointer; /* Show pointer on hover */
-  font-size: 1.1rem; /* Icon size */
-  line-height: 1; /* Tight line height for icon */
-  transition: background-color 0.2s; /* Smooth hover transition */
+  line-height: 0; /* Remove extra inline SVG gap */
+  transition: background-color 0.2s ease, color 0.2s ease; /* Smooth hover feedback */
 }
 
-/* Maroon background on theme toggle hover */
+/* Blue background on theme toggle hover */
 .theme-toggle:hover {
-  background-color: var(--accent-hover); /* Maroon on hover */
+  background-color: var(--teal); /* Blue on hover */
+  color: var(--cream); /* Cream icon on blue */
+}
+
+/* Shared sun/moon SVG icon sizing */
+.theme-toggle-icon {
+  display: block; /* Remove inline SVG baseline gap */
+  width: 15px; /* Compact readable icon width */
+  height: 15px; /* Compact readable icon height */
+  margin: 0; /* Avoid any default SVG margin */
+  flex-shrink: 0; /* Keep icon from squashing */
+  overflow: visible; /* Keep stroke ends from feeling clipped off-center */
+}
+
+/* Make the sun icon larger inside the circle */
+.theme-toggle-icon--light {
+  width: 18px; /* Larger sun width */
+  height: 18px; /* Larger sun height */
 }
 
 /* Hide sun icon in dark mode (show moon to switch to light) */
@@ -1470,11 +1594,11 @@ footer,
   gap: 1.5rem; /* Space between toggle and links */
 }
 
-/* Events page: compact theme toggle button */
+/* Shared circular theme toggle size (matches home header controls) */
 header .theme-toggle {
-  width: 42px; /* Fixed toggle width */
-  height: 38px; /* Fixed toggle height */
-  border-radius: 14px; /* Rounded pill shape */
+  width: 32px; /* Match the menu button height as a circle */
+  height: 32px; /* Perfect circle for the icon-only control */
+  border-radius: 50%; /* Round theme toggle shape */
 }
 
 /* ===== Home page (mockup layout) ===== */
@@ -1508,16 +1632,20 @@ body.home .site-header {
   position: relative; /* Contain absolutely positioned logo tab */
   padding: 0; /* Override global header padding */
   border-bottom: none; /* No border; maroon bar is self-contained */
+  overflow: visible; /* Keep the hanging logo visible when the menu opens */
 }
 
 /* Full-width maroon navigation bar */
 body.home .header-bar {
-  display: flex; /* Pin menu and theme to the edges; logo overlays the center */
-  justify-content: space-between; /* Keep menu left and theme right in fixed places */
+  display: flex; /* Keep header controls in one row */
+  justify-content: flex-start; /* Group menu and theme on the left */
   align-items: center; /* Vertically center header controls */
+  gap: 0.5rem; /* Space between the left-side buttons */
   height: var(--header-bar-height); /* Fixed bar height — does not change on scroll */
   padding: 0 clamp(1.25rem, 4vw, 2rem); /* Fluid horizontal padding */
   background-color: var(--header-bg); /* Theme-aware header bar */
+  position: relative; /* Anchor the logo to this bar so the open menu cannot move it */
+  overflow: visible; /* Allow the hanging logo tab to extend below the bar */
 }
 
 /* Pin menu button to the left edge on home */
@@ -1526,13 +1654,10 @@ body.home .nav-expand-toggle {
   z-index: 25; /* Stay clickable above the logo tab */
 }
 
-/* Pin theme toggle to the right edge on home */
+/* Pin theme toggle beside the menu on home */
 body.home .theme-toggle {
   position: relative; /* Keep above the centered logo overlay */
   z-index: 25; /* Stay clickable above the logo tab */
-  width: 44px; /* Fixed theme toggle width — does not morph on scroll */
-  height: 32px; /* Fixed theme toggle height — does not morph on scroll */
-  border-radius: 12px; /* Match home header scale */
 }
 
 /* Expandable navigation — shared across home and inner pages */
@@ -1554,9 +1679,38 @@ body.home .theme-toggle {
   transition: background-color 0.2s; /* Smooth hover transition */
 }
 
-/* Maroon background on menu button hover */
+/* Blue background on menu button hover */
 .site-header .nav-expand-toggle:hover {
-  background-color: var(--accent-hover); /* Maroon on hover */
+  background-color: var(--teal); /* Blue on hover */
+  color: var(--cream); /* Cream icon and label on blue */
+}
+
+/* Visit Us button pinned to the right side of the header */
+.site-header .header-visit {
+  display: inline-flex; /* Align label like the other header controls */
+  align-items: center; /* Vertically center the label */
+  justify-content: center; /* Center the label text */
+  margin-left: auto; /* Push this control to the right edge */
+  height: 32px; /* Match the menu button height */
+  padding: 0 0.95rem; /* Horizontal padding inside the visit button */
+  background-color: var(--accent); /* Golden orange button background */
+  color: var(--btn-text); /* Charcoal label color */
+  border-radius: 12px; /* Rounded pill shape */
+  text-decoration: none; /* Remove underline from the link */
+  font-family: inherit; /* Match site typeface */
+  font-size: 0.85rem; /* Compact visit label size */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold visit label */
+  letter-spacing: 0.04em; /* Slight letter spacing on label */
+  position: relative; /* Stay above the centered logo */
+  z-index: 25; /* Keep Visit Us clickable over the logo */
+  transition: background-color 0.2s, color 0.2s; /* Smooth hover transition */
+  white-space: nowrap; /* Keep the label on one line */
+}
+
+/* Blue Visit Us hover to match menu and theme controls */
+.site-header .header-visit:hover {
+  background-color: var(--teal); /* Blue on hover */
+  color: var(--cream); /* Cream text on blue */
 }
 
 /* Three-line hamburger icon inside menu button */
@@ -1617,6 +1771,8 @@ body.home .theme-toggle {
   background-color: var(--teal); /* Teal bar contrasts with maroon header */
   opacity: 0; /* Fade out when collapsed */
   transition: max-height 0.3s ease, opacity 0.25s ease; /* Smooth expand/collapse */
+  position: relative; /* Keep the panel under the hanging home logo */
+  z-index: 10; /* Sit below the logo tab when the menu opens */
 }
 
 /* Expanded navigation panel */
@@ -1679,47 +1835,50 @@ body.home .theme-toggle {
   border-bottom: none; /* No border; maroon bar is self-contained */
 }
 
-/* Inner page header row: menu, logo, theme toggle */
+/* Inner page header row: menu and theme on the left, logo centered */
 .site-header--page .header-bar {
-  display: grid; /* Three-column header layout */
-  grid-template-columns: minmax(0, 1fr) minmax(0, auto) minmax(0, 1fr); /* Prevent logo overflow on narrow screens */
+  display: flex; /* Keep header controls in one row */
   align-items: center; /* Vertically center header items */
+  justify-content: flex-start; /* Group menu and theme on the left */
+  gap: 0.5rem; /* Space between the left-side buttons */
   height: 56px; /* Taller bar for text logo on inner pages */
   padding: 0 clamp(1.25rem, 4vw, 2rem); /* Fluid horizontal padding */
   background-color: var(--header-bg); /* Theme-aware header bar */
-  column-gap: 0.5rem; /* Keep menu, logo, and toggle from colliding */
+  position: relative; /* Anchor the centered logo overlay */
 }
 
-/* Pin menu button to left column */
+/* Keep menu button first on the left */
 .site-header--page .nav-expand-toggle {
-  justify-self: start; /* Align menu button left */
+  position: relative; /* Stay above the centered logo */
+  z-index: 25; /* Keep menu clickable over the logo */
 }
 
 /* Centered brand logo on inner pages */
 .site-header--page .header-page-logo {
-  justify-self: center; /* Center logo between menu and theme toggle */
+  position: absolute; /* Overlay the bar so left buttons can share one side */
+  left: 50%; /* Horizontal center of the header */
+  top: 50%; /* Vertical center of the header */
+  transform: translate(-50%, -50%); /* Exact center alignment */
   display: flex; /* Center the image within the logo link */
   align-items: center; /* Vertically center the logo image */
   justify-content: center; /* Horizontally center the logo image */
   text-decoration: none; /* Remove underline from logo link */
-  max-width: 100%; /* Stay inside middle grid column */
-  min-width: 0; /* Allow the logo to shrink on narrow screens */
+  max-width: min(36vw, 170px); /* Keep controls clear on narrow screens */
+  z-index: 20; /* Sit under the left-side buttons */
 }
 
 .site-header--page .header-page-logo-img {
   display: block; /* Remove the inline image baseline gap */
   width: auto; /* Preserve the wordmark aspect ratio */
   height: clamp(22px, 3.5vw, 28px); /* Smaller LOGO_02 in the page header */
-  max-width: min(36vw, 170px); /* Keep controls clear on narrow screens */
+  max-width: 100%; /* Stay inside the centered logo slot */
   object-fit: contain; /* Scale the full logo without cropping */
 }
 
-/* Pin theme toggle to right column */
+/* Keep theme toggle beside the menu on the left */
 .site-header--page .theme-toggle {
-  justify-self: end; /* Align theme toggle right */
-  width: 42px; /* Fixed toggle width */
-  height: 38px; /* Fixed toggle height */
-  border-radius: 14px; /* Rounded pill shape */
+  position: relative; /* Stay above the centered logo */
+  z-index: 25; /* Keep theme toggle clickable over the logo */
 }
 
 /* Scrolling events and tasks announcement bar below header */
@@ -1805,11 +1964,11 @@ body.home .theme-toggle {
 
 /* Theme toggle sizing lives with the home header-bar rules above */
 
-/* Centered logo tab — always absolutely centered so controls never shift */
+/* Centered logo tab — locked to the maroon bar so opening the menu never moves it */
 body.home .logo-tab {
-  position: absolute; /* Overlay the bar; never enter document flow */
-  left: 50%; /* Horizontal center of the header */
-  top: 0; /* Align to top while the hanging tab is expanded */
+  position: absolute; /* Overlay the maroon bar only; ignore the expand panel height */
+  left: 50%; /* Horizontal center of the maroon bar */
+  top: 0; /* Align to the top of the maroon bar while expanded */
   transform: translateX(-50%); /* Exact horizontal center */
   display: grid; /* Stack both logos in one cell for a crossfade */
   place-items: center; /* Center logos inside the tab */
@@ -1817,7 +1976,7 @@ body.home .logo-tab {
   background-color: var(--logo-tab-bg); /* Maroon tab matching header bar */
   border-radius: 0 0 100px 100px; /* Curved bottom edge of logo tab */
   text-decoration: none; /* Remove underline from logo link */
-  z-index: 20; /* Above content, below menu/theme controls */
+  z-index: 20; /* Above the open menu panel, below menu/theme/visit controls */
   pointer-events: auto; /* Logo remains clickable */
   transition: padding 0.55s cubic-bezier(0.22, 1, 0.36, 1), border-radius 0.55s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.55s cubic-bezier(0.22, 1, 0.36, 1), top 0.55s cubic-bezier(0.22, 1, 0.36, 1), transform 0.55s cubic-bezier(0.22, 1, 0.36, 1); /* Smooth morph into flush wordmark */
 }
@@ -1849,10 +2008,10 @@ body.home .logo-img--compact {
   pointer-events: none; /* Ignore clicks while faded out */
 }
 
-/* Compact header: logo stays absolutely centered — controls do not move */
+/* Compact header: logo stays centered in the maroon bar — menu open does not move it */
 body.home.is-header-compact .logo-tab {
   top: 50%; /* Vertically center in the maroon bar */
-  transform: translate(-50%, -50%); /* Exact middle of the header bar */
+  transform: translate(-50%, -50%); /* Exact middle of the maroon bar */
   padding: 0; /* Flush with the maroon bar like other pages */
   background-color: transparent; /* Wordmark sits on the bar itself */
   border-radius: 0; /* No hanging tab curve when compact */
@@ -1890,6 +2049,7 @@ body.home .home-cards {
   margin: 0 auto; /* Center grid horizontally */
   padding: clamp(2.5rem, 6vw, 4rem) clamp(1.25rem, 4vw, 3rem); /* Fluid side and vertical padding */
   width: 100%; /* Fill available width */
+  background-color: var(--notch-bg); /* Match the card cutout circles to the surrounding section */
   box-sizing: border-box; /* Include padding in width */
 }
 
@@ -2046,12 +2206,6 @@ body.home .card-btn-icon {
   object-fit: contain; /* Scale icon without cropping */
   object-position: center; /* Center artwork within icon box */
   margin: 0; /* Remove any default image margin */
-  transition: filter 0.2s ease; /* Smooth brightness change on hover */
-}
-
-/* Brighten icon when hovering the linked card unit */
-body.home .card-link:hover .card-btn-icon {
-  filter: brightness(1.35); /* Make icon brighter when image or icon is hovered */
 }
 
 /* Tall runway: vertical page scroll maps to one gallery grid width, then page continues */
