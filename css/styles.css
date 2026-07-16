@@ -353,7 +353,9 @@ h1 {
 
 /* Reusable content section on inner pages */
 .page-section {
+  width: 100%; /* Fill the main column up to max-width */
   max-width: 900px; /* Section content width */
+  margin-inline: auto; /* Center sections within the wider main column */
 }
 
 /* Section heading */
@@ -1299,7 +1301,9 @@ h1 {
 
 /* Wrapper around the Google Calendar iframe */
 .calendar-wrapper {
+  width: 100%; /* Fill the centered section width */
   max-width: 100%; /* Prevent overflow on small screens */
+  margin-inline: auto; /* Keep the calendar panel centered */
   overflow-x: auto; /* Allow horizontal scroll if calendar is wider than screen */
   background-color: var(--surface); /* Theme-aware panel behind calendar */
   border: 1px solid var(--border); /* Theme-aware border around calendar area */
