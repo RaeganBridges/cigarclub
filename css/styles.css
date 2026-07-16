@@ -118,7 +118,19 @@
   box-sizing: border-box; /* Include padding and border in width/height */
 }
 
+/* Keep media from overflowing their containers */
+img,
+video,
+svg {
+  max-width: 100%; /* Scale down wide media on small screens */
+  height: auto; /* Preserve aspect ratio when width shrinks */
+}
+
 /* Set base typography and page background */
+html {
+  overflow-x: clip; /* Prevent accidental horizontal page scroll on narrow screens */
+}
+
 body {
   font-family: var(--font-zeitung); /* Sarvatrik Latin Variable via Adobe Fonts */
   font-style: normal; /* Upright Sarvatrik from kit end7yej */
@@ -127,7 +139,9 @@ body {
   color: var(--text); /* Theme-aware text color */
   line-height: 1.6; /* Comfortable reading line spacing */
   min-height: 100vh; /* Ensure page fills at least the full viewport height */
+  overflow-x: clip; /* Keep wide gallery/cards from shifting the page sideways */
   transition: background-color 0.25s, color 0.25s; /* Smooth theme transition */
+  -webkit-text-size-adjust: 100%; /* Keep iOS from inflating text unexpectedly */
 }
 
 /* Bold text using Zeitung weight axis */
@@ -187,7 +201,9 @@ nav {
 main {
   max-width: 1100px; /* Limit content width */
   margin: 0 auto; /* Center content horizontally */
-  padding: 3rem 2rem; /* Space around page content */
+  padding: clamp(2rem, 5vw, 3rem) clamp(1.25rem, 4vw, 2rem); /* Fluid side padding across screen sizes */
+  width: 100%; /* Fill available width within max-width */
+  box-sizing: border-box; /* Include padding in width calculation */
 }
 
 /* Style page headings */
@@ -209,7 +225,7 @@ h1 {
 .page-flow {
   display: flex; /* Stack page sections vertically */
   flex-direction: column; /* Top-to-bottom reading order */
-  gap: 4rem; /* Space between major sections */
+  gap: clamp(2.5rem, 6vw, 4rem); /* Tighter section gaps on small screens */
 }
 
 /* Hero block at top of inner pages */
@@ -274,7 +290,7 @@ h1 {
 /* Numbered pillar grid (Flyward-style value props) */
 .pillar-grid {
   display: grid; /* Responsive pillar layout */
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* Stack on small screens */
+  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); /* Stack cleanly on narrow screens */
   gap: 1.5rem; /* Space between pillars */
 }
 
@@ -312,7 +328,7 @@ h1 {
 /* Principle/value card grid */
 .principle-grid {
   display: grid; /* Responsive principles layout */
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Wrap on small screens */
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); /* Wrap cleanly on narrow screens */
   gap: 1.25rem; /* Space between principle cards */
 }
 
@@ -366,7 +382,7 @@ h1 {
 
 /* Closing CTA band at bottom of inner pages */
 .page-cta {
-  padding: 2.5rem 2rem; /* Generous CTA padding */
+  padding: clamp(1.75rem, 4vw, 2.5rem) clamp(1.25rem, 4vw, 2rem); /* Fluid CTA padding */
   text-align: center; /* Center CTA copy and button */
   background-color: var(--surface); /* Theme-aware CTA panel */
   border: 1px solid var(--border); /* Theme-aware border */
@@ -407,8 +423,10 @@ h1 {
 .reviews-section {
   max-width: 760px; /* Match home hero content width */
   margin: 0 auto; /* Center reviews block */
-  padding: 4rem 2rem 5rem; /* Space above footer and below gallery */
+  padding: clamp(3rem, 7vw, 4rem) clamp(1.25rem, 4vw, 2rem) clamp(3.5rem, 8vw, 5rem); /* Fluid spacing across widths */
   text-align: center; /* Center headline and carousel controls */
+  width: 100%; /* Fill available width within max-width */
+  box-sizing: border-box; /* Include padding in width */
 }
 
 /* Reviews section headline */
@@ -427,7 +445,7 @@ h1 {
 /* Viewport showing one review at a time */
 .reviews-carousel__viewport {
   position: relative; /* Stack review slides in same box */
-  min-height: 14.5rem; /* Stable height for longer review quotes */
+  min-height: clamp(12rem, 28vw, 16rem); /* Scale with screen while holding longer quotes */
 }
 
 /* Single review slide */
@@ -558,8 +576,10 @@ h1 {
 .home-hero {
   max-width: 760px; /* Limit hero width */
   margin: 0 auto; /* Center hero block */
-  padding: 10rem 2rem 0; /* Top padding clears logo tab; no bottom padding */
+  padding: clamp(7.5rem, 18vw, 10rem) clamp(1.25rem, 4vw, 2rem) 0; /* Clear logo tab at every width */
   text-align: center; /* Center hero copy */
+  width: 100%; /* Fill available width */
+  box-sizing: border-box; /* Include padding in width */
 }
 
 /* Home hero eyebrow label */
@@ -678,6 +698,8 @@ h1 {
   font-size: 1.1rem; /* Match phone and address link size */
   font-variation-settings: "wght" var(--font-wght-bold); /* Bold email address */
   text-decoration: none; /* Remove default underline */
+  overflow-wrap: anywhere; /* Break long email addresses on narrow screens */
+  word-break: break-word; /* Extra wrap support for older browsers */
 }
 
 /* Hover state for email link */
@@ -742,8 +764,8 @@ h1 {
 /* Single hours row with day and time columns */
 .location-hours__row {
   display: grid; /* Lay out days and times side by side */
-  grid-template-columns: 6.5rem 1fr; /* Fixed day column, flexible time column */
-  gap: 1.5rem; /* Gutter between days and times */
+  grid-template-columns: minmax(5.5rem, 6.5rem) 1fr; /* Flexible day column for small screens */
+  gap: clamp(0.75rem, 3vw, 1.5rem); /* Narrower gutter on mobile */
   align-items: baseline; /* Align text on the same baseline */
 }
 
@@ -921,7 +943,7 @@ h1 {
   display: block; /* Remove inline gap below iframe */
   width: 100%; /* Fill available container width */
   max-width: 800px; /* Cap width at Google embed default size */
-  height: 700px; /* Taller embed for week view */
+  height: clamp(420px, 75vh, 700px); /* Shorter calendar on phones, full height on desktop */
   border: 0; /* Remove iframe border */
   margin: 0 auto; /* Center iframe in wrapper */
 }
@@ -930,7 +952,7 @@ h1 {
 footer,
 .site-footer {
   text-align: center; /* Center footer content */
-  padding: 2.5rem 2rem; /* Space around footer content */
+  padding: clamp(2rem, 5vw, 2.5rem) clamp(1.25rem, 4vw, 2rem); /* Fluid footer padding */
   color: var(--text-muted); /* Theme-aware footer text */
   font-size: 0.85rem; /* Smaller footer text */
   border-top: 1px solid var(--border); /* Theme-aware top border separating footer */
@@ -995,6 +1017,7 @@ footer,
   font-size: 0.95rem; /* Button text size */
   letter-spacing: 0.05em; /* Spaced button label */
   transition: background-color 0.2s; /* Smooth hover transition */
+  box-sizing: border-box; /* Keep width:100% buttons from overflowing */
 }
 
 /* Darken button on hover */
@@ -1052,16 +1075,16 @@ body.home {
   background-color: var(--bg); /* Theme-aware main area background */
   color: var(--text); /* Theme-aware text color */
   --header-bar-height: 48px; /* Fixed maroon header bar height */
-  --logo-height-expanded: 130px; /* Large logo height at top of page */
-  --logo-height-compact: 40px; /* Logo height when shrunk into header */
-  --notch-size: 260px; /* Full diameter of bottom notch circle */
+  --logo-height-expanded: clamp(88px, 18vw, 130px); /* Scale logo between phone and desktop */
+  --logo-height-compact: clamp(30px, 5vw, 40px); /* Compact logo scales gently */
+  --notch-size: clamp(160px, 28vw, 260px); /* Keep notch inside card width on all screens */
   --notch-radius: calc(var(--notch-size) / 2); /* Half diameter; center sits on frame bottom */
-  --card-icon-size: 130px; /* Card category icon dimensions */
+  --card-icon-size: clamp(90px, 16vw, 130px); /* Category icons scale with viewport */
   --card-image-tint: color-mix(in srgb, var(--teal) 42%, transparent); /* Teal overlay on card photos */
-  --gallery-item-width: 300px; /* Width of each gallery image card */
-  --gallery-item-height: 380px; /* Height of each gallery image card */
-  --gallery-radius: 48px; /* Rounded corners on gallery cards */
-  --gallery-gap: 1.25rem; /* Space between gallery cards */
+  --gallery-item-width: clamp(220px, 42vw, 300px); /* Gallery cards shrink on narrow screens */
+  --gallery-item-height: clamp(280px, 52vw, 380px); /* Gallery height tracks card width */
+  --gallery-radius: clamp(28px, 6vw, 48px); /* Rounded corners scale down on mobile */
+  --gallery-gap: clamp(0.85rem, 2vw, 1.25rem); /* Tighter gaps on small screens */
 }
 
 /* Sticky wrapper for header and events banner below it */
@@ -1084,7 +1107,7 @@ body.home .header-bar {
   justify-content: space-between; /* Menu toggle left, theme toggle right */
   align-items: center; /* Vertically center header items */
   height: var(--header-bar-height); /* Compact header bar height */
-  padding: 0 2rem; /* Horizontal padding inside header */
+  padding: 0 clamp(1.25rem, 4vw, 2rem); /* Fluid horizontal padding */
   background-color: var(--header-bg); /* Theme-aware header bar */
 }
 
@@ -1235,11 +1258,12 @@ body.home .header-bar {
 /* Inner page header row: menu, logo, theme toggle */
 .site-header--page .header-bar {
   display: grid; /* Three-column header layout */
-  grid-template-columns: 1fr auto 1fr; /* Side columns flex; logo centered */
+  grid-template-columns: minmax(0, 1fr) minmax(0, auto) minmax(0, 1fr); /* Prevent logo overflow on narrow screens */
   align-items: center; /* Vertically center header items */
   height: 56px; /* Taller bar for text logo on inner pages */
-  padding: 0 2rem; /* Horizontal padding inside header */
+  padding: 0 clamp(1.25rem, 4vw, 2rem); /* Fluid horizontal padding */
   background-color: var(--header-bg); /* Theme-aware header bar */
+  column-gap: 0.5rem; /* Keep menu, logo, and toggle from colliding */
 }
 
 /* Pin menu button to left column */
@@ -1250,12 +1274,16 @@ body.home .header-bar {
 /* Centered text logo on inner pages */
 .site-header--page .header-page-logo {
   justify-self: center; /* Center logo between menu and theme toggle */
-  font-size: 1.05rem; /* Compact site title size */
+  font-size: clamp(0.78rem, 2.8vw, 1.05rem); /* Shrink title on phones without wrapping oddly */
   font-variation-settings: "wght" var(--font-wght-bold); /* Bold site title */
   color: var(--accent); /* Golden orange logo text */
   text-decoration: none; /* Remove underline from logo link */
   letter-spacing: 0.05em; /* Slight spacing between letters */
   text-align: center; /* Center multi-line title if needed */
+  max-width: 100%; /* Stay inside middle grid column */
+  white-space: nowrap; /* Keep brand name on one line */
+  overflow: hidden; /* Clip if still too wide */
+  text-overflow: ellipsis; /* Soft fallback when space is extremely tight */
 }
 
 /* Pin theme toggle to right column */
@@ -1389,11 +1417,13 @@ body.home .home-main {
 /* Three-column card grid on home page */
 body.home .home-cards {
   display: grid; /* CSS grid for three equal columns */
-  grid-template-columns: repeat(3, 1fr); /* Three equal-width columns */
-  gap: 2.5rem; /* Space between cards */
+  grid-template-columns: repeat(3, minmax(0, 1fr)); /* Prevent column overflow */
+  gap: clamp(1.5rem, 3vw, 2.5rem); /* Fluid card spacing */
   max-width: 1400px; /* Wider grid for larger cards on big screens */
   margin: 0 auto; /* Center grid horizontally */
-  padding: 4rem 3rem 4rem; /* Reduced top padding; home-hero clears logo tab */
+  padding: clamp(2.5rem, 6vw, 4rem) clamp(1.25rem, 4vw, 3rem); /* Fluid side and vertical padding */
+  width: 100%; /* Fill available width */
+  box-sizing: border-box; /* Include padding in width */
 }
 
 /* Individual feature card container */
@@ -1401,8 +1431,12 @@ body.home .feature-card {
   position: relative; /* Anchor notch and action elements */
   display: flex; /* Stack card surface and action area */
   flex-direction: column; /* Vertical card layout */
-  align-items: center; /* Center card contents horizontally */
+  align-items: stretch; /* Let image frame control its own side insets */
   padding-bottom: var(--notch-radius); /* Room for bottom half of circle below frame */
+  margin-left: 0; /* Side insets live on the image frame */
+  margin-right: 0; /* Side insets live on the image frame */
+  max-width: 100%; /* Stay inside grid column */
+  box-sizing: border-box; /* Include side margins in layout math */
 }
 
 /* Single link wrapping image and icon so they click and hover as one unit */
@@ -1416,13 +1450,25 @@ body.home .card-link {
 
 /* Gray image frame with rounded top corners */
 body.home .card-image-frame {
-  width: 100%; /* Fill column width */
-  height: 560px; /* Fixed frame height so photos always fill the box */
-  margin: 0; /* Remove default figure margin */
+  --card-top-radius: clamp(85px, 155px - 5vw, 125px); /* Shared top radius for frame and photo */
+  --card-side-inset: 0px; /* Extra left/right inset on mobile only */
+  width: auto; /* Shrink when side insets are applied */
+  margin-left: var(--card-side-inset); /* Left inset for image on mobile */
+  margin-right: var(--card-side-inset); /* Right inset for image on mobile */
+  height: clamp(320px, 55vw, 560px); /* Scale photo frames between phone and desktop */
   background-color: var(--frame-bg); /* Theme-aware placeholder until image loads */
-  border-radius: 85px 85px 0 0; /* Large rounded top corners scaled to card size */
+  border-radius: var(--card-top-radius) var(--card-top-radius) 0 0; /* Rounder on phones, desktop curves in between */
   position: relative; /* Anchor notch circle and icon overlay */
   overflow: visible; /* Allow notch and icons to extend below frame */
+}
+
+/* Clips the photo to the rounded top corners without clipping the notch */
+body.home .card-image-clip {
+  position: absolute; /* Fill the image frame */
+  inset: 0; /* Stretch to frame edges */
+  border-radius: var(--card-top-radius) var(--card-top-radius) 0 0; /* Match frame curve */
+  overflow: hidden; /* Actually clip the photo corners on all three cards */
+  z-index: 0; /* Sit under tint and notch */
 }
 
 /* Teal tint overlay on card photos; fades out on hover */
@@ -1430,7 +1476,7 @@ body.home .card-image-frame::before {
   content: ""; /* Create tint layer above photo */
   position: absolute; /* Cover the image area only */
   inset: 0; /* Stretch to frame edges */
-  border-radius: 85px 85px 0 0; /* Match frame rounded top corners */
+  border-radius: var(--card-top-radius) var(--card-top-radius) 0 0; /* Match frame rounded top corners */
   background-color: var(--card-image-tint); /* Semi-transparent teal tint */
   z-index: 1; /* Sit above photo, below notch and icons */
   pointer-events: none; /* Allow hover to reach image beneath */
@@ -1445,12 +1491,12 @@ body.home .card-link:hover .card-image-frame::before {
 
 /* Photo inside frame */
 body.home .card-image {
-  display: block; /* Remove inline gap below image */
-  width: 100%; /* Fill frame width */
-  height: 100%; /* Fill fixed frame height */
+  display: block; /* Remove inline image gap */
+  width: 100%; /* Fill clip width */
+  height: 100%; /* Fill clip height */
   object-fit: cover; /* Crop photo to fill frame */
   object-position: center; /* Center photo in frame */
-  border-radius: 85px 85px 0 0; /* Match frame rounded top corners */
+  border-radius: 0; /* Clip wrapper handles rounding */
 }
 
 /* Cigars and accessories photos: anchor to bottom so image reaches frame edge */
@@ -1554,8 +1600,9 @@ body.home .gallery-scroll {
   overflow-x: auto; /* Scroll left and right through image rows */
   overflow-y: hidden; /* Prevent vertical scroll inside gallery */
   -webkit-overflow-scrolling: touch; /* Momentum scroll on iOS */
-  padding: 2rem 2rem 4rem; /* Vertical spacing; side padding on outer edges only */
-  padding-right: calc(2rem + (var(--gallery-item-width) + var(--gallery-gap)) / 2); /* Room for stagger row overflow */
+  padding: clamp(1.25rem, 4vw, 2rem) clamp(1.25rem, 4vw, 2rem) clamp(2.5rem, 6vw, 4rem); /* Fluid gallery padding */
+  padding-right: calc(clamp(1.25rem, 4vw, 2rem) + (var(--gallery-item-width) + var(--gallery-gap)) / 2); /* Room for stagger row overflow */
+  overscroll-behavior-x: contain; /* Keep sideways gallery scroll from bouncing the page */
 }
 
 /* Vertical stack of staggered gallery rows */
@@ -1678,119 +1725,186 @@ body.home .gallery-item:focus-within .gallery-desc {
   visibility: visible; /* Show floating text */
 }
 
+/* Large tablet / small laptop: soften three-column home cards */
+@media (max-width: 1100px) {
+  body.home .home-cards {
+    gap: 1.75rem; /* Closer cards before dropping a column */
+  }
+}
+
 /* Tablet: two columns for category cards */
 @media (max-width: 900px) {
   body.home .home-cards {
-    grid-template-columns: repeat(2, 1fr); /* Two columns on medium screens */
-    padding: 2rem 2rem 3rem; /* Hero section handles logo clearance */
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* Two equal columns on medium screens */
   }
 
-  .home-hero {
-    padding: 9.5rem 1.5rem 0; /* Clear logo tab on tablet */
+  body.home .home-cards .feature-card:last-child {
+    grid-column: 1 / -1; /* Center the third card across both columns */
+    max-width: min(420px, calc(100% - 2 * clamp(1rem, 6vw, 1.75rem))); /* Keep Accessories inset like the other cards */
+    justify-self: center; /* Center the spanning card */
+    width: 100%; /* Fill available width up to max */
+    margin-left: 0; /* Side inset comes from the image frame */
+    margin-right: 0; /* Side inset comes from the image frame */
   }
-}
 
-/* Mobile: single column and smaller sizing */
-@media (max-width: 600px) {
-  .events-ticker-text {
-    padding: 0.55rem 0; /* Taller bar for larger text on mobile */
-    padding-right: 2rem; /* Tighter phrase spacing on small screens */
-    font-size: 0.95rem; /* Slightly smaller but still larger ticker on mobile */
+  body.home .feature-card:last-child .card-image-frame {
+    --card-side-inset: clamp(1rem, 6vw, 1.75rem); /* Match mobile side inset on Accessories at tablet widths */
   }
 
   .site-header .header-nav-links {
-    flex-direction: column; /* Stack links vertically on mobile */
-    align-items: flex-start; /* Left-align stacked links on mobile */
-    gap: 0.5rem; /* Tighter vertical gap on mobile */
-    padding: 0.5rem 1.25rem; /* Compact expand bar padding on mobile */
+    gap: 1.25rem; /* Slightly tighter link spacing on tablet */
   }
-
-.site-header.is-nav-open .header-nav-panel {
-  max-height: 9rem; /* Compact stacked links on mobile */
 }
 
-  body.home .header-bar {
-    padding: 0 1.25rem; /* Tighter header padding on mobile */
+/* Compact tablet / large phone: stack home cards before notch collisions */
+@media (max-width: 720px) {
+  body.home .home-cards {
+    grid-template-columns: 1fr; /* Full-width stacked cards */
+    gap: 2.75rem; /* Extra space for notches between stacked cards */
+    padding-left: clamp(0.5rem, 2vw, 1rem); /* Slightly tighter section padding so card margins read clearly */
+    padding-right: clamp(0.5rem, 2vw, 1rem); /* Match left section padding */
   }
 
-  .site-header--page .header-bar {
-    padding: 0 1.25rem; /* Tighter header padding on mobile */
+  body.home .home-cards .feature-card:last-child {
+    grid-column: auto; /* Reset tablet spanning rule */
+    max-width: none; /* Allow full-width cards when stacked */
   }
 
-  .site-header--page .header-page-logo {
-    font-size: 0.85rem; /* Smaller centered title on mobile */
+  body.home .card-image-frame,
+  body.home .feature-card:nth-child(1) .card-image-frame,
+  body.home .feature-card:nth-child(2) .card-image-frame,
+  body.home .feature-card:nth-child(3) .card-image-frame {
+    --card-side-inset: clamp(1rem, 6vw, 1.75rem); /* Left/right inset on Pipes, Cigars, and Accessories images */
   }
 
-  body.home {
-    --card-icon-size: 100px; /* Smaller icons on mobile */
-    --gallery-item-width: 240px; /* Narrower gallery cards on mobile */
-    --gallery-item-height: 300px; /* Shorter gallery cards on mobile */
-    --gallery-radius: 36px; /* Slightly smaller radius on mobile */
-    --logo-height-expanded: 88px; /* Smaller expanded logo on mobile */
-    --logo-height-compact: 34px; /* Larger compact logo on mobile */
+  .site-header .header-nav-links {
+    flex-direction: column; /* Stack links vertically */
+    align-items: flex-start; /* Left-align stacked links */
+    gap: 0.5rem; /* Tighter vertical gap */
+    padding: 0.5rem 1.25rem; /* Compact expand bar padding */
   }
 
+  .site-header.is-nav-open .header-nav-panel {
+    max-height: 10rem; /* Room for stacked mobile links */
+  }
+
+  .events-ticker-text {
+    padding: 0.55rem 0; /* Comfortable bar height */
+    padding-right: 2rem; /* Phrase spacing on small screens */
+    font-size: 0.95rem; /* Slightly smaller ticker text */
+  }
+
+  .page-hero__actions,
+  .home-hero__actions {
+    justify-content: center; /* Center wrapped buttons on compact screens */
+  }
+
+  .btn,
+  .btn--ghost {
+    width: 100%; /* Full-width CTAs are easier to tap on phones */
+    max-width: 22rem; /* Keep buttons from spanning ultra-wide phones awkwardly */
+    text-align: center; /* Center button labels */
+  }
+
+  .page-hero__actions .btn,
+  .page-hero__actions .btn--ghost,
+  .page-cta .btn,
+  .page-cta .btn--ghost {
+    max-width: none; /* Fill the action row on inner pages */
+  }
+}
+
+/* Phone refinements */
+@media (max-width: 600px) {
   body.home .logo-tab {
-    padding: 8px 1.75rem 26px; /* Compact logo tab on mobile */
-    border-radius: 0 0 80px 80px; /* Smaller curve on mobile */
+    padding: 8px 1.5rem 22px; /* Compact logo tab on phones */
+    border-radius: 0 0 72px 72px; /* Smaller curve on phones */
+    max-width: calc(100vw - 5.5rem); /* Keep logo tab clear of menu and theme controls */
   }
 
   body.home.is-header-compact .logo-tab {
-    padding: 2px 1.5rem 4px; /* Room for larger logo on mobile */
-    border-radius: 0 0 26px 26px; /* Compact curve on mobile */
+    padding: 2px 1.25rem 4px; /* Compact scrolled logo tab */
+    border-radius: 0 0 24px 24px; /* Compact curve */
   }
 
-  body.home .home-cards {
-    grid-template-columns: 1fr; /* Stack cards vertically on mobile */
-    gap: 3rem; /* Extra gap when stacked */
-    padding: 1.5rem 1.25rem 2rem; /* Hero section handles logo clearance */
+  body.home .card-label {
+    font-size: 1rem; /* Slightly smaller category labels */
   }
 
-  .home-hero {
-    padding: 8.5rem 1.25rem 0; /* Clear logo tab on mobile */
-  }
-
-  body.home .card-image-frame {
-    height: 420px; /* Fixed frame height on mobile */
-    border-radius: 60px 60px 0 0; /* Scaled top radius on mobile */
-  }
-
-  body.home .card-image-frame::before {
-    border-radius: 60px 60px 0 0; /* Match mobile frame corners on tint */
-  }
-
-  body.home .card-image {
-    border-radius: 60px 60px 0 0; /* Match mobile frame corners */
-  }
-
-  body.home .gallery-scroll {
-    padding-left: 1.25rem; /* Outer side inset on mobile */
-    padding-right: calc(1.25rem + (var(--gallery-item-width) + var(--gallery-gap)) / 2); /* Stagger overflow on mobile */
-  }
-
-  body.home .gallery-brick {
-    padding-bottom: 1rem; /* Bottom padding only on mobile */
+  body.home .card-image-frame,
+  body.home .feature-card:nth-child(1) .card-image-frame,
+  body.home .feature-card:nth-child(2) .card-image-frame,
+  body.home .feature-card:nth-child(3) .card-image-frame {
+    --card-side-inset: clamp(1.25rem, 7vw, 2rem); /* Stronger left/right inset for all three images on phones */
   }
 
   body.home .gallery-desc {
-    bottom: 1rem; /* Slightly tighter bottom inset on mobile */
-    padding: 0 1rem; /* Side inset on mobile */
+    bottom: 1rem; /* Tighter bottom inset */
+    padding: 0 1rem; /* Side inset on phones */
   }
 
   body.home .gallery-desc p {
-    font-size: 0.9rem; /* Slightly smaller text on mobile */
+    font-size: 0.9rem; /* Smaller description text */
     line-height: 1.45; /* Readable on narrow cards */
   }
 
-  .reviews-section {
-    padding: 3rem 1.25rem 4rem; /* Tighter reviews spacing on mobile */
-  }
-
   .reviews-carousel__slide {
-    padding: 1.5rem 1.25rem; /* Compact review card on mobile */
+    padding: 1.5rem 1.25rem; /* Compact review card */
   }
 
   .reviews-carousel__quote {
-    font-size: 1.05rem; /* Slightly smaller quote on mobile */
+    font-size: 1.05rem; /* Slightly smaller quote */
+  }
+
+  .reviews-carousel__controls {
+    gap: 0.75rem; /* Tighter control spacing */
+  }
+
+  .site-footer__nav {
+    gap: 0.85rem 1.25rem; /* Tighter footer link wrapping */
+  }
+
+  .location-hours {
+    max-width: 100%; /* Use full panel width on phones */
+  }
+
+  .calendar-wrapper {
+    padding: 0.75rem; /* Slightly tighter calendar chrome */
+  }
+}
+
+/* Very small phones */
+@media (max-width: 400px) {
+  .site-header .nav-expand-label {
+    display: none; /* Icon-only menu button saves header space */
+  }
+
+  .site-header .nav-expand-toggle {
+    padding: 0 0.7rem; /* Compact icon button padding */
+  }
+
+  .site-header--page .header-page-logo {
+    letter-spacing: 0.02em; /* Reduce spacing so brand name fits better */
+  }
+
+  body.home .logo-tab {
+    padding: 6px 1.1rem 18px; /* Extra-compact logo tab */
+  }
+}
+
+/* Prefer tap-friendly hover alternatives on coarse pointers */
+@media (hover: none) {
+  body.home .gallery-item .gallery-desc {
+    opacity: 1; /* Keep descriptions readable without hover on touch devices */
+    visibility: visible; /* Show floating text on touch */
+  }
+
+  body.home .gallery-item .gallery-card::before {
+    opacity: 0.55; /* Soft always-on tint so text stays readable */
+  }
+
+  body.home .card-link:hover .card-image-frame::before,
+  body.home .card-link:focus-within .card-image-frame::before {
+    opacity: 0; /* Preserve existing hover/focus behavior when available */
   }
 }

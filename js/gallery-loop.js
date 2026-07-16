@@ -178,9 +178,14 @@
   whenLayoutReady(setupGallery); // Initial setup after layout
   window.addEventListener("load", function () { whenLayoutReady(setupGallery); }); // Re-measure after images load
   window.addEventListener("resize", function () { whenLayoutReady(setupGallery); }); // Re-measure on resize
+  window.addEventListener("orientationchange", function () { whenLayoutReady(setupGallery); }); // Re-measure after phone rotation
   window.addEventListener("scroll", onWindowScroll, { passive: true }); // Map vertical page scroll to gallery
   scrollEl.addEventListener("scroll", onGalleryScroll, { passive: true }); // Native horizontal scroll / drag
   scrollEl.addEventListener("wheel", onGalleryWheel, { passive: false }); // Horizontal trackpad wheel over gallery
+
+  if (window.visualViewport) { // Use visual viewport when browser exposes it
+    window.visualViewport.addEventListener("resize", function () { whenLayoutReady(setupGallery); }); // Catch mobile browser chrome changes
+  }
 
   var siteTop = document.querySelector(".site-top"); // Sticky header stack whose height affects gallery pin offset
   if (siteTop && typeof ResizeObserver !== "undefined") { // Watch header height when events banner appears

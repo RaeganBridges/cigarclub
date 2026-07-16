@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-16T17:03:10.382Z",
+  "updatedAt": "2026-07-16T18:23:50.000Z",
   "timeZone": "America/Chicago",
   "source": "ical",
   "items": [
@@ -16,6 +16,14 @@
       "description": "",
       "categories": "",
       "start": "2026-06-18T19:00:00.000Z",
+      "allDay": false,
+      "isTodo": false
+    },
+    {
+      "summary": "holiday",
+      "description": "",
+      "categories": "",
+      "start": "2026-07-17T18:30:00.000Z",
       "allDay": false,
       "isTodo": false
     }
