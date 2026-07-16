@@ -1076,7 +1076,7 @@ body.home {
   color: var(--text); /* Theme-aware text color */
   --header-bar-height: 48px; /* Fixed maroon header bar height */
   --logo-height-expanded: clamp(88px, 18vw, 130px); /* Scale logo between phone and desktop */
-  --logo-height-compact: clamp(30px, 5vw, 40px); /* Compact logo scales gently */
+  --logo-height-compact: clamp(34px, 6vw, 44px); /* Compact wordmark stays readable */
   --notch-size: clamp(160px, 28vw, 260px); /* Keep notch inside card width on all screens */
   --notch-radius: calc(var(--notch-size) / 2); /* Half diameter; center sits on frame bottom */
   --card-icon-size: clamp(90px, 16vw, 130px); /* Category icons scale with viewport */
@@ -1271,19 +1271,23 @@ body.home .header-bar {
   justify-self: start; /* Align menu button left */
 }
 
-/* Centered text logo on inner pages */
+/* Centered brand logo on inner pages */
 .site-header--page .header-page-logo {
   justify-self: center; /* Center logo between menu and theme toggle */
-  font-size: clamp(0.78rem, 2.8vw, 1.05rem); /* Shrink title on phones without wrapping oddly */
-  font-variation-settings: "wght" var(--font-wght-bold); /* Bold site title */
-  color: var(--accent); /* Golden orange logo text */
+  display: flex; /* Center the image within the logo link */
+  align-items: center; /* Vertically center the logo image */
+  justify-content: center; /* Horizontally center the logo image */
   text-decoration: none; /* Remove underline from logo link */
-  letter-spacing: 0.05em; /* Slight spacing between letters */
-  text-align: center; /* Center multi-line title if needed */
   max-width: 100%; /* Stay inside middle grid column */
-  white-space: nowrap; /* Keep brand name on one line */
-  overflow: hidden; /* Clip if still too wide */
-  text-overflow: ellipsis; /* Soft fallback when space is extremely tight */
+  min-width: 0; /* Allow the logo to shrink on narrow screens */
+}
+
+.site-header--page .header-page-logo-img {
+  display: block; /* Remove the inline image baseline gap */
+  width: auto; /* Preserve the wordmark aspect ratio */
+  height: clamp(28px, 5vw, 38px); /* Fit LOGO_02 inside the compact page header */
+  max-width: min(42vw, 240px); /* Keep controls clear on narrow screens */
+  object-fit: contain; /* Scale the full logo without cropping */
 }
 
 /* Pin theme toggle to right column */
@@ -1374,48 +1378,68 @@ body.home .theme-toggle {
 
 /* Centered logo tab overlapping header and content */
 body.home .logo-tab {
-  position: absolute; /* Position over header and main content */
+  position: absolute; /* Position over header and content */
   left: 50%; /* Start at horizontal center of header */
   top: 0; /* Align to top of header */
   transform: translateX(-50%); /* Center the tab exactly */
-  display: flex; /* Center the logo image inside the tab */
-  align-items: center; /* Vertically center logo */
-  justify-content: center; /* Horizontally center logo */
-  padding: 10px 2.5rem 32px; /* Compact inner spacing for logo tab */
+  display: grid; /* Stack both logos in one cell for a crossfade */
+  place-items: center; /* Center logos vertically and horizontally */
+  padding: 10px 2.5rem 32px; /* Room for the large home logo */
   background-color: var(--logo-tab-bg); /* Maroon tab matching header bar */
-  border-radius: 0 0 100px 100px; /* Smaller curved bottom edge of logo tab */
+  border-radius: 0 0 100px 100px; /* Curved bottom edge of logo tab */
   text-decoration: none; /* Remove underline from logo link */
   z-index: 20; /* Keep logo above header bar and cards */
-  transition: padding 0.35s ease, border-radius 0.35s ease; /* Smooth shrink animation */
+  overflow: hidden; /* Clip logos to the curved tab */
+  transition: padding 0.4s ease, border-radius 0.4s ease, min-width 0.4s ease; /* Smooth shrink animation */
 }
 
-/* Full brand logo image inside logo tab */
+/* Both logos share one grid cell so they can crossfade */
 body.home .logo-img {
+  grid-area: 1 / 1; /* Stack full and compact logos on top of each other */
   display: block; /* Remove inline image gap */
-  height: var(--logo-height-expanded); /* Large logo at top of page */
   width: auto; /* Preserve logo aspect ratio */
-  max-width: 100%; /* Keep logo inside the curved tab */
-  transition: height 0.35s ease, opacity 0.25s ease; /* Smooth size and logo swap */
+  object-fit: contain; /* Keep logos fully visible while scaling */
+  transition: height 0.4s ease, opacity 0.4s ease, width 0.4s ease; /* Smooth size change and crossfade */
 }
 
-/* Compact wordmark stays hidden until the header shrinks */
+/* Expanded state: full logo on top and visible */
+body.home .logo-img--full {
+  height: var(--logo-height-expanded); /* Large logo at top of page */
+  max-width: min(72vw, 280px); /* Keep full logo inside the tab */
+  opacity: 1; /* Fully visible while header is expanded */
+  z-index: 2; /* Paint above the compact wordmark */
+}
+
+/* Expanded state: wordmark sits underneath, faded out */
 body.home .logo-img--compact {
-  display: none; /* Hide horizontal logo while header is expanded */
-  height: var(--logo-height-compact); /* Compact bar height for wordmark */
+  height: var(--logo-height-compact); /* Target height for the compact bar */
+  width: auto; /* Let the wide wordmark keep its aspect ratio */
+  max-width: min(70vw, 260px); /* Give LOGO_02 enough room to read */
+  opacity: 0; /* Hidden until the header shrinks */
+  z-index: 1; /* Sit under the full logo while expanded */
+  pointer-events: none; /* Ignore clicks while faded out */
 }
 
-/* Compact header: swap to horizontal wordmark inside maroon bar */
+/* Compact header: shrink the tab around the wordmark */
 body.home.is-header-compact .logo-tab {
-  padding: 2px 2rem 4px; /* Room for wordmark inside maroon tab */
-  border-radius: 0 0 32px 32px; /* Slightly larger curve when compact */
+  padding: 2px 1.5rem 4px; /* Tight padding for the compact bar */
+  border-radius: 0 0 28px 28px; /* Smaller curve when compact */
+  min-width: min(70vw, 260px); /* Reserve width so LOGO_02 is not crushed */
 }
 
+/* Compact header: fade the full logo out */
 body.home.is-header-compact .logo-img--full {
-  display: none; /* Hide stacked full logo when header is compact */
+  height: var(--logo-height-compact); /* Collapse so the tab can shrink */
+  opacity: 0; /* Fade the stacked logo out */
+  z-index: 1; /* Move under the wordmark while fading */
+  pointer-events: none; /* Ignore clicks once hidden */
 }
 
+/* Compact header: fade the horizontal wordmark in on top */
 body.home.is-header-compact .logo-img--compact {
-  display: block; /* Show horizontal LOGO_02 in the compact bar */
+  opacity: 1; /* Reveal LOGO_02 in the compact bar */
+  z-index: 2; /* Paint above the fading full logo */
+  pointer-events: auto; /* Restore clicks on the visible logo */
 }
 
 /* Main content wrapper on home page */
@@ -1834,8 +1858,13 @@ body.home .gallery-item:focus-within .gallery-desc {
   }
 
   body.home.is-header-compact .logo-tab {
-    padding: 2px 1.25rem 4px; /* Compact scrolled logo tab */
+    padding: 2px 1rem 4px; /* Compact scrolled logo tab */
     border-radius: 0 0 24px 24px; /* Compact curve */
+    min-width: min(58vw, 200px); /* Keep wordmark readable on phones */
+  }
+
+  body.home.is-header-compact .logo-img--compact {
+    max-width: min(58vw, 200px); /* Match compact tab width on phones */
   }
 
   body.home .card-label {
@@ -1894,8 +1923,8 @@ body.home .gallery-item:focus-within .gallery-desc {
     padding: 0 0.7rem; /* Compact icon button padding */
   }
 
-  .site-header--page .header-page-logo {
-    letter-spacing: 0.02em; /* Reduce spacing so brand name fits better */
+  .site-header--page .header-page-logo-img {
+    max-width: 38vw; /* Keep the wordmark clear of icon-only controls */
   }
 
   body.home .logo-tab {
