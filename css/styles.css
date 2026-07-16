@@ -1607,13 +1607,13 @@ header .theme-toggle {
 body.home {
   background-color: var(--bg); /* Theme-aware main area background */
   color: var(--text); /* Theme-aware text color */
-  --header-bar-height: 48px; /* Fixed maroon header bar height */
+  --header-bar-height: 56px; /* Match inner-page maroon header bar height */
   --logo-height-expanded: clamp(88px, 18vw, 130px); /* Scale logo between phone and desktop */
   --logo-height-compact: clamp(22px, 3.5vw, 28px); /* Smaller compact wordmark in the header tab */
   --notch-size: clamp(160px, 28vw, 260px); /* Keep notch inside card width on all screens */
   --notch-radius: calc(var(--notch-size) / 2); /* Half diameter; center sits on frame bottom */
   --card-icon-size: clamp(90px, 16vw, 130px); /* Category icons scale with viewport */
-  --card-image-tint: color-mix(in srgb, var(--teal) 42%, transparent); /* Teal overlay on card photos */
+  --card-image-tint: color-mix(in srgb, var(--teal) 28%, transparent); /* Lighter teal overlay on card photos */
   --gallery-item-width: clamp(220px, 42vw, 300px); /* Gallery cards shrink on narrow screens */
   --gallery-item-height: clamp(280px, 52vw, 380px); /* Gallery height tracks card width */
   --gallery-radius: clamp(28px, 6vw, 48px); /* Rounded corners scale down on mobile */
