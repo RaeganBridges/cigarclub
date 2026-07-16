@@ -5,11 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Make layout responsive on mobile -->
   <title>Events | The Cigar Club Nashville</title> <!-- Text shown in browser tab -->
   <script>
-    (function () { var s = localStorage.getItem("theme"); var t = s || (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark"); document.documentElement.setAttribute("data-theme", t); })();
+    (function () { var s = localStorage.getItem("theme"); var t = s || "dark"; document.documentElement.setAttribute("data-theme", t); })();
   </script> <!-- Apply saved theme before paint to prevent flash -->
   <link rel="preconnect" href="https://use.typekit.net"> <!-- Speed up Adobe Fonts connection -->
   <link rel="preconnect" href="https://p.typekit.net" crossorigin> <!-- Speed up Adobe Fonts files -->
   <link rel="stylesheet" href="https://use.typekit.net/end7yej.css"> <!-- Adobe Fonts: Sarvatrik Latin Variable -->
+  <link rel="icon" href="images/favicon.png" type="image/png" sizes="48x48"> <!-- Larger tab favicon with tight crop -->
+  <link rel="icon" href="images/favicon-32.png" type="image/png" sizes="32x32"> <!-- Standard small favicon size -->
+  <link rel="icon" href="images/favicon-192.png" type="image/png" sizes="192x192"> <!-- High-DPI and bookmark icon -->
+  <link rel="apple-touch-icon" href="images/favicon-192.png"> <!-- Home screen icon on iOS -->
   <link rel="stylesheet" href="css/styles.css"> <!-- Load shared site styles -->
 </head>
 <body class="tk-sarvatrik-latin-variable"> <!-- Sarvatrik via Adobe Fonts kit end7yej -->

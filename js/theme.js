@@ -3,11 +3,8 @@
   var root = document.documentElement; // <html> element receives data-theme attribute
   var toggle = document.querySelector(".theme-toggle"); // Theme toggle button on the page
 
-  function getPreferredTheme() { // Resolve theme when none is saved
-    if (window.matchMedia("(prefers-color-scheme: light)").matches) { // OS prefers light mode
-      return "light"; // Default to light when system preference is light
-    }
-    return "dark"; // Default to dark when system preference is dark
+  function getDefaultTheme() { // Resolve theme when none is saved
+    return "dark"; // Default every new visitor to dark mode
   }
 
   function getStoredTheme() { // Read saved theme from localStorage
@@ -24,7 +21,7 @@
 
   function initTheme() { // Set initial theme on page load
     var saved = getStoredTheme(); // Check for a saved user preference
-    applyTheme(saved || getPreferredTheme()); // Use saved theme or system default
+    applyTheme(saved || getDefaultTheme()); // Use saved theme or dark default
   }
 
   function toggleTheme() { // Flip between light and dark
