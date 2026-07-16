@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 const https = require("https"); // Node HTTPS client for iCal fetch
-const fs = require("fs"); // Read optional manual events file
+const fs = require("fs"); // Read/write calendar JSON files
 const path = require("path"); // Resolve paths relative to repo root
 const ical = require("../js/ical-utils.js"); // Shared iCal parser
 
@@ -11,6 +11,7 @@ const calendarConfig = { // Calendar feed settings (matches js/calendar-config.j
   ],
   timeZone: "America/Chicago", // Club timezone label stored in JSON
   manualPath: path.join(__dirname, "../data/events-manual.json"), // Optional manual events file
+  outputPath: path.join(__dirname, "../data/calendar-events.json"), // Synced events JSON written for the site
 };
 
 function buildIcalUrl(calendarId) { // Build public iCal URL from a calendar ID
@@ -71,18 +72,45 @@ function loadManualEvents() { // Read optional hand-edited events from repo JSON
   }
 }
 
+function normalizeItem(item) { // Normalize one event row for stable comparisons
+  return { // Canonical fields only
+    summary: item.summary || "", // Event title
+    description: item.description || "", // Event description
+    categories: item.categories || "", // Optional categories
+    start: item.start || "", // ISO start datetime
+    allDay: Boolean(item.allDay), // All-day flag
+    isTodo: Boolean(item.isTodo), // Task flag
+  };
+}
+
 function mergeItems(itemGroups) { // Combine multiple event arrays without duplicates
   var combined = []; // Accumulated unique items
   var seen = {}; // Track unique keys to avoid duplicate rows
   itemGroups.forEach(function (group) { // Walk each source group
     group.forEach(function (item) { // Walk each item in group
-      var key = (item.summary || "") + "|" + (item.start || ""); // Unique key per event
+      var normalized = normalizeItem(item); // Canonical row shape
+      var key = normalized.summary + "|" + normalized.start; // Unique key per event
       if (seen[key]) { return; } // Skip duplicate entry
       seen[key] = true; // Mark key as seen
-      combined.push(item); // Keep unique item
+      combined.push(normalized); // Keep unique item
     });
   });
+  combined.sort(function (a, b) { // Stable ordering so unchanged calendars produce identical JSON
+    return String(a.start).localeCompare(String(b.start)) || String(a.summary).localeCompare(String(b.summary)); // Sort by start then title
+  });
   return combined; // Return merged list
+}
+
+function itemsSignature(items) { // Fingerprint event list without updatedAt noise
+  return JSON.stringify(mergeItems([items || []])); // Sorted normalized items JSON
+}
+
+function readExistingPayload() { // Load current synced JSON if present
+  try { // File may not exist on first sync
+    return JSON.parse(fs.readFileSync(calendarConfig.outputPath, "utf8")); // Parse existing calendar JSON
+  } catch (error) { // Missing or invalid file
+    return null; // Treat as no previous payload
+  }
 }
 
 function loadGoogleEvents() { // Fetch all configured calendars via API or iCal
@@ -98,23 +126,40 @@ function loadGoogleEvents() { // Fetch all configured calendars via API or iCal
   });
 }
 
+function writePayload(payload, changed) { // Write JSON file and report whether events changed
+  var text = JSON.stringify(payload, null, 2) + "\n"; // Pretty JSON with trailing newline
+  fs.writeFileSync(calendarConfig.outputPath, text); // Persist synced calendar events
+  process.stdout.write(text); // Also print JSON for workflow logs
+  if (!changed) { // Events list is identical to the previous sync
+    process.stderr.write("Calendar events unchanged; left updatedAt alone to avoid noisy commits.\n"); // Explain no-op
+  }
+}
+
 loadGoogleEvents() // Fetch events from Google Calendar
   .then(function (googleItems) { // Merge with optional manual events
+    var items = mergeItems([googleItems, loadManualEvents()]); // Combined Google + manual events
+    var existing = readExistingPayload(); // Previous synced payload on disk
+    var changed = !existing || itemsSignature(existing.items) !== itemsSignature(items); // Detect real event changes
     var payload = { // JSON document written to data/calendar-events.json
-      updatedAt: new Date().toISOString(), // Timestamp of last successful sync
+      updatedAt: changed || !existing ? new Date().toISOString() : existing.updatedAt, // Only bump timestamp when events change
       timeZone: calendarConfig.timeZone, // Club timezone for client formatting
       source: process.env.GOOGLE_CALENDAR_API_KEY ? "api" : "ical", // Record which sync source was used
-      items: mergeItems([googleItems, loadManualEvents()]), // Combined Google + manual events
+      items: items, // Combined Google + manual events
     };
-    process.stdout.write(JSON.stringify(payload, null, 2)); // Print pretty JSON to stdout
+    writePayload(payload, changed); // Save synced calendar JSON
+    process.exit(changed ? 0 : 0); // Always succeed; workflow skips commit when file is unchanged
   })
   .catch(function (error) { // Still write manual events if Google fetch fails completely
+    var items = mergeItems([loadManualEvents()]); // Manual events only
+    var existing = readExistingPayload(); // Previous synced payload on disk
+    var changed = !existing || itemsSignature(existing.items) !== itemsSignature(items) || existing.source !== "manual"; // Detect changes
     var payload = { // JSON document with manual events only
-      updatedAt: new Date().toISOString(), // Timestamp of fallback write
+      updatedAt: changed || !existing ? new Date().toISOString() : existing.updatedAt, // Only bump timestamp when needed
       timeZone: calendarConfig.timeZone, // Club timezone for client formatting
       source: "manual", // Indicate Google fetch failed
-      items: loadManualEvents(), // Manual events only
+      items: items, // Manual events only
       error: String(error.message || error), // Store sync error for debugging
     };
-    process.stdout.write(JSON.stringify(payload, null, 2)); // Print fallback JSON to stdout
+    writePayload(payload, changed); // Save fallback calendar JSON
+    process.exit(0); // Do not fail the workflow on Google outage when fallback exists
   });

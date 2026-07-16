@@ -1,8 +1,6 @@
 name: Sync calendar events
 
 on:
-  push:
-    branches: [main]
   schedule:
     - cron: "*/15 * * * *"
   workflow_dispatch:
@@ -14,17 +12,29 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - name: Fetch calendar and write JSON
-        env:
-          GOOGLE_CALENDAR_API_KEY: ${{ secrets.GOOGLE_CALENDAR_API_KEY }}
-        run: node scripts/sync-calendar.js > data/calendar-events.json
-      - name: Commit updated events
+      - name: Configure git identity and calendar merge driver
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config merge.calendar-json.driver "node scripts/merge-calendar-events.js %O %A %B"
+          git config merge.calendar-json.name "Merge calendar-events.json by combining items"
+      - name: Fetch calendar and write JSON
+        env:
+          GOOGLE_CALENDAR_API_KEY: ${{ secrets.GOOGLE_CALENDAR_API_KEY }}
+        run: node scripts/sync-calendar.js > /tmp/calendar-sync-output.json
+      - name: Commit and push only when events changed
+        run: |
+          if git diff --quiet -- data/calendar-events.json; then
+            echo "No calendar event changes to commit."
+            exit 0
+          fi
           git add data/calendar-events.json
-          git diff --staged --quiet || git commit -m "Sync calendar events for ticker"
-          git push
+          git commit -m "Sync calendar events for ticker"
+          # Rebase onto latest main before push so sync commits do not fight site edits
+          git pull --rebase origin main
+          git push origin HEAD:main
