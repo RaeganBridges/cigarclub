@@ -3,7 +3,7 @@
 <head> <!-- Document metadata section (not visible on page) -->
   <meta charset="UTF-8"> <!-- Use UTF-8 character encoding for special characters -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Make layout responsive on mobile -->
-  <title>Location | The Cigar Club Nashville</title> <!-- Text shown in browser tab -->
+  <title>Pipes | The Cigar Club Nashville</title> <!-- Text shown in browser tab -->
   <script>
     (function () { var s = localStorage.getItem("theme"); var t = s || "dark"; document.documentElement.setAttribute("data-theme", t); })();
   </script> <!-- Apply saved theme before paint to prevent flash -->
@@ -36,7 +36,7 @@
         <ul class="header-nav-links"> <!-- Horizontal list of header links -->
           <li><a href="about-us.html"><img src="images/ICON-09.png" alt="" class="header-nav-icon" width="40" height="40"><span>About Us</span></a></li> <!-- Person icon for about us -->
           <li><a href="events.html"><img src="images/ICON-10.png" alt="" class="header-nav-icon" width="40" height="40"><span>Events</span></a></li> <!-- Calendar icon for events -->
-          <li><a href="location.html" class="active"><img src="images/ICON-08.png" alt="" class="header-nav-icon" width="40" height="40"><span>Location</span></a></li> <!-- House icon for location -->
+          <li><a href="location.html"><img src="images/ICON-08.png" alt="" class="header-nav-icon" width="40" height="40"><span>Location</span></a></li> <!-- House icon for location -->
         </ul>
       </nav>
     </div>
@@ -53,65 +53,56 @@
 
   <main class="page-flow"> <!-- Main page content with editorial section flow -->
     <section class="page-hero"> <!-- Opening hero establishes the page story -->
-      <p class="page-hero__eyebrow">Location</p> <!-- Section label above headline -->
-      <h1 class="page-hero__title">Visit Us in Madison</h1> <!-- Primary page headline -->
-      <p class="page-hero__lead">Stop by for tastings, lounge nights, and a hand-picked selection of cigars and pipe tobacco on Gallatin Pike.</p> <!-- Supporting hero copy -->
+      <p class="page-hero__eyebrow">Pipes</p> <!-- Section label above headline -->
+      <h1 class="page-hero__title">Hand-Crafted Pipes, Chosen with Care</h1> <!-- Primary page headline -->
+      <p class="page-hero__lead">From classic briar shapes to artisan one-offs, our pipe selection is curated for smokers who appreciate craftsmanship — whether it is your first bowl or your fiftieth.</p> <!-- Supporting hero copy -->
       <div class="page-hero__actions"> <!-- Next-step actions from hero -->
-        <a href="https://www.google.com/maps/search/?api=1&amp;query=2148+Gallatin+Pike+N,+Madison,+TN+37115" class="btn">Get directions</a> <!-- Open Google Maps directions -->
+        <a href="location.html" class="btn">Visit the shop</a> <!-- Guide visitors to location -->
         <a href="events.html" class="btn btn--ghost">See upcoming events</a> <!-- Guide visitors to calendar -->
       </div>
     </section>
 
-    <section class="page-section location-details"> <!-- Store address and directions -->
-      <h2 class="page-section__title">Our address</h2> <!-- Section heading for address block -->
-      <address class="location-address"> <!-- Semantic markup for physical address -->
-        <a href="https://www.google.com/maps/search/?api=1&amp;query=2148+Gallatin+Pike+N,+Madison,+TN+37115" class="location-address__link">2148 Gallatin Pike N<br>Madison, TN 37115</a> <!-- Clickable address opens directions in Google Maps -->
-      </address>
-      <p class="location-phone"> <!-- Store phone number -->
-        <a href="tel:+16158592425" class="location-phone__link">(615) 859-2425</a> <!-- Tap to call on mobile -->
-      </p>
-      <p class="location-email"> <!-- Store email address -->
-        <a href="mailto:cigarclubnashville@gmail.com" class="location-email__link">cigarclubnashville@gmail.com</a> <!-- Tap to open email client -->
-      </p>
-      <p class="location-instagram"> <!-- Store Instagram profile -->
-        <a href="https://www.instagram.com/cigarclubnashville" class="location-instagram__link" target="_blank" rel="noopener noreferrer">@cigarclubnashville</a> <!-- Opens Instagram in a new tab -->
-      </p>
-      <p class="location-x"> <!-- Store X (Twitter) profile -->
-        <a href="https://x.com/CigarNashville" class="location-x__link" target="_blank" rel="noopener noreferrer">@CigarNashville</a> <!-- Opens X profile in a new tab -->
-      </p>
-      <h3 class="location-hours__title">Hours</h3> <!-- Hours heading below address -->
-      <dl class="location-hours"> <!-- Two-column store hours list -->
-        <div class="location-hours__row"> <!-- Weekday hours row -->
-          <dt class="location-hours__days">Mon – Sat</dt> <!-- Days open -->
-          <dd class="location-hours__times">9:00 am – 7:00 pm</dd> <!-- Weekday hours -->
-        </div>
-        <div class="location-hours__row"> <!-- Sunday hours row -->
-          <dt class="location-hours__days">Sunday</dt> <!-- Sunday label -->
-          <dd class="location-hours__times">12:00 pm – 6:00 pm</dd> <!-- Sunday hours -->
-        </div>
-      </dl>
+    <section class="page-section page-section--catalog" aria-labelledby="pipes-selection-title"> <!-- Current pipe selection catalog -->
+      <h2 class="page-section__title" id="pipes-selection-title">Current selection</h2> <!-- Section headline -->
+      <p class="page-section__lead">Browse what we typically keep on the wall. Selection changes often — stop by to see what is in the shop today.</p> <!-- Section intro -->
+      <div class="pipes-filters" data-pipes-filters role="group" aria-label="Filter pipes by category"> <!-- Category filter chips -->
+        <button type="button" class="pipes-filter is-active" data-pipes-filter="all" aria-pressed="true">All</button> <!-- Show every pipe -->
+        <button type="button" class="pipes-filter" data-pipes-filter="briar" aria-pressed="false">Briar</button> <!-- Briar classics -->
+        <button type="button" class="pipes-filter" data-pipes-filter="artisan" aria-pressed="false">Artisan</button> <!-- Independent carvers -->
+        <button type="button" class="pipes-filter" data-pipes-filter="cob" aria-pressed="false">Cob</button> <!-- Corn cob pipes -->
+      </div>
+      <p class="pipes-status" data-pipes-status hidden></p> <!-- Empty or error status for the catalog -->
+      <div class="pipes-catalog" data-pipes-catalog></div> <!-- Filled by js/pipes-catalog.js from data/pipes.json -->
+      <p class="pipes-footnote">Prices and stock change — ask staff for the latest. No online checkout; purchase in the lounge.</p> <!-- Browse-in-store note -->
     </section>
 
-    <section class="page-section"> <!-- Visit planning steps -->
-      <h2 class="page-section__title">Plan your visit</h2> <!-- Section headline -->
-      <p class="page-section__lead">Three simple steps from browsing the site to walking through our door.</p> <!-- Section intro -->
-      <div class="pillar-grid"> <!-- Numbered visit steps -->
-        <article class="pillar"> <!-- First visit step -->
-          <span class="pillar__number">1</span> <!-- Step number -->
-          <h3 class="pillar__title">Check the calendar</h3> <!-- Step title -->
-          <p class="pillar__text">Browse <a href="events.html">upcoming events</a> for tastings, lounge nights, and special releases before you head our way.</p> <!-- Step description -->
+    <section class="page-section"> <!-- Guidance for new pipe smokers -->
+      <h2 class="page-section__title">New to pipes? Start here</h2> <!-- Section headline -->
+      <p class="page-section__lead">Choosing a first pipe should be fun, not intimidating. Here is how we help you get started.</p> <!-- Section intro -->
+      <div class="principle-grid"> <!-- Guidance cards matching about page layout -->
+        <article class="principle"> <!-- First card -->
+          <h3 class="principle__title">Find your fit</h3> <!-- Card title -->
+          <p class="principle__text">We will help you pick a shape and size that feels comfortable in hand and suits how and where you like to smoke.</p> <!-- Card copy -->
         </article>
-        <article class="pillar"> <!-- Second visit step -->
-          <span class="pillar__number">2</span> <!-- Step number -->
-          <h3 class="pillar__title">Get directions</h3> <!-- Step title -->
-          <p class="pillar__text">We are on Gallatin Pike in Madison, just north of Nashville. Tap the address above for turn-by-turn directions.</p> <!-- Step description -->
+        <article class="principle"> <!-- Second card -->
+          <h3 class="principle__title">Match the tobacco</h3> <!-- Card title -->
+          <p class="principle__text">From bright Virginias to smoky English blends, we will pair your new pipe with a tobacco that matches your taste.</p> <!-- Card copy -->
         </article>
-        <article class="pillar"> <!-- Third visit step -->
-          <span class="pillar__number">3</span> <!-- Step number -->
-          <h3 class="pillar__title">Walk in and explore</h3> <!-- Step title -->
-          <p class="pillar__text">Browse the lounge, ask about new arrivals, and stay for a conversation — whether it is your first visit or your regular stop.</p> <!-- Step description -->
+        <article class="principle"> <!-- Third card -->
+          <h3 class="principle__title">Learn the ritual</h3> <!-- Card title -->
+          <p class="principle__text">Packing, lighting, tamping — we will walk you through the basics so your first bowls smoke cool and even.</p> <!-- Card copy -->
+        </article>
+        <article class="principle"> <!-- Fourth card -->
+          <h3 class="principle__title">Care and keeping</h3> <!-- Card title -->
+          <p class="principle__text">Simple cleaning habits keep a good pipe smoking well for decades. We will show you what actually matters.</p> <!-- Card copy -->
         </article>
       </div>
+    </section>
+
+    <section class="page-cta"> <!-- Closing call-to-action -->
+      <h2 class="page-cta__title">Come see the pipe wall in person</h2> <!-- CTA headline -->
+      <p class="page-cta__text">Photos never do grain justice. Stop by the lounge and find the pipe that fits your hand.</p> <!-- CTA supporting copy -->
+      <a href="location.html" class="btn">Plan your visit</a> <!-- Primary CTA button -->
     </section>
   </main>
 
@@ -131,6 +122,7 @@
   <script src="js/ical-utils.js"></script> <!-- Shared iCal parser for live calendar fallback -->
   <script src="js/calendar-events-loader.js?v=2"></script> <!-- Shared event loading for ticker -->
   <script src="js/events-ticker.js?v=2"></script> <!-- Scrolling events and tasks announcement -->
+  <script src="js/pipes-catalog.js"></script> <!-- Loads and filters pipe selection from data/pipes.json -->
   <script src="js/theme.js"></script> <!-- Theme toggle logic and persistence -->
   <script src="js/nav-expand.js"></script> <!-- Expandable header navigation panel -->
 

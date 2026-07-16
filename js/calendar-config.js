@@ -10,10 +10,10 @@ window.CigarClubCalendar = { // Global config read by events-ticker.js and calen
   jsonPath: "data/calendar-events.json", // Auto-synced JSON from GitHub Action
   manualPath: "data/events-manual.json", // Optional hand-edited events (merged with synced data)
   refreshMs: 5 * 60 * 1000, // Re-fetch event data every 5 minutes
-  bootstrapEvents: [ // Fallback events when JSON/iCal fetch is unavailable (e.g. local preview)
-    { summary: "holiday", start: "2026-07-17T18:30:00.000Z", allDay: false, isTodo: false }, // Next upcoming club event
-    { summary: "Showcase 1", start: "2026-06-16T19:00:00.000Z", allDay: false, isTodo: false }, // Past club event kept for fallback history
-    { summary: "TEST", start: "2026-06-18T19:00:00.000Z", allDay: false, isTodo: false }, // Past club event kept for fallback history
+  bootstrapEvents: [ // Fallback events when JSON/iCal fetch is unavailable (e.g. local file preview)
+    { summary: "test", start: "2026-07-16T22:00:00.000Z", allDay: false, isTodo: false }, // Next upcoming club event
+    { summary: "holiday", start: "2026-07-17T18:30:00.000Z", allDay: false, isTodo: false }, // Second upcoming club event
+    { summary: "hello", start: "2026-07-18T00:30:00.000Z", allDay: false, isTodo: false }, // Third upcoming club event
   ],
 };
 

@@ -116,15 +116,18 @@
     return (getConfig().bootstrapEvents || []).map(normalizeItem); // Normalize config rows
   }
 
-  function loadEvents() { // Load events from API, JSON, iCal, then bootstrap fallback
-    return fetchAllFromApi().catch(function () { // Try live API first when key is configured
-      return Promise.all([ // Load JSON and iCal in parallel
-        loadFromJsonSources(), // Synced + manual JSON files
-        fetchFromIcal().catch(function () { return []; }), // Live iCal when browser allows it
-      ]).then(function (results) { // Merge all available sources
-        var merged = mergeItems(results); // Combined events from JSON and iCal
-        if (merged.length) { return merged; } // Use fetched data when available
-        return loadBootstrapEvents(); // Fall back to embedded config events
+  function loadEvents() { // Prefer synced JSON so the ticker always has the latest committed events
+    return loadFromJsonSources().then(function (jsonItems) { // Load calendar-events.json (+ manual) first
+      if (jsonItems.length) { return jsonItems; } // Use synced site data whenever it is available
+      return fetchFromIcal().then(function (icalItems) { // Fall back to live iCal when JSON is empty
+        if (icalItems.length) { return icalItems; } // Use live calendar feed
+        return loadBootstrapEvents(); // Embedded config as last resort
+      }).catch(function () { // iCal blocked or failed
+        return loadBootstrapEvents(); // Embedded config fallback
+      });
+    }).catch(function () { // JSON path failed entirely
+      return fetchAllFromApi().catch(function () { // Try API when configured
+        return fetchFromIcal().catch(function () { return loadBootstrapEvents(); }); // Then iCal, then bootstrap
       });
     });
   }

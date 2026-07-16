@@ -1,0 +1,101 @@
+{
+  "updatedAt": "2026-07-16T19:00:00.000Z",
+  "items": [
+    {
+      "id": "padron-1964",
+      "name": "1964 Anniversary Series",
+      "maker": "Padron",
+      "category": "premium",
+      "material": "Maduro",
+      "shape": "Toro",
+      "price": "$18",
+      "availability": "in-stock",
+      "note": "Nicaraguan puro with rich cocoa and coffee notes — a club favorite for special occasions.",
+      "image": "images/IMG_4338.JPG"
+    },
+    {
+      "id": "fuente-hemingway",
+      "name": "Hemingway Short Story",
+      "maker": "Arturo Fuente",
+      "category": "premium",
+      "material": "Connecticut Broadleaf",
+      "shape": "Perfecto",
+      "price": "$9",
+      "availability": "in-stock",
+      "note": "Short, flavorful perfecto — ideal when you want a premium smoke without a long sit-down.",
+      "image": "images/IMG_4338.JPG"
+    },
+    {
+      "id": "perdomo-champagne",
+      "name": "Champagne Noir",
+      "maker": "Perdomo",
+      "category": "everyday",
+      "material": "Connecticut",
+      "shape": "Robusto",
+      "price": "$8",
+      "availability": "in-stock",
+      "note": "Smooth, creamy Connecticut wrapper — an easy recommendation for newer smokers.",
+      "image": "images/IMG_4338.JPG"
+    },
+    {
+      "id": "rocky-decade",
+      "name": "Decade",
+      "maker": "Rocky Patel",
+      "category": "premium",
+      "material": "Habano",
+      "shape": "Toro",
+      "price": "$12",
+      "availability": "in-stock",
+      "note": "Full-bodied Habano with pepper and leather — great with an evening pour.",
+      "image": "images/IMG_4338.JPG"
+    },
+    {
+      "id": "undercrown-maduro",
+      "name": "Undercrown Maduro",
+      "maker": "Drew Estate",
+      "category": "everyday",
+      "material": "Maduro",
+      "shape": "Robusto",
+      "price": "$7",
+      "availability": "in-stock",
+      "note": "Sweet maduro wrapper and a reliable burn — a solid everyday stick at a fair price.",
+      "image": "images/IMG_4338.JPG"
+    },
+    {
+      "id": "club-sampler",
+      "name": "House sampler pack",
+      "maker": "The Cigar Club",
+      "category": "everyday",
+      "material": "Assorted",
+      "shape": "Mixed",
+      "price": "$45",
+      "availability": "in-stock",
+      "note": "Staff-picked five-pack rotated weekly — a low-risk way to explore new blends.",
+      "image": "images/ICON-05.png"
+    },
+    {
+      "id": "limited-box",
+      "name": "Limited release box",
+      "maker": "Varies",
+      "category": "limited",
+      "material": "Assorted",
+      "shape": "Box",
+      "price": "Ask in store",
+      "availability": "limited",
+      "note": "Small-batch and regional exclusives land here — ask what is in the humidor this week.",
+      "image": "images/IMG_4341.JPG"
+    },
+    {
+      "id": "humidor-rotation",
+      "name": "Humidor rotation",
+      "maker": "Varies",
+      "category": "premium",
+      "material": "Assorted",
+      "shape": "Assorted",
+      "price": "Ask in store",
+      "availability": "ask",
+      "note": "Our full walk-in humidor holds hundreds of SKUs — staff will walk you to the right shelf.",
+      "image": "images/ICON-05.png"
+    }
+  ]
+}

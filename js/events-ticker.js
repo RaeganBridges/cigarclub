@@ -5,7 +5,8 @@
   if (!ticker || !loader) { return; } // Exit if ticker markup or loader is missing
 
   var textEls = ticker.querySelectorAll(".events-ticker-text"); // Duplicate text nodes for seamless loop
-  var eventDivider = "\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0"; // Wide non-breaking gaps between events
+  var eventDivider = ' <span class="events-ticker-sep" aria-hidden="true">·</span> '; // Clear separator between the three events
+  var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches; // Respect reduced-motion preference
   var dateFormatter = new Intl.DateTimeFormat("en-US", { // Format event dates for ticker copy
     weekday: "short", // Short day name (e.g. Sat)
     month: "short", // Short month name (e.g. Jun)
@@ -66,7 +67,7 @@
       return !isTask(item); // Skip calendar tasks in the banner
     }).slice(0, 3); // Show at most three upcoming events
     if (!upcoming.length) { return null; } // No banner when calendar has no upcoming events
-    return upcoming.map(buildEventSegment).join(eventDivider); // Separate events with wide spacing
+    return upcoming.map(buildEventSegment).join(eventDivider); // Separate events with a visible dot
   }
 
   function showTicker() { // Reveal banner after content is ready
@@ -77,36 +78,37 @@
     ticker.setAttribute("hidden", ""); // Hide the events bar from layout
   }
 
-  function expandForMarquee(message) { // Repeat copy so text fills wide screens edge to edge
-    var chunk = message + eventDivider; // One segment plus trailing gap before repeat
-    var targetLength = Math.max(window.innerWidth * 0.9, 320); // Minimum track length for full-screen feel
-    var expanded = chunk; // Start with one segment
-    while (expanded.length < targetLength) { // Keep repeating until bar feels continuously filled
-      expanded += chunk; // Append another segment
+  function expandForMarquee(message) { // Repeat the three-event block so the marquee can loop
+    if (reducedMotion) { return message; } // Show the three events once when motion is reduced
+    var gap = ' <span class="events-ticker-sep" aria-hidden="true">·</span> '; // Gap between repeated blocks
+    var chunk = message + gap; // One full three-event pass plus trailing separator
+    var expanded = chunk + chunk; // Two copies required for the seamless -50% CSS loop
+    while (expanded.replace(/<[^>]+>/g, "").length < Math.max(window.innerWidth * 0.8, 280)) { // Fill wide screens without endless HTML
+      expanded += chunk; // Append another three-event block
     }
-    return expanded; // Long marquee string for one track copy
+    return expanded; // Marquee string for one track copy
   }
 
-  function setScrollSpeed() { // Tune animation speed from track width (slightly faster than before)
+  function setScrollSpeed() { // Tune animation speed from track width
     var track = ticker.querySelector(".events-ticker-track"); // Animated marquee row
-    if (!track || window.matchMedia("(prefers-reduced-motion: reduce)").matches) { return; } // Skip when motion is reduced
-    var pixelsPerSecond = 110; // Slightly faster scroll rate across the viewport
-    var duration = Math.max(12, track.scrollWidth / pixelsPerSecond); // Shorter duration = faster motion
+    if (!track || reducedMotion) { return; } // Skip when motion is reduced
+    var pixelsPerSecond = 90; // Steady scroll so all three events are readable
+    var duration = Math.max(16, track.scrollWidth / pixelsPerSecond); // Longer duration keeps names readable
     track.style.animationDuration = duration + "s"; // Apply computed speed to CSS animation
   }
 
   function showMessage(message) { // Render HTML message in both ticker text nodes
-    var expanded = expandForMarquee(message); // Lengthen copy so it spans the full screen width
+    var expanded = expandForMarquee(message); // Lengthen copy for looping when motion is allowed
     textEls.forEach(function (el) { // Update each duplicated span
-      el.innerHTML = expanded; // Set scrolling announcement HTML
+      el.innerHTML = expanded; // Set scrolling announcement HTML with up to three events
     });
     ticker.removeAttribute("hidden"); // Ensure ticker is visible after content is set
     requestAnimationFrame(setScrollSpeed); // Recalculate speed after text reflow
   }
 
   function refreshTicker() { // Fetch latest calendar data and show or hide banner
-    loader.loadEvents().then(function (items) { // Fetch from best available source
-      var message = buildTickerMessage(items); // All upcoming event text, or null if none
+    loader.loadEvents().then(function (items) { // Fetch from synced JSON first
+      var message = buildTickerMessage(items); // Up to three upcoming events, or null if none
       if (!message) { hideTicker(); return; } // Remove banner when no upcoming events
       showMessage(message); // Display events in scrolling bar
       showTicker(); // Ensure banner is visible

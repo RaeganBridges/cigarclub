@@ -380,6 +380,175 @@ h1 {
   color: var(--text-muted); /* Muted answer copy */
 }
 
+/* Pipes page: widen catalog section beyond default page-section width */
+.page-section--catalog {
+  max-width: 1100px; /* Room for a multi-column selection grid */
+}
+
+/* Category filter row above the pipe catalog */
+.pipes-filters {
+  display: flex; /* Lay filter chips in a row */
+  flex-wrap: wrap; /* Wrap chips on narrow screens */
+  gap: 0.5rem 1rem; /* Space between filter controls */
+  margin-bottom: 1.5rem; /* Space before the catalog grid */
+}
+
+/* Single category filter control */
+.pipes-filter {
+  padding: 0; /* Text-style chip, not a pill button */
+  border: none; /* Remove default button chrome */
+  border-bottom: 2px solid transparent; /* Reserve underline space */
+  background: transparent; /* Inherit page background */
+  color: var(--text-muted); /* Muted inactive filter label */
+  font-family: inherit; /* Match site typeface */
+  font-size: 0.95rem; /* Readable chip label size */
+  font-variation-settings: "wght" var(--font-wght-regular); /* Regular weight filter label */
+  letter-spacing: 0.04em; /* Slight tracking on filter labels */
+  cursor: pointer; /* Show pointer on hover */
+}
+
+/* Hover state for inactive filter chips */
+.pipes-filter:hover {
+  color: var(--text); /* Brighten label on hover */
+}
+
+/* Active filter chip */
+.pipes-filter.is-active {
+  color: var(--accent); /* Golden orange active filter */
+  border-bottom-color: var(--accent); /* Underline the selected category */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold active filter */
+}
+
+/* Empty / error status under filters */
+.pipes-status {
+  margin-bottom: 1.25rem; /* Space before footnote when grid is empty */
+  color: var(--text-muted); /* Muted status copy */
+}
+
+/* Responsive pipe selection grid */
+.pipes-catalog {
+  display: grid; /* Multi-column selection layout */
+  grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr)); /* 1–3 columns by viewport */
+  gap: 1.25rem; /* Space between selection tiles */
+}
+
+/* One pipe selection tile */
+.pipes-item {
+  display: flex; /* Stack image above details */
+  flex-direction: column; /* Top-to-bottom tile flow */
+  overflow: hidden; /* Clip image to tile corners */
+  background-color: var(--surface); /* Theme-aware tile background */
+  border: 1px solid var(--border); /* Theme-aware tile border */
+  border-radius: 8px; /* Match other inner-page panels */
+}
+
+/* Image area at top of tile */
+.pipes-item__media {
+  aspect-ratio: 4 / 3; /* Consistent photo frame across items */
+  background-color: var(--header-bg); /* Maroon fallback behind photos */
+  overflow: hidden; /* Crop photo to frame */
+}
+
+/* Pipe photo inside media frame */
+.pipes-item__image {
+  display: block; /* Remove inline image gap */
+  width: 100%; /* Fill media frame width */
+  height: 100%; /* Fill media frame height */
+  object-fit: cover; /* Crop photos evenly */
+}
+
+/* Text block under the photo */
+.pipes-item__body {
+  display: flex; /* Stack text rows */
+  flex-direction: column; /* Vertical text flow */
+  gap: 0.35rem; /* Tight spacing between text lines */
+  padding: 1rem 1.1rem 1.15rem; /* Inner text padding */
+  flex: 1; /* Stretch body so prices align across a row */
+}
+
+/* Name and availability badge row */
+.pipes-item__topline {
+  display: flex; /* Place name beside badge */
+  align-items: flex-start; /* Align badge with first name line */
+  justify-content: space-between; /* Push badge to the right */
+  gap: 0.75rem; /* Space between name and badge */
+}
+
+/* Pipe display name */
+.pipes-item__name {
+  margin: 0; /* Remove default heading margin */
+  font-size: 1.05rem; /* Tile title size */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold pipe name */
+  color: var(--text); /* Theme-aware name color */
+  line-height: 1.25; /* Compact title leading */
+}
+
+/* Availability badge */
+.pipes-item__badge {
+  flex-shrink: 0; /* Keep badge from wrapping awkwardly */
+  padding: 0.15rem 0; /* Minimal vertical padding */
+  font-size: 0.72rem; /* Small status label */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold status */
+  letter-spacing: 0.06em; /* Spaced status label */
+  text-transform: uppercase; /* Status reads as a label */
+  color: var(--accent); /* Default accent status color */
+  white-space: nowrap; /* Keep badge on one line */
+}
+
+/* In-stock status stays high-contrast on both themes */
+.pipes-item__badge--in-stock {
+  color: var(--text); /* Readable on teal or cream tiles */
+}
+
+/* Limited stock stays on brand gold */
+.pipes-item__badge--limited {
+  color: var(--accent); /* Golden limited signal */
+}
+
+/* Ask-in-store uses muted text */
+.pipes-item__badge--ask {
+  color: var(--text-muted); /* Soft ask-in-store signal */
+}
+
+/* Maker line under the name */
+.pipes-item__maker {
+  margin: 0; /* Remove default paragraph margin */
+  color: var(--text); /* Readable maker name */
+  font-size: 0.92rem; /* Slightly smaller than title */
+}
+
+/* Material · shape meta line */
+.pipes-item__meta {
+  margin: 0; /* Remove default paragraph margin */
+  color: var(--text-muted); /* Muted material and shape */
+  font-size: 0.85rem; /* Compact meta size */
+}
+
+/* Short shop note */
+.pipes-item__note {
+  margin: 0.25rem 0 0; /* Slight separation from meta */
+  color: var(--text-muted); /* Muted descriptive copy */
+  font-size: 0.9rem; /* Readable note size */
+  line-height: 1.45; /* Comfortable note leading */
+  flex: 1; /* Push price toward the bottom of the tile */
+}
+
+/* Price or ask-in-store line */
+.pipes-item__price {
+  margin: 0.65rem 0 0; /* Space above price */
+  font-size: 1rem; /* Clear price size */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold price */
+  color: var(--accent); /* Golden orange price */
+}
+
+/* Footnote under the catalog grid */
+.pipes-footnote {
+  margin-top: 1.25rem; /* Space after the grid */
+  color: var(--text-muted); /* Muted footnote */
+  font-size: 0.9rem; /* Smaller supporting line */
+  max-width: 640px; /* Readable footnote width */
+}
+
 /* Closing CTA band at bottom of inner pages */
 .page-cta {
   padding: clamp(1.75rem, 4vw, 2.5rem) clamp(1.25rem, 4vw, 2rem); /* Fluid CTA padding */
@@ -1076,7 +1245,7 @@ body.home {
   color: var(--text); /* Theme-aware text color */
   --header-bar-height: 48px; /* Fixed maroon header bar height */
   --logo-height-expanded: clamp(88px, 18vw, 130px); /* Scale logo between phone and desktop */
-  --logo-height-compact: clamp(34px, 6vw, 44px); /* Compact wordmark stays readable */
+  --logo-height-compact: clamp(22px, 3.5vw, 28px); /* Smaller compact wordmark in the header tab */
   --notch-size: clamp(160px, 28vw, 260px); /* Keep notch inside card width on all screens */
   --notch-radius: calc(var(--notch-size) / 2); /* Half diameter; center sits on frame bottom */
   --card-icon-size: clamp(90px, 16vw, 130px); /* Category icons scale with viewport */
@@ -1103,12 +1272,27 @@ body.home .site-header {
 
 /* Full-width maroon navigation bar */
 body.home .header-bar {
-  display: flex; /* Lay out header contents in a row */
-  justify-content: space-between; /* Menu toggle left, theme toggle right */
-  align-items: center; /* Vertically center header items */
-  height: var(--header-bar-height); /* Compact header bar height */
+  display: flex; /* Pin menu and theme to the edges; logo overlays the center */
+  justify-content: space-between; /* Keep menu left and theme right in fixed places */
+  align-items: center; /* Vertically center header controls */
+  height: var(--header-bar-height); /* Fixed bar height — does not change on scroll */
   padding: 0 clamp(1.25rem, 4vw, 2rem); /* Fluid horizontal padding */
   background-color: var(--header-bg); /* Theme-aware header bar */
+}
+
+/* Pin menu button to the left edge on home */
+body.home .nav-expand-toggle {
+  position: relative; /* Keep above the centered logo overlay */
+  z-index: 25; /* Stay clickable above the logo tab */
+}
+
+/* Pin theme toggle to the right edge on home */
+body.home .theme-toggle {
+  position: relative; /* Keep above the centered logo overlay */
+  z-index: 25; /* Stay clickable above the logo tab */
+  width: 44px; /* Fixed theme toggle width — does not morph on scroll */
+  height: 32px; /* Fixed theme toggle height — does not morph on scroll */
+  border-radius: 12px; /* Match home header scale */
 }
 
 /* Expandable navigation — shared across home and inner pages */
@@ -1285,8 +1469,8 @@ body.home .header-bar {
 .site-header--page .header-page-logo-img {
   display: block; /* Remove the inline image baseline gap */
   width: auto; /* Preserve the wordmark aspect ratio */
-  height: clamp(28px, 5vw, 38px); /* Fit LOGO_02 inside the compact page header */
-  max-width: min(42vw, 240px); /* Keep controls clear on narrow screens */
+  height: clamp(22px, 3.5vw, 28px); /* Smaller LOGO_02 in the page header */
+  max-width: min(36vw, 170px); /* Keep controls clear on narrow screens */
   object-fit: contain; /* Scale the full logo without cropping */
 }
 
@@ -1333,7 +1517,9 @@ body.home .header-bar {
 
   .events-ticker-track {
     animation: none; /* Stop scrolling animation */
-    width: 100%; /* Fill bar for centered static message */
+    width: max-content; /* Keep all three events visible without clipping */
+    max-width: 100%; /* Stay inside the bar on narrow screens */
+    margin: 0 auto; /* Center the static three-event message */
     justify-content: center; /* Center static ticker copy */
   }
 
@@ -1358,6 +1544,14 @@ body.home .header-bar {
   font-variation-settings: "wght" var(--font-wght-bold); /* Bold event title */
 }
 
+/* Dot separator between the next three events */
+.events-ticker-sep {
+  display: inline-block; /* Keep the separator on the marquee line */
+  margin: 0 0.85rem; /* Space events apart so all three read clearly */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Match ticker weight */
+  opacity: 0.7; /* Soften the separator against the gold bar */
+}
+
 /* Marquee keyframes: move track left by half (one duplicate width) */
 @keyframes events-ticker-scroll {
   from { transform: translateX(0); } /* Start at first copy */
@@ -1369,77 +1563,75 @@ body.home .header-bar {
   background-color: var(--pale-yellow); /* Lighter gold hover feedback */
 }
 
-/* Theme toggle uses nav pill sizing on home page */
-body.home .theme-toggle {
-  width: 44px; /* Compact theme toggle width */
-  height: 32px; /* Compact theme toggle height */
-  border-radius: 12px; /* Match smaller header scale */
-}
+/* Theme toggle sizing lives with the home header-bar rules above */
 
-/* Centered logo tab overlapping header and content */
+/* Centered logo tab — always absolutely centered so controls never shift */
 body.home .logo-tab {
-  position: absolute; /* Position over header and content */
-  left: 50%; /* Start at horizontal center of header */
-  top: 0; /* Align to top of header */
-  transform: translateX(-50%); /* Center the tab exactly */
+  position: absolute; /* Overlay the bar; never enter document flow */
+  left: 50%; /* Horizontal center of the header */
+  top: 0; /* Align to top while the hanging tab is expanded */
+  transform: translateX(-50%); /* Exact horizontal center */
   display: grid; /* Stack both logos in one cell for a crossfade */
-  place-items: center; /* Center logos vertically and horizontally */
-  padding: 10px 2.5rem 32px; /* Room for the large home logo */
+  place-items: center; /* Center logos inside the tab */
+  padding: 10px 2.5rem 32px; /* Room for the large home logo while expanded */
   background-color: var(--logo-tab-bg); /* Maroon tab matching header bar */
   border-radius: 0 0 100px 100px; /* Curved bottom edge of logo tab */
   text-decoration: none; /* Remove underline from logo link */
-  z-index: 20; /* Keep logo above header bar and cards */
-  overflow: hidden; /* Clip logos to the curved tab */
-  transition: padding 0.4s ease, border-radius 0.4s ease, min-width 0.4s ease; /* Smooth shrink animation */
+  z-index: 20; /* Above content, below menu/theme controls */
+  pointer-events: auto; /* Logo remains clickable */
+  transition: padding 0.55s cubic-bezier(0.22, 1, 0.36, 1), border-radius 0.55s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.55s cubic-bezier(0.22, 1, 0.36, 1), top 0.55s cubic-bezier(0.22, 1, 0.36, 1), transform 0.55s cubic-bezier(0.22, 1, 0.36, 1); /* Smooth morph into flush wordmark */
 }
 
-/* Both logos share one grid cell so they can crossfade */
+/* Shared logo image styles — both logos share one grid cell */
 body.home .logo-img {
-  grid-area: 1 / 1; /* Stack full and compact logos on top of each other */
+  grid-area: 1 / 1; /* Stack full and compact logos for crossfade */
   display: block; /* Remove inline image gap */
   width: auto; /* Preserve logo aspect ratio */
-  object-fit: contain; /* Keep logos fully visible while scaling */
-  transition: height 0.4s ease, opacity 0.4s ease, width 0.4s ease; /* Smooth size change and crossfade */
+  object-fit: contain; /* Scale logos without cropping */
+  transition: height 0.55s cubic-bezier(0.22, 1, 0.36, 1), max-width 0.55s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease; /* Smooth size and fade */
 }
 
-/* Expanded state: full logo on top and visible */
+/* Expanded state: full logo visible on top */
 body.home .logo-img--full {
+  position: relative; /* Drive the tab’s layout height while expanded */
   height: var(--logo-height-expanded); /* Large logo at top of page */
-  max-width: min(72vw, 280px); /* Keep full logo inside the tab */
-  opacity: 1; /* Fully visible while header is expanded */
+  max-width: min(72vw, 280px); /* Keep full logo inside the curved tab */
+  opacity: 1; /* Visible while header is expanded */
   z-index: 2; /* Paint above the compact wordmark */
 }
 
-/* Expanded state: wordmark sits underneath, faded out */
+/* Expanded state: compact wordmark waits underneath */
 body.home .logo-img--compact {
-  height: var(--logo-height-compact); /* Target height for the compact bar */
-  width: auto; /* Let the wide wordmark keep its aspect ratio */
-  max-width: min(70vw, 260px); /* Give LOGO_02 enough room to read */
-  opacity: 0; /* Hidden until the header shrinks */
+  height: clamp(22px, 3.5vw, 28px); /* Target height matching other page headers */
+  max-width: min(36vw, 170px); /* Target width matching other page headers */
+  opacity: 0; /* Hidden until the header becomes compact */
   z-index: 1; /* Sit under the full logo while expanded */
   pointer-events: none; /* Ignore clicks while faded out */
 }
 
-/* Compact header: shrink the tab around the wordmark */
+/* Compact header: logo stays absolutely centered — controls do not move */
 body.home.is-header-compact .logo-tab {
-  padding: 2px 1.5rem 4px; /* Tight padding for the compact bar */
-  border-radius: 0 0 28px 28px; /* Smaller curve when compact */
-  min-width: min(70vw, 260px); /* Reserve width so LOGO_02 is not crushed */
+  top: 50%; /* Vertically center in the maroon bar */
+  transform: translate(-50%, -50%); /* Exact middle of the header bar */
+  padding: 0; /* Flush with the maroon bar like other pages */
+  background-color: transparent; /* Wordmark sits on the bar itself */
+  border-radius: 0; /* No hanging tab curve when compact */
 }
 
-/* Compact header: fade the full logo out */
+/* Compact header: fade LOGO_01 out and collapse its layout height */
 body.home.is-header-compact .logo-img--full {
-  height: var(--logo-height-compact); /* Collapse so the tab can shrink */
-  opacity: 0; /* Fade the stacked logo out */
+  height: clamp(22px, 3.5vw, 28px); /* Collapse so the tab shrinks smoothly */
+  max-width: min(36vw, 170px); /* Match wordmark width while fading out */
+  opacity: 0; /* Crossfade the full logo out */
   z-index: 1; /* Move under the wordmark while fading */
   pointer-events: none; /* Ignore clicks once hidden */
 }
 
-/* Compact header: fade the horizontal wordmark in on top */
+/* Compact header: fade LOGO_02 in at page-header size */
 body.home.is-header-compact .logo-img--compact {
-  opacity: 1; /* Reveal LOGO_02 in the compact bar */
+  opacity: 1; /* Reveal the horizontal wordmark */
   z-index: 2; /* Paint above the fading full logo */
-  pointer-events: auto; /* Restore clicks on the visible logo */
+  pointer-events: auto; /* Allow clicks on the visible wordmark */
 }
 
 /* Main content wrapper on home page */
@@ -1858,13 +2050,12 @@ body.home .gallery-item:focus-within .gallery-desc {
   }
 
   body.home.is-header-compact .logo-tab {
-    padding: 2px 1rem 4px; /* Compact scrolled logo tab */
-    border-radius: 0 0 24px 24px; /* Compact curve */
-    min-width: min(58vw, 200px); /* Keep wordmark readable on phones */
+    padding: 0; /* Stay flush in the bar on phones */
   }
 
-  body.home.is-header-compact .logo-img--compact {
-    max-width: min(58vw, 200px); /* Match compact tab width on phones */
+  body.home.is-header-compact .logo-img--compact,
+  body.home.is-header-compact .logo-img--full {
+    max-width: min(36vw, 150px); /* Match page-header wordmark limits on phones */
   }
 
   body.home .card-label {

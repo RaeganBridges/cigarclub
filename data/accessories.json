@@ -1,0 +1,101 @@
+{
+  "updatedAt": "2026-07-16T19:00:00.000Z",
+  "items": [
+    {
+      "id": "xikar-x2",
+      "name": "X2 Dual Blade Cutter",
+      "maker": "Xikar",
+      "category": "cutters",
+      "material": "Stainless steel",
+      "shape": "Double guillotine",
+      "price": "$45",
+      "availability": "in-stock",
+      "note": "Clean, even cuts with lifetime warranty — a reliable everyday cutter.",
+      "image": "images/IMG_4341.JPG"
+    },
+    {
+      "id": "colibri-v-cut",
+      "name": "V-Cut Cigar Cutter",
+      "maker": "Colibri",
+      "category": "cutters",
+      "material": "Stainless steel",
+      "shape": "V-cut",
+      "price": "$55",
+      "availability": "in-stock",
+      "note": "Concentrates the draw with a deep V notch — popular with fuller-bodied smokes.",
+      "image": "images/IMG_4341.JPG"
+    },
+    {
+      "id": "xikar-forb",
+      "name": "Forb Soft Flame",
+      "maker": "Xikar",
+      "category": "lighters",
+      "material": "Metal",
+      "shape": "Soft flame",
+      "price": "$40",
+      "availability": "in-stock",
+      "note": "Classic soft flame for a gentle toast — easy to control on windless evenings.",
+      "image": "images/IMG_4341.JPG"
+    },
+    {
+      "id": "vector-triple",
+      "name": "Triple Torch Lighter",
+      "maker": "Vector",
+      "category": "lighters",
+      "material": "Metal",
+      "shape": "Triple torch",
+      "price": "$65",
+      "availability": "in-stock",
+      "note": "Hot, focused torch for denser cigars and outdoor lighting.",
+      "image": "images/IMG_4341.JPG"
+    },
+    {
+      "id": "boveda-65",
+      "name": "Boveda 65% 60g",
+      "maker": "Boveda",
+      "category": "storage",
+      "material": "2-way humidity",
+      "shape": "Pack",
+      "price": "$6",
+      "availability": "in-stock",
+      "note": "Set-and-forget humidity control for travel humidors and small desktop boxes.",
+      "image": "images/ICON-07.png"
+    },
+    {
+      "id": "travel-humidor",
+      "name": "5-Count Travel Humidor",
+      "maker": "The Cigar Club",
+      "category": "storage",
+      "material": "Cedar lined",
+      "shape": "Travel case",
+      "price": "$35",
+      "availability": "in-stock",
+      "note": "Protects a short rotation on the road — fits easily in a bag or glove box.",
+      "image": "images/IMG_4341.JPG"
+    },
+    {
+      "id": "ashtray-rest",
+      "name": "Ceramic Cigar Rest",
+      "maker": "Assorted",
+      "category": "tools",
+      "material": "Ceramic",
+      "shape": "Ashtray",
+      "price": "$28",
+      "availability": "in-stock",
+      "note": "Stable rest for lounge nights — ask about colors currently on the shelf.",
+      "image": "images/IMG_4341.JPG"
+    },
+    {
+      "id": "punch-kit",
+      "name": "Punch & Tool Kit",
+      "maker": "Assorted",
+      "category": "tools",
+      "material": "Metal",
+      "shape": "Multi-tool",
+      "price": "Ask in store",
+      "availability": "ask",
+      "note": "Punches, picks, and pocket tools rotate often — staff will show what is in stock.",
+      "image": "images/ICON-07.png"
+    }
+  ]
+}

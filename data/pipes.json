@@ -1,0 +1,101 @@
+{
+  "updatedAt": "2026-07-16T19:00:00.000Z",
+  "items": [
+    {
+      "id": "savinelli-207",
+      "name": "Savinelli 207 KS",
+      "maker": "Savinelli",
+      "category": "briar",
+      "material": "Briar",
+      "shape": "Billiard",
+      "price": "$145",
+      "availability": "in-stock",
+      "note": "Classic Italian straight billiard — a reliable everyday smoker with clean drilling.",
+      "image": "images/IMG_4334.JPG"
+    },
+    {
+      "id": "peterson-dublin",
+      "name": "Peterson Dublin Filter",
+      "maker": "Peterson",
+      "category": "briar",
+      "material": "Briar",
+      "shape": "Bent Dublin",
+      "price": "$120",
+      "availability": "in-stock",
+      "note": "Comfortable bent Dublin with the signature Peterson P-Lip stem.",
+      "image": "images/IMG_4334.JPG"
+    },
+    {
+      "id": "missouri-meerschaum",
+      "name": "Missouri Meerschaum Legend",
+      "maker": "Missouri Meerschaum",
+      "category": "cob",
+      "material": "Corn Cob",
+      "shape": "Apple",
+      "price": "$18",
+      "availability": "in-stock",
+      "note": "American-made cob — perfect first pipe or knock-around for the porch.",
+      "image": "images/IMG_4338.JPG"
+    },
+    {
+      "id": "artisan-freehand",
+      "name": "Workshop Freehand No. 4",
+      "maker": "Independent carver",
+      "category": "artisan",
+      "material": "Briar",
+      "shape": "Freehand",
+      "price": "Ask in store",
+      "availability": "limited",
+      "note": "One-of-a-kind freehand with lively grain — ask staff to pull it from the wall.",
+      "image": "images/IMG_4341.JPG"
+    },
+    {
+      "id": "rattray-bulldog",
+      "name": "Rattray's Bulldog",
+      "maker": "Rattray's",
+      "category": "briar",
+      "material": "Briar",
+      "shape": "Bulldog",
+      "price": "$95",
+      "availability": "in-stock",
+      "note": "Faceted bulldog bowl with a sturdy vulcanite stem — classic club shape.",
+      "image": "images/IMG_4334.JPG"
+    },
+    {
+      "id": "cob-country-gentleman",
+      "name": "Country Gentleman",
+      "maker": "Missouri Meerschaum",
+      "category": "cob",
+      "material": "Corn Cob",
+      "shape": "Bent",
+      "price": "$22",
+      "availability": "in-stock",
+      "note": "Bent cob with a longer stem for cooler smoking on warm evenings.",
+      "image": "images/IMG_4338.JPG"
+    },
+    {
+      "id": "artisan-poker",
+      "name": "Sandblast Poker",
+      "maker": "Independent carver",
+      "category": "artisan",
+      "material": "Briar",
+      "shape": "Poker",
+      "price": "$210",
+      "availability": "limited",
+      "note": "Sit-down poker with a crisp sandblast — sits upright while you pour a drink.",
+      "image": "images/IMG_4341.JPG"
+    },
+    {
+      "id": "ask-estate",
+      "name": "Estate rotation",
+      "maker": "Varies",
+      "category": "briar",
+      "material": "Briar",
+      "shape": "Assorted",
+      "price": "Ask in store",
+      "availability": "ask",
+      "note": "Cleaned estate pieces rotate through the shop — ask what is on the shelf this week.",
+      "image": "images/ICON-04.png"
+    }
+  ]
+}

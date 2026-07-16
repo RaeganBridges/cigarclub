@@ -3,7 +3,7 @@
 <head> <!-- Document metadata section (not visible on page) -->
   <meta charset="UTF-8"> <!-- Use UTF-8 character encoding for special characters -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Make layout responsive on mobile -->
-  <title>Location | The Cigar Club Nashville</title> <!-- Text shown in browser tab -->
+  <title>Cigars | The Cigar Club Nashville</title> <!-- Text shown in browser tab -->
   <script>
     (function () { var s = localStorage.getItem("theme"); var t = s || "dark"; document.documentElement.setAttribute("data-theme", t); })();
   </script> <!-- Apply saved theme before paint to prevent flash -->
@@ -36,7 +36,7 @@
         <ul class="header-nav-links"> <!-- Horizontal list of header links -->
           <li><a href="about-us.html"><img src="images/ICON-09.png" alt="" class="header-nav-icon" width="40" height="40"><span>About Us</span></a></li> <!-- Person icon for about us -->
           <li><a href="events.html"><img src="images/ICON-10.png" alt="" class="header-nav-icon" width="40" height="40"><span>Events</span></a></li> <!-- Calendar icon for events -->
-          <li><a href="location.html" class="active"><img src="images/ICON-08.png" alt="" class="header-nav-icon" width="40" height="40"><span>Location</span></a></li> <!-- House icon for location -->
+          <li><a href="location.html"><img src="images/ICON-08.png" alt="" class="header-nav-icon" width="40" height="40"><span>Location</span></a></li> <!-- House icon for location -->
         </ul>
       </nav>
     </div>
@@ -53,65 +53,56 @@
 
   <main class="page-flow"> <!-- Main page content with editorial section flow -->
     <section class="page-hero"> <!-- Opening hero establishes the page story -->
-      <p class="page-hero__eyebrow">Location</p> <!-- Section label above headline -->
-      <h1 class="page-hero__title">Visit Us in Madison</h1> <!-- Primary page headline -->
-      <p class="page-hero__lead">Stop by for tastings, lounge nights, and a hand-picked selection of cigars and pipe tobacco on Gallatin Pike.</p> <!-- Supporting hero copy -->
+      <p class="page-hero__eyebrow">Cigars</p> <!-- Section label above headline -->
+      <h1 class="page-hero__title">Premium Cigars, Curated for Every Palate</h1> <!-- Primary page headline -->
+      <p class="page-hero__lead">From approachable everyday smokes to limited releases and boutique boxes, our walk-in humidor is stocked for enthusiasts who care about quality, variety, and honest recommendations.</p> <!-- Supporting hero copy -->
       <div class="page-hero__actions"> <!-- Next-step actions from hero -->
-        <a href="https://www.google.com/maps/search/?api=1&amp;query=2148+Gallatin+Pike+N,+Madison,+TN+37115" class="btn">Get directions</a> <!-- Open Google Maps directions -->
+        <a href="location.html" class="btn">Visit the shop</a> <!-- Guide visitors to location -->
         <a href="events.html" class="btn btn--ghost">See upcoming events</a> <!-- Guide visitors to calendar -->
       </div>
     </section>
 
-    <section class="page-section location-details"> <!-- Store address and directions -->
-      <h2 class="page-section__title">Our address</h2> <!-- Section heading for address block -->
-      <address class="location-address"> <!-- Semantic markup for physical address -->
-        <a href="https://www.google.com/maps/search/?api=1&amp;query=2148+Gallatin+Pike+N,+Madison,+TN+37115" class="location-address__link">2148 Gallatin Pike N<br>Madison, TN 37115</a> <!-- Clickable address opens directions in Google Maps -->
-      </address>
-      <p class="location-phone"> <!-- Store phone number -->
-        <a href="tel:+16158592425" class="location-phone__link">(615) 859-2425</a> <!-- Tap to call on mobile -->
-      </p>
-      <p class="location-email"> <!-- Store email address -->
-        <a href="mailto:cigarclubnashville@gmail.com" class="location-email__link">cigarclubnashville@gmail.com</a> <!-- Tap to open email client -->
-      </p>
-      <p class="location-instagram"> <!-- Store Instagram profile -->
-        <a href="https://www.instagram.com/cigarclubnashville" class="location-instagram__link" target="_blank" rel="noopener noreferrer">@cigarclubnashville</a> <!-- Opens Instagram in a new tab -->
-      </p>
-      <p class="location-x"> <!-- Store X (Twitter) profile -->
-        <a href="https://x.com/CigarNashville" class="location-x__link" target="_blank" rel="noopener noreferrer">@CigarNashville</a> <!-- Opens X profile in a new tab -->
-      </p>
-      <h3 class="location-hours__title">Hours</h3> <!-- Hours heading below address -->
-      <dl class="location-hours"> <!-- Two-column store hours list -->
-        <div class="location-hours__row"> <!-- Weekday hours row -->
-          <dt class="location-hours__days">Mon – Sat</dt> <!-- Days open -->
-          <dd class="location-hours__times">9:00 am – 7:00 pm</dd> <!-- Weekday hours -->
-        </div>
-        <div class="location-hours__row"> <!-- Sunday hours row -->
-          <dt class="location-hours__days">Sunday</dt> <!-- Sunday label -->
-          <dd class="location-hours__times">12:00 pm – 6:00 pm</dd> <!-- Sunday hours -->
-        </div>
-      </dl>
+    <section class="page-section page-section--catalog" aria-labelledby="cigars-selection-title"> <!-- Current cigar selection catalog -->
+      <h2 class="page-section__title" id="cigars-selection-title">Current selection</h2> <!-- Section headline -->
+      <p class="page-section__lead">A sample of what we keep in the humidor. Inventory changes often — stop by to browse the full wall and walk-in selection.</p> <!-- Section intro -->
+      <div class="pipes-filters" data-cigars-filters role="group" aria-label="Filter cigars by category"> <!-- Category filter chips -->
+        <button type="button" class="pipes-filter is-active" data-cigars-filter="all" aria-pressed="true">All</button> <!-- Show every cigar -->
+        <button type="button" class="pipes-filter" data-cigars-filter="premium" aria-pressed="false">Premium</button> <!-- Premium sticks -->
+        <button type="button" class="pipes-filter" data-cigars-filter="everyday" aria-pressed="false">Everyday</button> <!-- Everyday value picks -->
+        <button type="button" class="pipes-filter" data-cigars-filter="limited" aria-pressed="false">Limited</button> <!-- Limited releases -->
+      </div>
+      <p class="pipes-status" data-cigars-status hidden></p> <!-- Empty or error status for the catalog -->
+      <div class="pipes-catalog" data-cigars-catalog></div> <!-- Filled by js/cigars-catalog.js from data/cigars.json -->
+      <p class="pipes-footnote">Prices and stock change — ask staff for the latest. No online checkout; purchase in the lounge.</p> <!-- Browse-in-store note -->
     </section>
 
-    <section class="page-section"> <!-- Visit planning steps -->
-      <h2 class="page-section__title">Plan your visit</h2> <!-- Section headline -->
-      <p class="page-section__lead">Three simple steps from browsing the site to walking through our door.</p> <!-- Section intro -->
-      <div class="pillar-grid"> <!-- Numbered visit steps -->
-        <article class="pillar"> <!-- First visit step -->
-          <span class="pillar__number">1</span> <!-- Step number -->
-          <h3 class="pillar__title">Check the calendar</h3> <!-- Step title -->
-          <p class="pillar__text">Browse <a href="events.html">upcoming events</a> for tastings, lounge nights, and special releases before you head our way.</p> <!-- Step description -->
+    <section class="page-section"> <!-- Guidance for new cigar smokers -->
+      <h2 class="page-section__title">New to cigars? Start here</h2> <!-- Section headline -->
+      <p class="page-section__lead">Finding the right cigar should feel welcoming. Here is how we help you choose with confidence.</p> <!-- Section intro -->
+      <div class="principle-grid"> <!-- Guidance cards matching pipes page layout -->
+        <article class="principle"> <!-- First card -->
+          <h3 class="principle__title">Start mild</h3> <!-- Card title -->
+          <p class="principle__text">Connecticut-wrapped robustos are a gentle entry point — creamy, approachable, and easy to enjoy on a first visit.</p> <!-- Card copy -->
         </article>
-        <article class="pillar"> <!-- Second visit step -->
-          <span class="pillar__number">2</span> <!-- Step number -->
-          <h3 class="pillar__title">Get directions</h3> <!-- Step title -->
-          <p class="pillar__text">We are on Gallatin Pike in Madison, just north of Nashville. Tap the address above for turn-by-turn directions.</p> <!-- Step description -->
+        <article class="principle"> <!-- Second card -->
+          <h3 class="principle__title">Match your time</h3> <!-- Card title -->
+          <p class="principle__text">Short perfectos for a quick break, toros for a longer lounge session — we will point you to the right size.</p> <!-- Card copy -->
         </article>
-        <article class="pillar"> <!-- Third visit step -->
-          <span class="pillar__number">3</span> <!-- Step number -->
-          <h3 class="pillar__title">Walk in and explore</h3> <!-- Step title -->
-          <p class="pillar__text">Browse the lounge, ask about new arrivals, and stay for a conversation — whether it is your first visit or your regular stop.</p> <!-- Step description -->
+        <article class="principle"> <!-- Third card -->
+          <h3 class="principle__title">Pair the moment</h3> <!-- Card title -->
+          <p class="principle__text">Morning coffee, evening whiskey, or a quiet porch — tell us the vibe and we will suggest a blend that fits.</p> <!-- Card copy -->
+        </article>
+        <article class="principle"> <!-- Fourth card -->
+          <h3 class="principle__title">Ask anything</h3> <!-- Card title -->
+          <p class="principle__text">No jargon, no pressure. Our staff loves walking newcomers through wrappers, strength, and what is worth trying next.</p> <!-- Card copy -->
         </article>
       </div>
+    </section>
+
+    <section class="page-cta"> <!-- Closing call-to-action -->
+      <h2 class="page-cta__title">Come browse the humidor in person</h2> <!-- CTA headline -->
+      <p class="page-cta__text">The best way to choose a cigar is to see the selection and talk with someone who smokes them. We will meet you at the door.</p> <!-- CTA supporting copy -->
+      <a href="location.html" class="btn">Plan your visit</a> <!-- Primary CTA button -->
     </section>
   </main>
 
@@ -131,6 +122,7 @@
   <script src="js/ical-utils.js"></script> <!-- Shared iCal parser for live calendar fallback -->
   <script src="js/calendar-events-loader.js?v=2"></script> <!-- Shared event loading for ticker -->
   <script src="js/events-ticker.js?v=2"></script> <!-- Scrolling events and tasks announcement -->
+  <script src="js/cigars-catalog.js"></script> <!-- Loads and filters cigar selection from data/cigars.json -->
   <script src="js/theme.js"></script> <!-- Theme toggle logic and persistence -->
   <script src="js/nav-expand.js"></script> <!-- Expandable header navigation panel -->
 
