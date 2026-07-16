@@ -1394,17 +1394,28 @@ body.home .logo-img {
   display: block; /* Remove inline image gap */
   height: var(--logo-height-expanded); /* Large logo at top of page */
   width: auto; /* Preserve logo aspect ratio */
-  transition: height 0.35s ease; /* Smooth logo shrink on scroll */
+  max-width: 100%; /* Keep logo inside the curved tab */
+  transition: height 0.35s ease, opacity 0.25s ease; /* Smooth size and logo swap */
 }
 
-/* Compact header: logo shrinks to fit inside maroon bar */
+/* Compact wordmark stays hidden until the header shrinks */
+body.home .logo-img--compact {
+  display: none; /* Hide horizontal logo while header is expanded */
+  height: var(--logo-height-compact); /* Compact bar height for wordmark */
+}
+
+/* Compact header: swap to horizontal wordmark inside maroon bar */
 body.home.is-header-compact .logo-tab {
-  padding: 2px 2rem 4px; /* Room for larger logo inside maroon tab */
+  padding: 2px 2rem 4px; /* Room for wordmark inside maroon tab */
   border-radius: 0 0 32px 32px; /* Slightly larger curve when compact */
 }
 
-body.home.is-header-compact .logo-img {
-  height: var(--logo-height-compact); /* Small logo inside header bar */
+body.home.is-header-compact .logo-img--full {
+  display: none; /* Hide stacked full logo when header is compact */
+}
+
+body.home.is-header-compact .logo-img--compact {
+  display: block; /* Show horizontal LOGO_02 in the compact bar */
 }
 
 /* Main content wrapper on home page */
