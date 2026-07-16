@@ -1,0 +1,163 @@
+<!DOCTYPE html> <!-- Tell the browser this is an HTML5 document -->
+<html lang="en"> <!-- Root element; lang helps screen readers and search engines -->
+<head> <!-- Document metadata section (not visible on page) -->
+  <meta charset="UTF-8"> <!-- Use UTF-8 character encoding for special characters -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Make layout responsive on mobile -->
+  <title>Shop | The Cigar Club Nashville</title> <!-- Text shown in browser tab -->
+  <script>
+    (function () { var s = localStorage.getItem("theme"); var t = s || "dark"; document.documentElement.setAttribute("data-theme", t); })();
+  </script> <!-- Apply saved theme before paint to prevent flash -->
+  <link rel="preconnect" href="https://use.typekit.net"> <!-- Speed up Adobe Fonts connection -->
+  <link rel="preconnect" href="https://p.typekit.net" crossorigin> <!-- Speed up Adobe Fonts files -->
+  <link rel="stylesheet" href="https://use.typekit.net/end7yej.css"> <!-- Adobe Fonts: Sarvatrik Latin Variable -->
+  <link rel="icon" href="images/favicon.png" type="image/png" sizes="48x48"> <!-- Larger tab favicon with tight crop -->
+  <link rel="icon" href="images/favicon-32.png" type="image/png" sizes="32x32"> <!-- Standard small favicon size -->
+  <link rel="icon" href="images/favicon-192.png" type="image/png" sizes="192x192"> <!-- High-DPI and bookmark icon -->
+  <link rel="apple-touch-icon" href="images/favicon-192.png"> <!-- Home screen icon on iOS -->
+  <link rel="stylesheet" href="css/styles.css"> <!-- Load shared site styles -->
+</head>
+<body class="tk-sarvatrik-latin-variable"> <!-- Sarvatrik via Adobe Fonts kit end7yej -->
+
+  <div class="site-top"> <!-- Sticky header + events banner stack -->
+  <header class="site-header site-header--page"> <!-- Sticky header with expandable navigation -->
+    <div class="header-bar"> <!-- Maroon navigation bar -->
+      <button type="button" class="nav-expand-toggle" aria-expanded="false" aria-controls="header-nav-panel"> <!-- Expand/collapse site navigation -->
+        <span class="nav-expand-icon" aria-hidden="true"></span> <!-- Hamburger icon; animates when open -->
+        <span class="nav-expand-label">Menu</span> <!-- Visible label for menu button -->
+      </button>
+      <a href="index.html" class="header-page-logo"><img src="images/LOGO_02.png" alt="Cigar Club" class="header-page-logo-img"></a> <!-- Horizontal brand logo links back to home -->
+      <button type="button" class="theme-toggle" aria-label="Switch to light mode"> <!-- Toggle light/dark mode -->
+        <span class="theme-toggle-icon theme-toggle-icon--light" aria-hidden="true">☀</span> <!-- Sun icon shown in light mode -->
+        <span class="theme-toggle-icon theme-toggle-icon--dark" aria-hidden="true">☾</span> <!-- Moon icon shown in dark mode -->
+      </button>
+    </div>
+    <div class="header-nav-panel" id="header-nav-panel" hidden> <!-- Collapsible bar with page links -->
+      <nav aria-label="Site"> <!-- Navigation landmark for screen readers -->
+        <ul class="header-nav-links"> <!-- Horizontal list of header links -->
+          <li><a href="about-us.html"><img src="images/ICON-09.png" alt="" class="header-nav-icon" width="40" height="40"><span>About Us</span></a></li> <!-- Person icon for about us -->
+          <li><a href="events.html"><img src="images/ICON-10.png" alt="" class="header-nav-icon" width="40" height="40"><span>Events</span></a></li> <!-- Calendar icon for events -->
+          <li><a href="location.html"><img src="images/ICON-08.png" alt="" class="header-nav-icon" width="40" height="40"><span>Location</span></a></li> <!-- House icon for location -->
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <a href="events.html" class="events-ticker" hidden> <!-- Scrolling next-event and task announcement -->
+    <div class="events-ticker-viewport"> <!-- Clips scrolling text at bar edges -->
+      <div class="events-ticker-track"> <!-- Animated row duplicated for seamless loop -->
+        <span class="events-ticker-text"></span> <!-- Primary scrolling announcement copy -->
+        <span class="events-ticker-text" aria-hidden="true"></span> <!-- Duplicate for infinite marquee loop -->
+      </div>
+    </div>
+  </a>
+  </div>
+
+  <main class="page-flow product-page"> <!-- Unified cigars / pipes / accessories shop page -->
+    <nav class="product-switcher" aria-label="Product sections"> <!-- In-page switcher between product panels -->
+      <button type="button" class="product-switcher__link is-active" data-product-tab="cigars" aria-pressed="true">Cigars</button> <!-- Show cigars panel -->
+      <button type="button" class="product-switcher__link" data-product-tab="pipes" aria-pressed="false">Pipes</button> <!-- Show pipes panel -->
+      <button type="button" class="product-switcher__link" data-product-tab="accessories" aria-pressed="false">Accessories</button> <!-- Show accessories panel -->
+    </nav>
+
+    <div class="product-panels" data-product-panels> <!-- Crossfading product panels share one page -->
+
+      <article class="product-panel is-active" id="cigars" data-product-panel="cigars" aria-hidden="false"> <!-- Cigars panel keeps original format -->
+        <div class="product-panel__body"> <!-- Catalog and CTA share one background icon layer -->
+          <img src="images/ICON-05.png" alt="" class="product-panel__bg-icon" aria-hidden="true"> <!-- Large decorative cigar icon behind the section -->
+          <div class="product-panel__content"> <!-- Foreground content sits above the background icon -->
+        <section class="page-section page-section--catalog" aria-label="Cigar selection"> <!-- Compact cigar examples catalog -->
+          <div class="pipes-filters" data-cigars-filters role="group" aria-label="Filter cigars by category"> <!-- Category filter chips -->
+            <button type="button" class="pipes-filter is-active" data-cigars-filter="all" aria-pressed="true">All</button> <!-- Show every cigar -->
+            <button type="button" class="pipes-filter" data-cigars-filter="premium" aria-pressed="false">Premium</button> <!-- Premium sticks -->
+            <button type="button" class="pipes-filter" data-cigars-filter="everyday" aria-pressed="false">Everyday</button> <!-- Everyday value picks -->
+            <button type="button" class="pipes-filter" data-cigars-filter="limited" aria-pressed="false">Limited</button> <!-- Limited releases -->
+          </div>
+          <p class="pipes-status" data-cigars-status hidden></p> <!-- Empty or error status for the catalog -->
+          <div class="pipes-catalog" data-cigars-catalog></div> <!-- Filled by js/cigars-catalog.js -->
+        </section>
+
+        <section class="page-cta"> <!-- Closing call-to-action -->
+          <h2 class="page-cta__title">Not sure where to start?</h2> <!-- CTA headline -->
+          <p class="page-cta__text">Tell us your preferred strength, flavor, and smoking time.</p> <!-- Concise CTA supporting copy -->
+          <a href="location.html" class="btn">Plan your visit</a> <!-- Primary CTA button -->
+        </section>
+          </div> <!-- End foreground content above background icon -->
+        </div> <!-- End shared background section wrapper -->
+      </article>
+
+      <article class="product-panel" id="pipes" data-product-panel="pipes" aria-hidden="true" hidden> <!-- Pipes panel keeps original format -->
+        <div class="product-panel__body"> <!-- Catalog and CTA share one background icon layer -->
+          <img src="images/ICON-04.png" alt="" class="product-panel__bg-icon" aria-hidden="true"> <!-- Large decorative pipe icon behind the section -->
+          <div class="product-panel__content"> <!-- Foreground content sits above the background icon -->
+        <section class="page-section page-section--catalog" aria-label="Pipe selection"> <!-- Compact pipe examples catalog -->
+          <div class="pipes-filters" data-pipes-filters role="group" aria-label="Filter pipes by category"> <!-- Category filter chips -->
+            <button type="button" class="pipes-filter is-active" data-pipes-filter="all" aria-pressed="true">All</button> <!-- Show every pipe -->
+            <button type="button" class="pipes-filter" data-pipes-filter="briar" aria-pressed="false">Briar</button> <!-- Briar classics -->
+            <button type="button" class="pipes-filter" data-pipes-filter="artisan" aria-pressed="false">Artisan</button> <!-- Independent carvers -->
+            <button type="button" class="pipes-filter" data-pipes-filter="cob" aria-pressed="false">Cob</button> <!-- Corn cob pipes -->
+          </div>
+          <p class="pipes-status" data-pipes-status hidden></p> <!-- Empty or error status for the catalog -->
+          <div class="pipes-catalog" data-pipes-catalog></div> <!-- Filled by js/pipes-catalog.js -->
+        </section>
+
+        <section class="page-cta"> <!-- Closing call-to-action -->
+          <h2 class="page-cta__title">Need help choosing?</h2> <!-- CTA headline -->
+          <p class="page-cta__text">We’ll help you compare shape, fit, and price in the shop.</p> <!-- Concise CTA supporting copy -->
+          <a href="location.html" class="btn">Plan your visit</a> <!-- Primary CTA button -->
+        </section>
+          </div> <!-- End foreground content above background icon -->
+        </div> <!-- End shared background section wrapper -->
+      </article>
+
+      <article class="product-panel" id="accessories" data-product-panel="accessories" aria-hidden="true" hidden> <!-- Accessories panel keeps original format -->
+        <div class="product-panel__body"> <!-- Catalog and CTA share one background icon layer -->
+          <img src="images/ICON-07.png" alt="" class="product-panel__bg-icon" aria-hidden="true"> <!-- Large decorative accessories icon behind the section -->
+          <div class="product-panel__content"> <!-- Foreground content sits above the background icon -->
+        <section class="page-section page-section--catalog" aria-label="Accessories selection"> <!-- Compact accessories examples catalog -->
+          <div class="pipes-filters" data-accessories-filters role="group" aria-label="Filter accessories by category"> <!-- Category filter chips -->
+            <button type="button" class="pipes-filter is-active" data-accessories-filter="all" aria-pressed="true">All</button> <!-- Show every accessory -->
+            <button type="button" class="pipes-filter" data-accessories-filter="cutters" aria-pressed="false">Cutters</button> <!-- Cigar cutters -->
+            <button type="button" class="pipes-filter" data-accessories-filter="lighters" aria-pressed="false">Lighters</button> <!-- Torches and soft flame -->
+            <button type="button" class="pipes-filter" data-accessories-filter="storage" aria-pressed="false">Storage</button> <!-- Humidors and humidity -->
+            <button type="button" class="pipes-filter" data-accessories-filter="tools" aria-pressed="false">Tools</button> <!-- Ashtrays and kits -->
+          </div>
+          <p class="pipes-status" data-accessories-status hidden></p> <!-- Empty or error status for the catalog -->
+          <div class="pipes-catalog" data-accessories-catalog></div> <!-- Filled by js/accessories-catalog.js -->
+        </section>
+
+        <section class="page-cta"> <!-- Closing call-to-action -->
+          <h2 class="page-cta__title">Need help building a kit?</h2> <!-- CTA headline -->
+          <p class="page-cta__text">We’ll help you choose the essentials that fit how you smoke.</p> <!-- Concise CTA supporting copy -->
+          <a href="location.html" class="btn">Plan your visit</a> <!-- Primary CTA button -->
+        </section>
+          </div> <!-- End foreground content above background icon -->
+        </div> <!-- End shared background section wrapper -->
+      </article>
+
+    </div>
+  </main>
+
+  <footer class="site-footer"> <!-- Site footer with navigation -->
+    <nav class="site-footer__nav" aria-label="Footer"> <!-- Footer links mirror main site flow -->
+      <a href="index.html">Home</a> <!-- Link back to home -->
+      <a href="about-us.html">About Us</a> <!-- About page -->
+      <a href="events.html">Events</a> <!-- Events page -->
+      <a href="location.html">Location</a> <!-- Location page -->
+      <a href="https://www.instagram.com/cigarclubnashville" target="_blank" rel="noopener noreferrer">Instagram</a> <!-- Opens Instagram profile in a new tab -->
+      <a href="https://x.com/CigarNashville" target="_blank" rel="noopener noreferrer">X</a> <!-- Opens X profile in a new tab -->
+    </nav>
+    <p class="site-footer__copy">&copy; 2026 The Cigar Club Nashville. All rights reserved.</p> <!-- Copyright notice -->
+  </footer>
+
+  <script src="js/calendar-config.js?v=2"></script> <!-- Google Calendar ID and optional API key -->
+  <script src="js/ical-utils.js"></script> <!-- Shared iCal parser for live calendar fallback -->
+  <script src="js/calendar-events-loader.js?v=2"></script> <!-- Shared event loading for ticker -->
+  <script src="js/events-ticker.js?v=2"></script> <!-- Scrolling events and tasks announcement -->
+  <script src="js/cigars-catalog.js"></script> <!-- Loads and filters cigar selection -->
+  <script src="js/pipes-catalog.js"></script> <!-- Loads and filters pipe selection -->
+  <script src="js/accessories-catalog.js"></script> <!-- Loads and filters accessories selection -->
+  <script src="js/product-panels.js"></script> <!-- Smooth in-page product panel switcher -->
+  <script src="js/theme.js"></script> <!-- Theme toggle logic and persistence -->
+  <script src="js/nav-expand.js"></script> <!-- Expandable header navigation panel -->
+
+</body>
+</html>
