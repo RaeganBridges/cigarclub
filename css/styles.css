@@ -56,15 +56,59 @@
   --text: var(--charcoal); /* Primary text */
   --text-muted: var(--teal); /* Secondary / muted text */
   --header-bg: var(--maroon); /* Header bar background */
-  --accent: var(--gold); /* Links, headings, buttons */
+  --accent: var(--gold); /* Buttons and warm highlights */
   --accent-hover: var(--maroon); /* Hover state for accent buttons */
-  --surface: var(--pale-yellow); /* Cards, panels, calendar wrapper */
-  --border: var(--maroon); /* Borders and dividers */
+  --surface: var(--pale-yellow); /* Warm cards and panels on cream */
+  --border: color-mix(in srgb, var(--teal) 22%, var(--pale-yellow)); /* Soft teal borders */
   --frame-bg: var(--pale-yellow); /* Image placeholder frames */
   --notch-bg: var(--cream); /* Card notch cutout matches page bg */
   --logo-tab-bg: var(--header-bg); /* Logo tab matches maroon header */
   --btn-text: var(--charcoal); /* Text on gold buttons */
   --pill-hover: var(--pale-yellow); /* Nav pill hover */
+}
+
+/* Light mode refinements: maroon headlines, teal supporting accents, gold actions */
+[data-theme="light"] h1,
+[data-theme="light"] .page-hero__title,
+[data-theme="light"] .page-section__title,
+[data-theme="light"] .home-hero__title,
+[data-theme="light"] .page-cta__title,
+[data-theme="light"] .location-details__title,
+[data-theme="light"] .events-upcoming-panel__title,
+[data-theme="light"] .reviews-section__title {
+  color: var(--maroon); /* Brand red for major headlines */
+}
+
+[data-theme="light"] .page-hero__eyebrow,
+[data-theme="light"] .home-hero__eyebrow,
+[data-theme="light"] .events-upcoming__when,
+[data-theme="light"] .pillar__number {
+  color: var(--teal); /* Teal for labels and metadata */
+}
+
+[data-theme="light"] .page-flow a:not(.btn):not(.calendar-add-link):not(.calendar-open-link):not(.location-address__link):not(.location-phone__link):not(.location-email__link):not(.location-instagram__link):not(.location-x__link),
+[data-theme="light"] .calendar-open-link {
+  color: var(--maroon); /* Maroon in-content links */
+}
+
+[data-theme="light"] .page-flow a:not(.btn):not(.calendar-add-link):not(.calendar-open-link):not(.location-address__link):not(.location-phone__link):not(.location-email__link):not(.location-instagram__link):not(.location-x__link):hover,
+[data-theme="light"] .calendar-open-link:hover,
+[data-theme="light"] .location-address__link:hover {
+  color: var(--teal); /* Teal link hover */
+}
+
+[data-theme="light"] .site-footer__nav a:hover {
+  color: var(--maroon); /* Maroon footer link hover */
+}
+
+[data-theme="light"] .btn--ghost {
+  color: var(--maroon); /* Maroon outline button text */
+  border-color: color-mix(in srgb, var(--maroon) 40%, var(--pale-yellow)); /* Soft maroon outline */
+}
+
+[data-theme="light"] .btn--ghost:hover {
+  background-color: var(--maroon); /* Maroon fill on ghost hover */
+  color: var(--cream); /* Cream text on maroon */
 }
 
 /* Reset default browser margin and padding on all elements */
@@ -359,6 +403,135 @@ h1 {
   color: var(--btn-text); /* Dark text on gold fill */
 }
 
+/* Customer reviews section */
+.reviews-section {
+  max-width: 760px; /* Match home hero content width */
+  margin: 0 auto; /* Center reviews block */
+  padding: 4rem 2rem 5rem; /* Space above footer and below gallery */
+  text-align: center; /* Center headline and carousel controls */
+}
+
+/* Reviews section headline */
+.reviews-section__title {
+  margin-bottom: 2rem; /* Space below section title */
+  font-size: clamp(1.75rem, 4vw, 2.25rem); /* Responsive section title */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold section heading */
+  color: var(--accent); /* Golden orange section title */
+}
+
+/* Review carousel container */
+.reviews-carousel {
+  position: relative; /* Anchor controls relative to carousel */
+}
+
+/* Viewport showing one review at a time */
+.reviews-carousel__viewport {
+  position: relative; /* Stack review slides in same box */
+  min-height: 14.5rem; /* Stable height for longer review quotes */
+}
+
+/* Single review slide */
+.reviews-carousel__slide {
+  position: absolute; /* Layer slides for crossfade */
+  inset: 0; /* Fill viewport area */
+  margin: 0; /* Reset blockquote default margin */
+  padding: 2rem 2.25rem; /* Inner card spacing */
+  background-color: var(--surface); /* Theme-aware review card background */
+  border: 1px solid var(--border); /* Theme-aware card border */
+  border-radius: 12px; /* Rounded review card corners */
+  opacity: 0; /* Hidden until active */
+  visibility: hidden; /* Remove inactive slide from accessibility tree */
+  transition: opacity 0.45s ease, visibility 0.45s ease; /* Smooth crossfade between reviews */
+}
+
+/* Visible active review slide */
+.reviews-carousel__slide.is-active {
+  position: relative; /* Restore flow height for active slide */
+  opacity: 1; /* Fade active review in */
+  visibility: visible; /* Expose active review to screen readers */
+}
+
+/* Review quote text */
+.reviews-carousel__quote {
+  margin: 0 0 1.25rem; /* Space before author line */
+  color: var(--text); /* Theme-aware quote text */
+  font-size: 1.15rem; /* Slightly larger quote size */
+  line-height: 1.65; /* Comfortable quote leading */
+}
+
+/* Review author attribution */
+.reviews-carousel__author {
+  color: var(--text-muted); /* Muted author name */
+  font-size: 1rem; /* Author line size */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold author name */
+}
+
+/* Row of prev button, dots, and next button */
+.reviews-carousel__controls {
+  display: flex; /* Lay out controls in a row */
+  align-items: center; /* Vertically center controls */
+  justify-content: center; /* Center controls under review card */
+  gap: 1rem; /* Space between controls */
+  margin-top: 1.5rem; /* Space below review card */
+}
+
+/* Previous and next review buttons */
+.reviews-carousel__btn {
+  width: 2.5rem; /* Circular control button width */
+  height: 2.5rem; /* Circular control button height */
+  border: 1px solid var(--border); /* Theme-aware button border */
+  border-radius: 50%; /* Circular button shape */
+  background-color: var(--surface); /* Theme-aware button background */
+  color: var(--text); /* Theme-aware arrow color */
+  font-size: 1.5rem; /* Large arrow glyph */
+  line-height: 1; /* Tight arrow line height */
+  cursor: pointer; /* Pointer on hover */
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s; /* Smooth hover transition */
+}
+
+/* Hover state for carousel arrow buttons */
+.reviews-carousel__btn:hover {
+  background-color: var(--accent); /* Gold fill on hover */
+  border-color: var(--accent); /* Match border to fill */
+  color: var(--btn-text); /* Dark text on gold */
+}
+
+/* Dot navigation group */
+.reviews-carousel__dots {
+  display: flex; /* Lay out dots horizontally */
+  align-items: center; /* Vertically center dots */
+  gap: 0.55rem; /* Space between dots */
+}
+
+/* Individual review dot button */
+.reviews-carousel__dot {
+  width: 0.65rem; /* Dot diameter */
+  height: 0.65rem; /* Dot diameter */
+  padding: 0; /* Remove default button padding */
+  border: none; /* Remove default button border */
+  border-radius: 50%; /* Circular dot shape */
+  background-color: color-mix(in srgb, var(--text-muted) 45%, transparent); /* Muted inactive dot */
+  cursor: pointer; /* Pointer on hover */
+  transition: background-color 0.2s, transform 0.2s; /* Smooth dot state change */
+}
+
+/* Active review dot */
+.reviews-carousel__dot.is-active {
+  background-color: var(--accent); /* Gold active dot */
+  transform: scale(1.2); /* Slightly enlarge active dot */
+}
+
+/* Pause crossfade when user prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .reviews-carousel__slide {
+    transition: none; /* Instant review change without fade */
+  }
+
+  .reviews-carousel__dot {
+    transition: none; /* Instant dot state without animation */
+  }
+}
+
 /* Collapsible staff note on events page */
 .calendar-setup-details {
   max-width: 900px; /* Match section width */
@@ -426,13 +599,13 @@ h1 {
 }
 
 /* In-content text links on inner pages */
-.page-flow a:not(.btn):not(.calendar-add-link):not(.calendar-open-link):not(.location-address__link) {
+.page-flow a:not(.btn):not(.calendar-add-link):not(.calendar-open-link):not(.location-address__link):not(.location-phone__link):not(.location-email__link):not(.location-instagram__link):not(.location-x__link) {
   color: var(--accent); /* Golden orange in-content links */
   text-decoration: none; /* Remove default underline */
 }
 
 /* Underline in-content links on hover */
-.page-flow a:not(.btn):not(.calendar-add-link):not(.calendar-open-link):not(.location-address__link):hover {
+.page-flow a:not(.btn):not(.calendar-add-link):not(.calendar-open-link):not(.location-address__link):not(.location-phone__link):not(.location-email__link):not(.location-instagram__link):not(.location-x__link):hover {
   text-decoration: underline; /* Hover affordance */
 }
 
@@ -475,9 +648,116 @@ h1 {
   text-decoration: underline; /* Underline on hover for affordance */
 }
 
-/* Hours placeholder note below address */
-.location-hours-note {
-  color: var(--text-muted); /* Muted secondary text */
+/* Store phone number below address */
+.location-phone {
+  margin-bottom: 0.5rem; /* Tight spacing before email */
+}
+
+/* Clickable store phone link */
+.location-phone__link {
+  color: var(--text); /* Theme-aware phone text */
+  font-size: 1.1rem; /* Match address link size */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold phone number */
+  text-decoration: none; /* Remove default underline */
+}
+
+/* Hover state for phone link */
+.location-phone__link:hover {
+  color: var(--accent); /* Golden orange on hover */
+  text-decoration: underline; /* Underline on hover for affordance */
+}
+
+/* Store email below phone */
+.location-email {
+  margin-bottom: 0.5rem; /* Tight spacing before Instagram */
+}
+
+/* Clickable store email link */
+.location-email__link {
+  color: var(--text); /* Theme-aware email text */
+  font-size: 1.1rem; /* Match phone and address link size */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold email address */
+  text-decoration: none; /* Remove default underline */
+}
+
+/* Hover state for email link */
+.location-email__link:hover {
+  color: var(--accent); /* Golden orange on hover */
+  text-decoration: underline; /* Underline on hover for affordance */
+}
+
+/* Store Instagram below email */
+.location-instagram {
+  margin-bottom: 0.5rem; /* Tight spacing before X */
+}
+
+/* Clickable Instagram profile link */
+.location-instagram__link {
+  color: var(--text); /* Theme-aware Instagram text */
+  font-size: 1.1rem; /* Match phone and email link size */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold handle */
+  text-decoration: none; /* Remove default underline */
+}
+
+/* Hover state for Instagram link */
+.location-instagram__link:hover {
+  color: var(--accent); /* Golden orange on hover */
+  text-decoration: underline; /* Underline on hover for affordance */
+}
+
+/* Store X profile below Instagram */
+.location-x {
+  margin-bottom: 1.5rem; /* Space before hours section */
+}
+
+/* Clickable X profile link */
+.location-x__link {
+  color: var(--text); /* Theme-aware X handle text */
+  font-size: 1.1rem; /* Match phone and email link size */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold handle */
+  text-decoration: none; /* Remove default underline */
+}
+
+/* Hover state for X link */
+.location-x__link:hover {
+  color: var(--accent); /* Golden orange on hover */
+  text-decoration: underline; /* Underline on hover for affordance */
+}
+
+/* Hours heading below address */
+.location-hours__title {
+  margin-bottom: 0.75rem; /* Space below hours heading */
+  font-size: 1.25rem; /* Match address section title size */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold hours heading */
+  color: var(--text); /* Theme-aware heading color */
+}
+
+/* Two-column store hours list */
+.location-hours {
+  display: grid; /* Stack hours rows vertically */
+  gap: 0.65rem; /* Space between hours rows */
+  max-width: 22rem; /* Keep day/time columns readable */
+}
+
+/* Single hours row with day and time columns */
+.location-hours__row {
+  display: grid; /* Lay out days and times side by side */
+  grid-template-columns: 6.5rem 1fr; /* Fixed day column, flexible time column */
+  gap: 1.5rem; /* Gutter between days and times */
+  align-items: baseline; /* Align text on the same baseline */
+}
+
+/* Day label in hours row */
+.location-hours__days {
+  margin: 0; /* Reset default dt margin */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold day labels */
+  color: var(--text); /* Theme-aware day text */
+}
+
+/* Hours time range in hours row */
+.location-hours__times {
+  margin: 0; /* Reset default dd margin */
+  color: var(--text-muted); /* Muted time text */
 }
 
 /* Wrapper around the Google Calendar iframe */
@@ -784,11 +1064,16 @@ body.home {
   --gallery-gap: 1.25rem; /* Space between gallery cards */
 }
 
-/* Sticky maroon header container with overlapping logo */
+/* Sticky wrapper for header and events banner below it */
+.site-top {
+  position: sticky; /* Pin header + banner together at top while scrolling */
+  top: 0; /* Stick to viewport top */
+  z-index: 100; /* Keep above page content */
+}
+
+/* Maroon header container with overlapping logo */
 body.home .site-header {
-  position: sticky; /* Stay at top while scrolling */
-  top: 0; /* Pin to viewport top */
-  z-index: 100; /* Keep header above page content */
+  position: relative; /* Contain absolutely positioned logo tab */
   padding: 0; /* Override global header padding */
   border-bottom: none; /* No border; maroon bar is self-contained */
 }
@@ -940,11 +1225,9 @@ body.home .header-bar {
   color: var(--gold); /* Golden orange on hover or active page */
 }
 
-/* Inner pages: sticky header without overlapping logo tab */
+/* Inner pages: header without overlapping logo tab */
 .site-header--page {
-  position: sticky; /* Stay at top while scrolling */
-  top: 0; /* Pin to viewport top */
-  z-index: 100; /* Keep header above page content */
+  position: relative; /* Normal flow inside sticky site-top wrapper */
   padding: 0; /* Override global header padding */
   border-bottom: none; /* No border; maroon bar is self-contained */
 }
@@ -983,21 +1266,18 @@ body.home .header-bar {
   border-radius: 14px; /* Rounded pill shape */
 }
 
-/* Scrolling events and tasks announcement bar */
-.site-header .events-ticker {
-  display: block; /* Full-width bar below header controls */
-  width: 100vw; /* Span entire viewport width */
-  max-width: 100vw; /* Prevent overflow past screen edges */
-  margin-left: calc(50% - 50vw); /* Break out to true full-bleed from centered header */
+/* Scrolling events and tasks announcement bar below header */
+.events-ticker {
+  display: block; /* Full-width bar directly under header */
+  width: 100%; /* Span full page width */
   background-color: var(--gold); /* Golden announcement bar */
   color: var(--charcoal); /* Dark text on gold background */
   text-decoration: none; /* Remove underline from link wrapper */
   overflow: hidden; /* Clip scrolling text at bar edges */
-  z-index: 15; /* Below logo tab, above page content */
 }
 
 /* Viewport clipping scrolling ticker text with edge fade */
-.site-header .events-ticker-viewport {
+.events-ticker-viewport {
   overflow: hidden; /* Hide text outside visible bar */
   width: 100%; /* Fill announcement bar width */
   -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%); /* Safari edge fade */
@@ -1005,7 +1285,7 @@ body.home .header-bar {
 }
 
 /* Horizontal track animated for marquee effect */
-.site-header .events-ticker-track {
+.events-ticker-track {
   display: flex; /* Place duplicate text spans side by side */
   width: max-content; /* Shrink-wrap to combined text width */
   animation: events-ticker-scroll 22s linear infinite; /* Faster default scroll; JS may tune further */
@@ -1014,31 +1294,36 @@ body.home .header-bar {
 
 /* Pause ticker motion when user prefers reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .site-header .events-ticker-viewport {
+  .events-ticker-viewport {
     -webkit-mask-image: none; /* No fade needed for static text */
     mask-image: none; /* No fade needed for static text */
   }
 
-  .site-header .events-ticker-track {
+  .events-ticker-track {
     animation: none; /* Stop scrolling animation */
     width: 100%; /* Fill bar for centered static message */
     justify-content: center; /* Center static ticker copy */
   }
 
-  .site-header .events-ticker-text + .events-ticker-text {
+  .events-ticker-text + .events-ticker-text {
     display: none; /* Hide duplicate loop copy when not animating */
   }
 }
 
 /* One segment of scrolling announcement text */
-.site-header .events-ticker-text {
+.events-ticker-text {
   flex: 0 0 auto; /* Do not shrink text segments */
-  padding: 0.45rem 0; /* Slightly taller bar for readability */
+  padding: 0.6rem 0; /* Taller bar for larger announcement text */
   padding-right: 3rem; /* Wide gap between repeated phrases as they cross the screen */
-  font-size: 0.85rem; /* Small announcement text */
-  font-variation-settings: "wght" var(--font-wght-bold); /* Medium-bold ticker copy */
+  font-size: 1rem; /* Larger announcement text */
+  font-variation-settings: "wght" var(--font-wght-regular); /* Regular weight for date copy */
   letter-spacing: 0.03em; /* Slight spacing for readability in motion */
   white-space: nowrap; /* Keep each segment on one line */
+}
+
+/* Bold event name inside scrolling ticker copy */
+.events-ticker-name {
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold event title */
 }
 
 /* Marquee keyframes: move track left by half (one duplicate width) */
@@ -1048,7 +1333,7 @@ body.home .header-bar {
 }
 
 /* Gold bar darkens slightly on hover */
-.site-header .events-ticker:hover {
+.events-ticker:hover {
   background-color: var(--pale-yellow); /* Lighter gold hover feedback */
 }
 
@@ -1256,8 +1541,16 @@ body.home .card-link:hover .card-btn-icon {
   filter: brightness(1.35); /* Make icon brighter when image or icon is hovered */
 }
 
+/* Tall runway: vertical page scroll maps to one gallery grid width, then page continues */
+body.home .gallery-scroll-stage {
+  position: relative; /* Anchor scroll distance for vertical-to-horizontal mapping */
+  height: calc(var(--gallery-scroll-span, 900px) + var(--gallery-scroll-height, 520px)); /* One grid width plus pinned gallery height */
+}
+
 /* Horizontally scrollable gallery below feature cards */
 body.home .gallery-scroll {
+  position: sticky; /* Pin gallery while page scroll drives horizontal motion */
+  top: var(--gallery-sticky-top, 0px); /* Sit below sticky site header and events banner */
   overflow-x: auto; /* Scroll left and right through image rows */
   overflow-y: hidden; /* Prevent vertical scroll inside gallery */
   -webkit-overflow-scrolling: touch; /* Momentum scroll on iOS */
@@ -1399,10 +1692,10 @@ body.home .gallery-item:focus-within .gallery-desc {
 
 /* Mobile: single column and smaller sizing */
 @media (max-width: 600px) {
-  .site-header .events-ticker-text {
-    padding: 0.4rem 0; /* Slightly shorter bar on mobile */
+  .events-ticker-text {
+    padding: 0.55rem 0; /* Taller bar for larger text on mobile */
     padding-right: 2rem; /* Tighter phrase spacing on small screens */
-    font-size: 0.8rem; /* Slightly smaller ticker on mobile */
+    font-size: 0.95rem; /* Slightly smaller but still larger ticker on mobile */
   }
 
   .site-header .header-nav-links {
@@ -1487,5 +1780,17 @@ body.home .gallery-item:focus-within .gallery-desc {
   body.home .gallery-desc p {
     font-size: 0.9rem; /* Slightly smaller text on mobile */
     line-height: 1.45; /* Readable on narrow cards */
+  }
+
+  .reviews-section {
+    padding: 3rem 1.25rem 4rem; /* Tighter reviews spacing on mobile */
+  }
+
+  .reviews-carousel__slide {
+    padding: 1.5rem 1.25rem; /* Compact review card on mobile */
+  }
+
+  .reviews-carousel__quote {
+    font-size: 1.05rem; /* Slightly smaller quote on mobile */
   }
 }

@@ -112,13 +112,19 @@
     });
   }
 
-  function loadEvents() { // Load events from API, JSON, and live iCal feed
+  function loadBootstrapEvents() { // Read embedded fallback events from calendar-config.js
+    return (getConfig().bootstrapEvents || []).map(normalizeItem); // Normalize config rows
+  }
+
+  function loadEvents() { // Load events from API, JSON, iCal, then bootstrap fallback
     return fetchAllFromApi().catch(function () { // Try live API first when key is configured
       return Promise.all([ // Load JSON and iCal in parallel
         loadFromJsonSources(), // Synced + manual JSON files
         fetchFromIcal().catch(function () { return []; }), // Live iCal when browser allows it
       ]).then(function (results) { // Merge all available sources
-        return mergeItems(results); // Combined events from JSON and iCal
+        var merged = mergeItems(results); // Combined events from JSON and iCal
+        if (merged.length) { return merged; } // Use fetched data when available
+        return loadBootstrapEvents(); // Fall back to embedded config events
       });
     });
   }

@@ -2,6 +2,7 @@
   var scrollEl = document.querySelector(".gallery-scroll"); // Horizontal scroll container
   if (!scrollEl) { return; } // Exit if gallery is not on this page
 
+  var stage = scrollEl.closest(".gallery-scroll-stage"); // Tall runway for vertical-to-horizontal mapping
   var brick = scrollEl.querySelector(".gallery-brick"); // Staggered two-row grid block
   if (!brick) { return; } // Exit if gallery content is missing
 
@@ -12,6 +13,7 @@
   var originalStart = 0; // Scroll offset where the original card set begins
   var isAdjusting = false; // Prevent scroll handler re-entry during jump
   var hasStarted = false; // Whether initial scroll position has been applied
+  var pageScrollTicking = false; // Throttle window scroll sync to animation frames
 
   function duplicateRow(row) { // Prepend and append clones for bidirectional loop
     if (row.dataset.loopReady === "true") { return; } // Skip rows already duplicated
@@ -52,6 +54,47 @@
 
     loopWidth = firstOriginal.offsetLeft - firstLeading.offsetLeft; // Full cycle width including inter-set gap
     originalStart = loopWidth; // Leading section width equals scroll offset for original set
+  }
+
+  function siteTopHeight() { // Height of sticky header plus events banner
+    var siteTop = document.querySelector(".site-top"); // Sticky top stack on every page
+    return siteTop ? siteTop.offsetHeight : 0; // Zero when markup is missing
+  }
+
+  function updateStageMetrics() { // Size scroll runway and sticky offset from measured gallery
+    if (!stage || loopWidth <= 0) { return; } // Skip until stage and loop width exist
+    var topOffset = siteTopHeight(); // Keep gallery pinned below site header
+    stage.style.setProperty("--gallery-scroll-span", loopWidth + "px"); // One grid width of vertical scroll
+    stage.style.setProperty("--gallery-scroll-height", scrollEl.offsetHeight + "px"); // Pinned gallery block height
+    stage.style.setProperty("--gallery-sticky-top", topOffset + "px"); // Sticky offset below header stack
+  }
+
+  function pageScrollProgress() { // Map current page scroll to 0–1 across one gallery grid width
+    if (!stage || loopWidth <= 0) { return 0; } // Default to start when not ready
+    var stageTop = stage.offsetTop; // Top of gallery runway in document flow
+    var span = loopWidth; // Vertical pixels that equal one horizontal grid width
+    var progress = (window.scrollY - stageTop) / span; // How far through the runway user has scrolled
+    return Math.min(Math.max(progress, 0), 1); // Clamp to one grid width only
+  }
+
+  function applyPageScrollProgress(progress) { // Set horizontal scroll from vertical page position
+    if (loopWidth <= 0) { return; } // Skip until measured
+    var target = originalStart + progress * Math.max(loopWidth - 1, 0); // End just before loop wrap point
+    isAdjusting = true; // Block recursive scroll events
+    scrollEl.scrollLeft = target; // Move gallery to mapped horizontal offset
+    isAdjusting = false; // Re-enable scroll handling
+  }
+
+  function syncFromPageScroll() { // Drive gallery horizontally while user scrolls down one grid width
+    pageScrollTicking = false; // Allow next scroll frame to run
+    applyPageScrollProgress(pageScrollProgress()); // Map vertical scroll to horizontal position
+  }
+
+  function onWindowScroll() { // Throttle vertical page scroll mapping to animation frames
+    if (!pageScrollTicking) { // Skip if sync already scheduled
+      pageScrollTicking = true; // Block duplicate scheduling until sync runs
+      window.requestAnimationFrame(syncFromPageScroll); // Sync on next paint
+    }
   }
 
   function normalizeScroll() { // Keep scroll position inside the middle (original) loop range
@@ -95,31 +138,31 @@
 
   function initScrollPosition() { // Begin on the original card set, not the leading clones
     if (loopWidth <= 0) { return; } // Skip until measured
-    isAdjusting = true; // Block scroll handler during setup
-    scrollEl.scrollLeft = originalStart; // Align first original card to loop start
-    isAdjusting = false; // Re-enable scroll handling
+    applyPageScrollProgress(pageScrollProgress()); // Align to current page scroll in runway
     hasStarted = true; // Mark initialization complete
   }
 
   function setupGallery() { // Measure loop geometry and normalize scroll position
     measureLoop(); // Refresh width and original start offset
+    updateStageMetrics(); // Refresh runway height and sticky offset
     if (!hasStarted) { // Only jump on first setup so resize does not reset user scroll
-      initScrollPosition(); // Start on the middle (original) card set
+      initScrollPosition(); // Start on mapped position for current page scroll
+    } else {
+      syncFromPageScroll(); // Keep mapped position after resize
     }
-    normalizeScroll(); // Correct if outside the loop range
+    normalizeScroll(); // Correct if outside the loop range after manual horizontal scroll
   }
 
   function onGalleryScroll() { // Handle scroll events on gallery container
     if (isAdjusting) { return; } // Ignore programmatic scroll adjustments
-    normalizeScroll(); // Loop when bounds are crossed
+    normalizeScroll(); // Loop when bounds are crossed during horizontal drag
   }
 
-  function onGalleryWheel(event) { // Map vertical wheel/trackpad motion to horizontal scroll
+  function onGalleryWheel(event) { // Horizontal wheel/trackpad motion scrolls gallery; vertical scrolls the page
     if (loopWidth <= 0) { return; } // Skip until measured
-    var delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY; // Pick dominant axis
-    if (delta === 0) { return; } // Ignore empty wheel events
-    event.preventDefault(); // Stop page from scrolling vertically instead
-    scrollEl.scrollLeft += delta; // Move gallery horizontally
+    if (Math.abs(event.deltaX) <= Math.abs(event.deltaY)) { return; } // Let vertical wheel move page through runway
+    event.preventDefault(); // Stop browser from treating horizontal wheel as back/forward navigation
+    scrollEl.scrollLeft += event.deltaX; // Move gallery horizontally
     normalizeScroll(); // Wrap when loop bounds are crossed
   }
 
@@ -135,8 +178,15 @@
   whenLayoutReady(setupGallery); // Initial setup after layout
   window.addEventListener("load", function () { whenLayoutReady(setupGallery); }); // Re-measure after images load
   window.addEventListener("resize", function () { whenLayoutReady(setupGallery); }); // Re-measure on resize
+  window.addEventListener("scroll", onWindowScroll, { passive: true }); // Map vertical page scroll to gallery
   scrollEl.addEventListener("scroll", onGalleryScroll, { passive: true }); // Native horizontal scroll / drag
-  scrollEl.addEventListener("wheel", onGalleryWheel, { passive: false }); // Trackpad and mouse wheel over gallery
+  scrollEl.addEventListener("wheel", onGalleryWheel, { passive: false }); // Horizontal trackpad wheel over gallery
+
+  var siteTop = document.querySelector(".site-top"); // Sticky header stack whose height affects gallery pin offset
+  if (siteTop && typeof ResizeObserver !== "undefined") { // Watch header height when events banner appears
+    var siteTopObserver = new ResizeObserver(function () { whenLayoutReady(updateStageMetrics); }); // Refresh sticky top offset
+    siteTopObserver.observe(siteTop); // React to ticker show/hide and nav expand
+  }
 
   if ("onscrollend" in scrollEl) { // Use scrollend when browser supports it (momentum scroll)
     scrollEl.addEventListener("scrollend", normalizeScroll, { passive: true }); // Wrap after touch momentum stops

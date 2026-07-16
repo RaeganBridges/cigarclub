@@ -6,10 +6,14 @@ window.CigarClubCalendar = { // Global config read by events-ticker.js and calen
   ],
   apiKey: "", // Optional: paste Google Calendar API key here for live browser updates
   timeZone: "America/Chicago", // Display event times in Central Time
-  embedMode: "AGENDA", // Embed view: AGENDA lists upcoming events; WEEK or MONTH also supported
+  embedMode: "MONTH", // Embed view: MONTH shows month grid first; WEEK or AGENDA also supported
   jsonPath: "data/calendar-events.json", // Auto-synced JSON from GitHub Action
   manualPath: "data/events-manual.json", // Optional hand-edited events (merged with synced data)
   refreshMs: 5 * 60 * 1000, // Re-fetch event data every 5 minutes
+  bootstrapEvents: [ // Fallback events when JSON/iCal fetch is unavailable (e.g. local preview)
+    { summary: "Showcase 1", start: "2026-06-16T19:00:00.000Z", allDay: false, isTodo: false }, // Next club event
+    { summary: "TEST", start: "2026-06-18T19:00:00.000Z", allDay: false, isTodo: false }, // Second club event
+  ],
 };
 
 window.CigarClubCalendar.icalUrl = "https://calendar.google.com/calendar/ical/" + encodeURIComponent(window.CigarClubCalendar.calendarId).replace(/%40/g, "%40") + "/public/basic.ics"; // Public iCal feed derived from calendar ID

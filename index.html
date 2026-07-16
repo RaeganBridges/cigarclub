@@ -14,6 +14,7 @@
 </head>
 <body class="home tk-sarvatrik-latin-variable"> <!-- Home page; Sarvatrik via Adobe Fonts kit end7yej -->
 
+  <div class="site-top"> <!-- Sticky header + events banner stack -->
   <header class="site-header"> <!-- Full-width maroon header with overlapping logo tab -->
     <div class="header-bar"> <!-- Maroon navigation bar -->
       <button type="button" class="nav-expand-toggle" aria-expanded="false" aria-controls="header-nav-panel"> <!-- Expand/collapse site navigation -->
@@ -34,28 +35,25 @@
         </ul>
       </nav>
     </div>
-    <a href="events.html" class="events-ticker" hidden> <!-- Scrolling next-event and task announcement -->
-      <div class="events-ticker-viewport"> <!-- Clips scrolling text at bar edges -->
-        <div class="events-ticker-track"> <!-- Animated row duplicated for seamless loop -->
-          <span class="events-ticker-text"></span> <!-- Primary scrolling announcement copy -->
-          <span class="events-ticker-text" aria-hidden="true"></span> <!-- Duplicate for infinite marquee loop -->
-        </div>
-      </div>
-    </a>
     <a href="index.html" class="logo-tab"> <!-- Centered logo tab overlapping header and content -->
       <img src="images/LOGO_01.png" alt="Cigar Club" class="logo-img"> <!-- Full brand logo image -->
     </a>
   </header>
+  <a href="events.html" class="events-ticker" hidden> <!-- Scrolling next-event and task announcement -->
+    <div class="events-ticker-viewport"> <!-- Clips scrolling text at bar edges -->
+      <div class="events-ticker-track"> <!-- Animated row duplicated for seamless loop -->
+        <span class="events-ticker-text"></span> <!-- Primary scrolling announcement copy -->
+        <span class="events-ticker-text" aria-hidden="true"></span> <!-- Duplicate for infinite marquee loop -->
+      </div>
+    </div>
+  </a>
+  </div>
 
   <main class="home-main"> <!-- Main scrollable content area -->
     <section class="home-hero"> <!-- Opening hero guides visitors into the site -->
       <p class="home-hero__eyebrow">The Cigar Club Nashville</p> <!-- Brand eyebrow above headline -->
       <h1 class="home-hero__title">Where Craft Meets Community</h1> <!-- Primary home headline -->
       <p class="home-hero__lead">Curated cigars, pipes, and accessories — plus tastings and lounge nights in Madison.</p> <!-- Supporting hero copy -->
-      <div class="home-hero__actions"> <!-- Primary paths into the site -->
-        <a href="about-us.html" class="btn">Learn about us</a> <!-- Story-first entry like Flyward About flow -->
-        <a href="events.html" class="btn btn--ghost">View upcoming events</a> <!-- Secondary path to calendar -->
-      </div>
     </section>
 
     <section class="home-cards" aria-label="Shop categories"> <!-- Original three feature cards -->
@@ -100,6 +98,7 @@
       </article>
     </section>
 
+    <div class="gallery-scroll-stage"> <!-- Tall scroll runway maps one grid width of vertical scroll to horizontal -->
     <section class="gallery-scroll" aria-label="Featured collection"> <!-- Horizontally scrollable gallery below cards -->
       <div class="gallery-brick"> <!-- Staggered two-row brick layout -->
         <div class="gallery-row"> <!-- Top row of image cards -->
@@ -204,6 +203,19 @@
         </div>
       </div>
     </section>
+    </div>
+
+    <section class="reviews-section" aria-labelledby="reviews-heading"> <!-- Rotating customer reviews -->
+      <h2 id="reviews-heading" class="reviews-section__title">What People Are Saying</h2> <!-- Reviews section headline -->
+      <div class="reviews-carousel" id="reviews-carousel"> <!-- Auto-flipping review carousel -->
+        <div class="reviews-carousel__viewport" aria-live="polite"></div> <!-- Review slides injected by JS -->
+        <div class="reviews-carousel__controls"> <!-- Manual carousel navigation -->
+          <button type="button" class="reviews-carousel__btn reviews-carousel__btn--prev" aria-label="Previous review">‹</button> <!-- Go to previous review -->
+          <div class="reviews-carousel__dots" role="tablist" aria-label="Choose review"></div> <!-- Dot indicators built by JS -->
+          <button type="button" class="reviews-carousel__btn reviews-carousel__btn--next" aria-label="Next review">›</button> <!-- Go to next review -->
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer"> <!-- Site footer with navigation -->
@@ -212,6 +224,8 @@
       <a href="about-us.html">About Us</a> <!-- About page -->
       <a href="events.html">Events</a> <!-- Events page -->
       <a href="location.html">Location</a> <!-- Location page -->
+      <a href="https://www.instagram.com/cigarclubnashville" target="_blank" rel="noopener noreferrer">Instagram</a> <!-- Opens Instagram profile in a new tab -->
+      <a href="https://x.com/CigarNashville" target="_blank" rel="noopener noreferrer">X</a> <!-- Opens X profile in a new tab -->
     </nav>
     <p class="site-footer__copy">&copy; 2026 The Cigar Club Nashville. All rights reserved.</p> <!-- Copyright notice -->
   </footer>
@@ -223,7 +237,8 @@
   <script src="js/theme.js"></script> <!-- Theme toggle logic and persistence -->
   <script src="js/nav-expand.js"></script> <!-- Expandable header navigation panel -->
   <script src="js/home-scroll.js"></script> <!-- Logo shrink animation on scroll -->
-  <script src="js/gallery-loop.js?v=5"></script> <!-- Infinite horizontal loop for gallery grid -->
+  <script src="js/gallery-loop.js?v=8"></script> <!-- Infinite horizontal loop for gallery grid -->
+  <script src="js/reviews-carousel.js"></script> <!-- Auto-rotating customer reviews -->
 
 </body>
 </html>

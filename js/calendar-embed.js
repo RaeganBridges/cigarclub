@@ -11,7 +11,7 @@
   params.set("wkst", "1"); // Week starts on Sunday
   params.set("bgcolor", "#fdfddc"); // Cream background to match site
   params.set("ctz", config.timeZone || "America/Chicago"); // Club timezone
-  params.set("mode", config.embedMode || "AGENDA"); // Agenda list shows upcoming events clearly
+  params.set("mode", config.embedMode || "MONTH"); // Month view by default
   params.set("showTitle", "0"); // Hide duplicate calendar title in embed
   params.set("showNav", "1"); // Show month/week navigation
   params.set("showDate", "1"); // Show date picker

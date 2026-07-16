@@ -5,6 +5,7 @@
   if (!ticker || !loader) { return; } // Exit if ticker markup or loader is missing
 
   var textEls = ticker.querySelectorAll(".events-ticker-text"); // Duplicate text nodes for seamless loop
+  var eventDivider = "\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0"; // Wide non-breaking gaps between events
   var dateFormatter = new Intl.DateTimeFormat("en-US", { // Format event dates for ticker copy
     weekday: "short", // Short day name (e.g. Sat)
     month: "short", // Short month name (e.g. Jun)
@@ -46,20 +47,38 @@
     return dateFormatter.format(item.start); // Timed items include clock time
   }
 
-  function buildTickerMessage(items) { // Compose scrolling text from the next upcoming event only
-    var upcoming = loader.upcomingItems(items); // Future items sorted by start time
-    var nextEvent = upcoming.filter(function (item) { return !isTask(item); })[0]; // Soonest non-task calendar event
-    if (!nextEvent) { return null; } // No banner when calendar has no upcoming events
-    var when = formatWhen(nextEvent); // Formatted date/time for the event
-    return cleanTitle(nextEvent.summary) + (when ? " \u2014 " + when : ""); // Event name and date only
+  function escapeHtml(text) { // Escape calendar text before inserting into ticker HTML
+    return (text || "") // Fallback for empty strings
+      .replace(/&/g, "&amp;") // Escape ampersands
+      .replace(/</g, "&lt;") // Escape less-than
+      .replace(/>/g, "&gt;") // Escape greater-than
+      .replace(/"/g, "&quot;"); // Escape double quotes
+  }
+
+  function buildEventSegment(event) { // Build one HTML segment with bold event name
+    var title = escapeHtml(cleanTitle(event.summary)); // Sanitized event title text
+    var when = formatWhen(event); // Formatted date/time for this event
+    return '<strong class="events-ticker-name">' + title + "</strong>" + (when ? " \u2014 " + escapeHtml(when) : ""); // Bold name plus date
+  }
+
+  function buildTickerMessage(items) { // Compose scrolling HTML from up to three upcoming events
+    var upcoming = loader.upcomingItems(items).filter(function (item) { // Future non-task events only
+      return !isTask(item); // Skip calendar tasks in the banner
+    }).slice(0, 3); // Show at most three upcoming events
+    if (!upcoming.length) { return null; } // No banner when calendar has no upcoming events
+    return upcoming.map(buildEventSegment).join(eventDivider); // Separate events with wide spacing
+  }
+
+  function showTicker() { // Reveal banner after content is ready
+    ticker.removeAttribute("hidden"); // Remove hidden attribute for reliable display
   }
 
   function hideTicker() { // Remove banner when there is nothing to announce
-    ticker.hidden = true; // Hide the events bar from layout
+    ticker.setAttribute("hidden", ""); // Hide the events bar from layout
   }
 
   function expandForMarquee(message) { // Repeat copy so text fills wide screens edge to edge
-    var chunk = message + "   \u2726   "; // One segment plus star divider
+    var chunk = message + eventDivider; // One segment plus trailing gap before repeat
     var targetLength = Math.max(window.innerWidth * 0.9, 320); // Minimum track length for full-screen feel
     var expanded = chunk; // Start with one segment
     while (expanded.length < targetLength) { // Keep repeating until bar feels continuously filled
@@ -76,22 +95,32 @@
     track.style.animationDuration = duration + "s"; // Apply computed speed to CSS animation
   }
 
-  function showMessage(message) { // Render message in both ticker text nodes
+  function showMessage(message) { // Render HTML message in both ticker text nodes
     var expanded = expandForMarquee(message); // Lengthen copy so it spans the full screen width
     textEls.forEach(function (el) { // Update each duplicated span
-      el.textContent = expanded; // Set scrolling announcement copy
+      el.innerHTML = expanded; // Set scrolling announcement HTML
     });
-    ticker.hidden = false; // Ensure ticker is visible after content is set
+    ticker.removeAttribute("hidden"); // Ensure ticker is visible after content is set
     requestAnimationFrame(setScrollSpeed); // Recalculate speed after text reflow
   }
 
   function refreshTicker() { // Fetch latest calendar data and show or hide banner
     loader.loadEvents().then(function (items) { // Fetch from best available source
-      var message = buildTickerMessage(items); // Next event text, or null if none
+      var message = buildTickerMessage(items); // All upcoming event text, or null if none
       if (!message) { hideTicker(); return; } // Remove banner when no upcoming events
-      showMessage(message); // Display next event in scrolling bar
+      showMessage(message); // Display events in scrolling bar
+      showTicker(); // Ensure banner is visible
     }).catch(function () { // Handle fetch/parse failures gracefully
-      hideTicker(); // Hide banner when event data cannot be loaded
+      var fallback = buildTickerMessage(loadBootstrapFromConfig()); // Try embedded config events
+      if (!fallback) { hideTicker(); return; } // Hide banner when no fallback events exist
+      showMessage(fallback); // Display fallback events in scrolling bar
+      showTicker(); // Ensure banner is visible
+    });
+  }
+
+  function loadBootstrapFromConfig() { // Read embedded fallback events when fetch fails
+    return (config.bootstrapEvents || []).map(function (raw) { // Map config rows to item shape
+      return { summary: raw.summary || "", start: raw.start ? new Date(raw.start) : null, allDay: Boolean(raw.allDay), isTodo: Boolean(raw.isTodo) }; // Normalized item
     });
   }
 

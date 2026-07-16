@@ -14,6 +14,7 @@
 </head>
 <body class="tk-sarvatrik-latin-variable"> <!-- Sarvatrik via Adobe Fonts kit end7yej -->
 
+  <div class="site-top"> <!-- Sticky header + events banner stack -->
   <header class="site-header site-header--page"> <!-- Sticky header with expandable navigation -->
     <div class="header-bar"> <!-- Maroon navigation bar -->
       <button type="button" class="nav-expand-toggle" aria-expanded="false" aria-controls="header-nav-panel"> <!-- Expand/collapse site navigation -->
@@ -35,15 +36,16 @@
         </ul>
       </nav>
     </div>
-    <a href="events.html" class="events-ticker" hidden> <!-- Scrolling next-event and task announcement -->
-      <div class="events-ticker-viewport"> <!-- Clips scrolling text at bar edges -->
-        <div class="events-ticker-track"> <!-- Animated row duplicated for seamless loop -->
-          <span class="events-ticker-text"></span> <!-- Primary scrolling announcement copy -->
-          <span class="events-ticker-text" aria-hidden="true"></span> <!-- Duplicate for infinite marquee loop -->
-        </div>
-      </div>
-    </a>
   </header>
+  <a href="events.html" class="events-ticker" hidden> <!-- Scrolling next-event and task announcement -->
+    <div class="events-ticker-viewport"> <!-- Clips scrolling text at bar edges -->
+      <div class="events-ticker-track"> <!-- Animated row duplicated for seamless loop -->
+        <span class="events-ticker-text"></span> <!-- Primary scrolling announcement copy -->
+        <span class="events-ticker-text" aria-hidden="true"></span> <!-- Duplicate for infinite marquee loop -->
+      </div>
+    </div>
+  </a>
+  </div>
 
   <main class="page-flow"> <!-- Main page content with editorial section flow -->
     <section class="page-hero"> <!-- Opening hero establishes the page story -->
@@ -61,7 +63,29 @@
       <address class="location-address"> <!-- Semantic markup for physical address -->
         <a href="https://www.google.com/maps/search/?api=1&amp;query=2148+Gallatin+Pike+N,+Madison,+TN+37115" class="location-address__link">2148 Gallatin Pike N<br>Madison, TN 37115</a> <!-- Clickable address opens directions in Google Maps -->
       </address>
-      <p class="location-hours-note">Hours details will be posted here soon.</p> <!-- Placeholder until hours are finalized -->
+      <p class="location-phone"> <!-- Store phone number -->
+        <a href="tel:+16158592425" class="location-phone__link">(615) 859-2425</a> <!-- Tap to call on mobile -->
+      </p>
+      <p class="location-email"> <!-- Store email address -->
+        <a href="mailto:cigarclubnashville@gmail.com" class="location-email__link">cigarclubnashville@gmail.com</a> <!-- Tap to open email client -->
+      </p>
+      <p class="location-instagram"> <!-- Store Instagram profile -->
+        <a href="https://www.instagram.com/cigarclubnashville" class="location-instagram__link" target="_blank" rel="noopener noreferrer">@cigarclubnashville</a> <!-- Opens Instagram in a new tab -->
+      </p>
+      <p class="location-x"> <!-- Store X (Twitter) profile -->
+        <a href="https://x.com/CigarNashville" class="location-x__link" target="_blank" rel="noopener noreferrer">@CigarNashville</a> <!-- Opens X profile in a new tab -->
+      </p>
+      <h3 class="location-hours__title">Hours</h3> <!-- Hours heading below address -->
+      <dl class="location-hours"> <!-- Two-column store hours list -->
+        <div class="location-hours__row"> <!-- Weekday hours row -->
+          <dt class="location-hours__days">Mon – Sat</dt> <!-- Days open -->
+          <dd class="location-hours__times">9:00 am – 7:00 pm</dd> <!-- Weekday hours -->
+        </div>
+        <div class="location-hours__row"> <!-- Sunday hours row -->
+          <dt class="location-hours__days">Sunday</dt> <!-- Sunday label -->
+          <dd class="location-hours__times">12:00 pm – 6:00 pm</dd> <!-- Sunday hours -->
+        </div>
+      </dl>
     </section>
 
     <section class="page-section"> <!-- Visit planning steps -->
@@ -85,12 +109,6 @@
         </article>
       </div>
     </section>
-
-    <section class="page-cta"> <!-- Closing call-to-action -->
-      <h2 class="page-cta__title">Something on the calendar?</h2> <!-- CTA headline -->
-      <p class="page-cta__text">Pair your visit with a tasting or club night — see what is coming up before you make the drive.</p> <!-- CTA supporting copy -->
-      <a href="events.html" class="btn">View upcoming events</a> <!-- Primary CTA button -->
-    </section>
   </main>
 
   <footer class="site-footer"> <!-- Site footer with navigation -->
@@ -99,6 +117,8 @@
       <a href="about-us.html">About Us</a> <!-- About page -->
       <a href="events.html">Events</a> <!-- Events page -->
       <a href="location.html">Location</a> <!-- Location page -->
+      <a href="https://www.instagram.com/cigarclubnashville" target="_blank" rel="noopener noreferrer">Instagram</a> <!-- Opens Instagram profile in a new tab -->
+      <a href="https://x.com/CigarNashville" target="_blank" rel="noopener noreferrer">X</a> <!-- Opens X profile in a new tab -->
     </nav>
     <p class="site-footer__copy">&copy; 2026 The Cigar Club Nashville. All rights reserved.</p> <!-- Copyright notice -->
   </footer>

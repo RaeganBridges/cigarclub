@@ -14,6 +14,7 @@
 </head>
 <body class="tk-sarvatrik-latin-variable"> <!-- Sarvatrik via Adobe Fonts kit end7yej -->
 
+  <div class="site-top"> <!-- Sticky header + events banner stack -->
   <header class="site-header site-header--page"> <!-- Sticky header with expandable navigation -->
     <div class="header-bar"> <!-- Maroon navigation bar -->
       <button type="button" class="nav-expand-toggle" aria-expanded="false" aria-controls="header-nav-panel"> <!-- Expand/collapse site navigation -->
@@ -35,15 +36,16 @@
         </ul>
       </nav>
     </div>
-    <a href="events.html" class="events-ticker" hidden> <!-- Scrolling next-event and task announcement -->
-      <div class="events-ticker-viewport"> <!-- Clips scrolling text at bar edges -->
-        <div class="events-ticker-track"> <!-- Animated row duplicated for seamless loop -->
-          <span class="events-ticker-text"></span> <!-- Primary scrolling announcement copy -->
-          <span class="events-ticker-text" aria-hidden="true"></span> <!-- Duplicate for infinite marquee loop -->
-        </div>
-      </div>
-    </a>
   </header>
+  <a href="events.html" class="events-ticker" hidden> <!-- Scrolling next-event and task announcement -->
+    <div class="events-ticker-viewport"> <!-- Clips scrolling text at bar edges -->
+      <div class="events-ticker-track"> <!-- Animated row duplicated for seamless loop -->
+        <span class="events-ticker-text"></span> <!-- Primary scrolling announcement copy -->
+        <span class="events-ticker-text" aria-hidden="true"></span> <!-- Duplicate for infinite marquee loop -->
+      </div>
+    </div>
+  </a>
+  </div>
 
   <main class="page-flow"> <!-- Main page content with editorial section flow -->
     <section class="page-hero"> <!-- Opening hero establishes the page story -->
@@ -61,10 +63,6 @@
       <div class="events-upcoming"> <!-- Populated by js/events-list.js -->
         <p class="events-upcoming__loading">Loading events…</p> <!-- Placeholder until events load -->
       </div>
-      <div class="calendar-actions"> <!-- Quick links for staff to manage club calendar -->
-        <a href="https://calendar.google.com/calendar/u/0/r/eventedit?cid=OWQ2MjRjMDJiYzMxNmI5YzQyMmFhMzBhMWYzZjU4MGExMWIxYTg1YjI0MTJkZjlkMzBiZjY3NWFkZmNkZjYwN0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t" class="calendar-add-link">Add event to club calendar</a> <!-- Opens Google event editor on The Cigar Club calendar -->
-        <a href="https://calendar.google.com/calendar/u/0/r?cid=OWQ2MjRjMDJiYzMxNmI5YzQyMmFhMzBhMWYzZjU4MGExMWIxYTg1YjI0MTJkZjlkMzBiZjY3NWFkZmNkZjYwN0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t" class="calendar-open-link">Open in Google Calendar</a> <!-- Opens full club calendar in Google -->
-      </div>
     </section>
 
     <section class="page-section"> <!-- Full calendar embed section -->
@@ -74,7 +72,7 @@
         <!-- Google Calendar embed: src is set by js/calendar-embed.js from js/calendar-config.js -->
         <iframe
           class="calendar-embed"
-          src="https://calendar.google.com/calendar/embed?height=700&amp;wkst=1&amp;bgcolor=%23fdfddc&amp;ctz=America%2FChicago&amp;mode=AGENDA&amp;showTitle=0&amp;showNav=1&amp;showDate=1&amp;showPrint=0&amp;showTabs=1&amp;showCalendars=0&amp;src=9d624c02bc316b9c422aa30a1f3f580a11b1a85b2412df9d30bf675adfcdf607%40group.calendar.google.com"
+          src="https://calendar.google.com/calendar/embed?height=700&amp;wkst=1&amp;bgcolor=%23fdfddc&amp;ctz=America%2FChicago&amp;mode=MONTH&amp;showTitle=0&amp;showNav=1&amp;showDate=1&amp;showPrint=0&amp;showTabs=1&amp;showCalendars=0&amp;src=9d624c02bc316b9c422aa30a1f3f580a11b1a85b2412df9d30bf675adfcdf607%40group.calendar.google.com"
           style="border: 0"
           width="800"
           height="700"
@@ -84,17 +82,6 @@
         </iframe>
       </div>
     </section>
-
-    <details class="calendar-setup-details"> <!-- Collapsible staff note keeps page flow clean -->
-      <summary>Events not showing? Staff setup guide</summary> <!-- Collapsed by default -->
-      <p class="calendar-setup-note__text">Google only publishes events that are saved on <strong>The Cigar Club</strong> calendar with <strong>public</strong> visibility. Tasks and private events will not appear on the website.</p> <!-- Main troubleshooting step -->
-      <ol class="calendar-setup-note__steps"> <!-- Numbered setup checklist -->
-        <li>Click <strong>Add event to club calendar</strong> above (do not use your personal calendar).</li> <!-- Step 1 -->
-        <li>When editing an event, set visibility to <strong>Public</strong> (not Private).</li> <!-- Step 2 -->
-        <li>In calendar settings, enable <strong>Make available to public</strong> → <strong>See all event details</strong>.</li> <!-- Step 3 -->
-        <li>If events are on another calendar, add its ID to <code>embedCalendarIds</code> in <code>js/calendar-config.js</code>.</li> <!-- Step 4 for wrong calendar ID -->
-      </ol>
-    </details>
 
     <section class="page-cta"> <!-- Closing call-to-action -->
       <h2 class="page-cta__title">Ready to join us?</h2> <!-- CTA headline -->
@@ -109,6 +96,8 @@
       <a href="about-us.html">About Us</a> <!-- About page -->
       <a href="events.html">Events</a> <!-- Events page -->
       <a href="location.html">Location</a> <!-- Location page -->
+      <a href="https://www.instagram.com/cigarclubnashville" target="_blank" rel="noopener noreferrer">Instagram</a> <!-- Opens Instagram profile in a new tab -->
+      <a href="https://x.com/CigarNashville" target="_blank" rel="noopener noreferrer">X</a> <!-- Opens X profile in a new tab -->
     </nav>
     <p class="site-footer__copy">&copy; 2026 The Cigar Club Nashville. All rights reserved.</p> <!-- Copyright notice -->
   </footer>
