@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-16T18:23:50.000Z",
+  "updatedAt": "2026-07-16T18:32:54.652Z",
   "timeZone": "America/Chicago",
   "source": "ical",
   "items": [
@@ -20,10 +20,34 @@
       "isTodo": false
     },
     {
+      "summary": "weeeee",
+      "description": "",
+      "categories": "",
+      "start": "2026-07-16T19:00:00.000Z",
+      "allDay": false,
+      "isTodo": false
+    },
+    {
+      "summary": "test",
+      "description": "",
+      "categories": "",
+      "start": "2026-07-16T22:00:00.000Z",
+      "allDay": false,
+      "isTodo": false
+    },
+    {
       "summary": "holiday",
       "description": "",
       "categories": "",
       "start": "2026-07-17T18:30:00.000Z",
+      "allDay": false,
+      "isTodo": false
+    },
+    {
+      "summary": "hello",
+      "description": "",
+      "categories": "",
+      "start": "2026-07-18T00:30:00.000Z",
       "allDay": false,
       "isTodo": false
     }
