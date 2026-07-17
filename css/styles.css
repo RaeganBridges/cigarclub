@@ -961,23 +961,66 @@ h1 {
 
 /* Single review slide */
 .reviews-carousel__slide {
+  position: relative; /* Anchor the decorative quote mark */
   display: flex; /* Center review text inside each card */
   flex-direction: column; /* Stack quote and author vertically */
   justify-content: center; /* Center content vertically in the box */
   align-items: center; /* Center content horizontally in the box */
   flex: 0 0 100%; /* Make each review occupy one viewport width */
   margin: 0; /* Reset blockquote default margin */
-  padding: 2rem 2.25rem; /* Inner card spacing */
-  background-color: var(--surface); /* Theme-aware review card background */
-  border: 1px solid var(--border); /* Theme-aware card border */
-  border-radius: 12px; /* Rounded review card corners */
+  padding: 2.5rem 2.5rem 2rem; /* Roomier inner spacing around the quote */
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--accent) 14%, var(--surface)) 0%,
+      var(--surface) 28%
+    ); /* Soft gold wash into the card surface */
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--border)); /* Warm gold-edged frame */
+  border-radius: 18px; /* Softer lounge-style corners */
+  box-shadow:
+    0 1px 0 color-mix(in srgb, var(--pale-yellow) 18%, transparent),
+    0 18px 36px color-mix(in srgb, var(--charcoal) 28%, transparent); /* Subtle lift without heavy glow */
   scroll-snap-align: center; /* Snap the whole card into the viewport */
   scroll-snap-stop: always; /* Avoid skipping reviews on quick swipes */
+  overflow: hidden; /* Keep the top accent bar clipped to the radius */
+}
+
+/* Gold accent bar across the top of each quote box */
+.reviews-carousel__slide::before {
+  content: ""; /* Draw the top accent strip */
+  position: absolute; /* Pin to the top edge of the card */
+  top: 0; /* Flush with the card top */
+  left: 0; /* Span from the left edge */
+  right: 0; /* Span to the right edge */
+  height: 3px; /* Thin gold accent line */
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--accent) 20%,
+    var(--pale-yellow) 50%,
+    var(--accent) 80%,
+    transparent 100%
+  ); /* Soft gold highlight across the card */
+}
+
+/* Large decorative opening quote mark */
+.reviews-carousel__slide::after {
+  content: "“"; /* Decorative quotation mark */
+  position: absolute; /* Float behind the quote text */
+  top: 0.85rem; /* Sit near the top of the card */
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%); /* Exact center alignment */
+  color: color-mix(in srgb, var(--accent) 45%, transparent); /* Soft gold mark */
+  font-size: clamp(3.5rem, 8vw, 5rem); /* Large atmospheric mark */
+  line-height: 1; /* Tight mark leading */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold decorative mark */
+  pointer-events: none; /* Do not block swipe/drag */
+  z-index: 0; /* Stay behind the review copy */
 }
 
 /* Visible active review slide */
 .reviews-carousel__slide.is-active {
-  border-color: color-mix(in srgb, var(--accent) 55%, var(--border)); /* Subtly mark the current review */
+  border-color: color-mix(in srgb, var(--accent) 48%, var(--border)); /* Stronger gold edge on the current review */
 }
 
 /* Next slide starts just off the right edge */
@@ -1002,20 +1045,37 @@ h1 {
 
 /* Review quote text */
 .reviews-carousel__quote {
-  margin: 0 0 0.5rem; /* Tighter space before the author line */
-  max-width: 58rem; /* Keep long reviews readable while centered */
+  position: relative; /* Keep quote above the decorative mark */
+  z-index: 1; /* Sit above the background quote mark */
+  margin: 1.25rem 0 0.85rem; /* Space under the decorative mark and before the author */
+  max-width: 42rem; /* Keep long reviews readable while centered */
   color: var(--text); /* Theme-aware quote text */
-  font-size: 1.15rem; /* Slightly larger quote size */
-  line-height: 1.65; /* Comfortable quote leading */
+  font-size: clamp(1.08rem, 2.2vw, 1.22rem); /* Slightly larger, fluid quote size */
+  line-height: 1.7; /* Comfortable quote leading */
   text-align: center; /* Center quote text in the review box */
 }
 
 /* Review author attribution */
 .reviews-carousel__author {
-  color: var(--text-muted); /* Muted author name */
-  font-size: 1rem; /* Author line size */
+  position: relative; /* Keep author above the decorative mark */
+  z-index: 1; /* Sit above the background quote mark */
+  display: flex; /* Center the author with a divider rule */
+  flex-direction: column; /* Stack rule above the name */
+  align-items: center; /* Center the rule and name */
+  gap: 0.65rem; /* Space between the rule and the name */
+  color: var(--accent); /* Gold author name for emphasis */
+  font-size: 0.95rem; /* Compact author line size */
   font-variation-settings: "wght" var(--font-wght-bold); /* Bold author name */
+  letter-spacing: 0.04em; /* Slight spacing for the attribution */
   text-align: center; /* Center author under the quote */
+}
+
+/* Thin gold rule above the reviewer name */
+.reviews-carousel__author::before {
+  content: ""; /* Draw the divider */
+  width: 2.5rem; /* Short accent rule */
+  height: 1px; /* Hairline divider */
+  background-color: color-mix(in srgb, var(--accent) 70%, transparent); /* Soft gold separator */
 }
 
 /* Row of review dots under the card */
@@ -1768,68 +1828,148 @@ body.home .theme-toggle {
   transform: rotate(-45deg); /* Form lower leg of X */
 }
 
-/* Collapsible link bar below header row */
+/* Collapsible icon popup below the menu button */
 .site-header .header-nav-panel {
-  max-height: 0; /* Collapsed by default */
-  overflow: hidden; /* Hide links while collapsed */
-  background-color: var(--teal); /* Teal bar contrasts with maroon header */
-  opacity: 0; /* Fade out when collapsed */
-  transition: max-height 0.3s ease, opacity 0.25s ease; /* Smooth expand/collapse */
-  position: relative; /* Keep the panel under the hanging home logo */
-  z-index: 10; /* Sit below the logo tab when the menu opens */
+  position: absolute; /* Float over page content instead of pushing layout */
+  top: calc(100% + 0.55rem); /* Sit just under the maroon header bar */
+  left: clamp(1.25rem, 4vw, 2rem); /* Align with the left header padding */
+  z-index: 40; /* Keep icons above logo tab and page content */
+  width: max-content; /* Shrink-wrap to the icon column */
+  max-width: min(18rem, calc(100vw - 2.5rem)); /* Stay on-screen on phones */
+  background-color: transparent; /* Let each icon pill provide its own surface */
+  border: none; /* No full-width bar behind the icons */
+  opacity: 0; /* Invisible while closed */
+  pointer-events: none; /* Ignore clicks while closed */
+  transform: translateY(-0.35rem); /* Slight rise start for the open motion */
+  transition: opacity 0.2s ease, transform 0.25s ease; /* Smooth panel entrance */
 }
 
-/* Expanded navigation panel */
+/* Expanded navigation popup */
 .site-header.is-nav-open .header-nav-panel {
-  max-height: 3.25rem; /* Compact single-row height */
   opacity: 1; /* Fully visible when open */
+  pointer-events: auto; /* Allow clicks on the icons */
+  transform: translateY(0); /* Settle into place */
 }
 
 /* Override global nav centering inside expand panel */
 .site-header .header-nav-panel nav {
-  width: 100%; /* Span full width of expand bar */
+  width: auto; /* Fit the icon stack */
   max-width: none; /* Remove global 1100px nav cap */
   margin: 0; /* Remove global auto centering on nav */
   display: block; /* Let link list control flex layout */
 }
 
-/* Horizontal link list inside expand panel */
+/* Vertical icon list inside the popup */
 .site-header .header-nav-links {
   list-style: none; /* Remove bullet points */
-  display: flex; /* Lay out links in a row */
-  flex-wrap: wrap; /* Wrap on very narrow screens */
-  justify-content: flex-start; /* Align links to left edge of page */
-  align-items: center; /* Vertically center link text */
-  width: 100%; /* Fill expand bar so flex-start anchors to left */
-  gap: 0.25rem 1.5rem; /* Tighter spacing between links */
-  padding: 0.3rem 2rem; /* Minimal vertical padding in expand bar */
+  display: flex; /* Stack nav destinations */
+  flex-direction: column; /* Icons pop as a vertical column */
+  align-items: flex-start; /* Keep labels expanding to the right */
+  gap: 0.45rem; /* Space between popping icons */
+  width: auto; /* Shrink to icon/label content */
+  padding: 0; /* No bar padding around floating icons */
+  margin: 0; /* Remove default list margin */
 }
 
-/* Individual expand bar links */
+/* Stagger each icon's pop-in from the menu button */
+.site-header .header-nav-links li {
+  opacity: 0; /* Hidden until the menu opens */
+  transform: scale(0.55) translateY(-0.65rem); /* Start smaller and slightly above */
+  transition:
+    opacity 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1); /* Springy pop entrance */
+}
+
+/* Reveal icons in sequence once the menu is open */
+.site-header.is-nav-open .header-nav-links li {
+  opacity: 1; /* Fully visible */
+  transform: scale(1) translateY(0); /* Settle at full size */
+}
+
+.site-header.is-nav-open .header-nav-links li:nth-child(1) { transition-delay: 0.04s; } /* Shop pops first */
+.site-header.is-nav-open .header-nav-links li:nth-child(2) { transition-delay: 0.09s; } /* About Us next */
+.site-header.is-nav-open .header-nav-links li:nth-child(3) { transition-delay: 0.14s; } /* Events next */
+.site-header.is-nav-open .header-nav-links li:nth-child(4) { transition-delay: 0.19s; } /* Location last */
+
+/* Individual icon pills */
 .site-header .header-nav-links a {
   display: inline-flex; /* Align icon and label horizontally */
   align-items: center; /* Vertically center icon with text */
-  gap: 0.35rem; /* Tight gap between icon and label */
-  color: var(--cream); /* Cream text on teal background */
+  gap: 0; /* Gap opens with the label on hover */
+  min-height: 3.15rem; /* Comfortable tap target for mid-size icons */
+  padding: 0.25rem 0.25rem; /* Compact icon-only padding by default */
+  background-color: var(--cream); /* Cream pill behind each icon */
+  color: var(--charcoal); /* Dark label text on cream */
+  border-radius: 999px; /* Capsule shape that grows with the label */
   text-decoration: none; /* Remove underline */
-  font-size: 0.85rem; /* Slightly smaller nav label */
+  font-size: 0.85rem; /* Compact nav label size */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold hover label */
   letter-spacing: 0.04em; /* Subtle letter spacing */
-  transition: color 0.2s; /* Smooth hover color change */
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--charcoal) 28%, transparent); /* Soft floating depth */
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    padding 0.25s ease,
+    gap 0.25s ease; /* Smooth hover expansion */
 }
 
-/* Nav link icons in expand bar */
+/* Nav link icons in the popup */
 .site-header .header-nav-icon {
   display: block; /* Remove inline image gap */
-  width: 40px; /* Compact icon width */
-  height: 40px; /* Compact icon height */
+  width: 48px; /* Mid-size icon width */
+  height: 48px; /* Mid-size icon height */
   object-fit: contain; /* Preserve icon aspect ratio */
   flex-shrink: 0; /* Do not shrink icon when space is tight */
 }
 
-/* Gold highlight on expand bar link hover or current page */
+/* Hide destination words until the icon is hovered or focused */
+.site-header .header-nav-links a span {
+  display: inline-block; /* Allow width animation */
+  max-width: 0; /* Collapse the label by default */
+  margin: 0; /* No extra space while collapsed */
+  overflow: hidden; /* Clip the word until hover */
+  opacity: 0; /* Fade the word in with the width */
+  white-space: nowrap; /* Keep the label on one line */
+  transition:
+    max-width 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.2s ease,
+    margin 0.25s ease; /* Smooth word reveal to the right */
+}
+
+/* Show the word to the right of the icon on hover or keyboard focus */
 .site-header .header-nav-links a:hover,
+.site-header .header-nav-links a:focus-visible {
+  gap: 0.45rem; /* Open space between icon and word */
+  padding-right: 0.95rem; /* Room for the revealed label */
+  background-color: var(--accent); /* Gold hover surface */
+  color: var(--charcoal); /* Dark text on gold */
+}
+
+.site-header .header-nav-links a:hover span,
+.site-header .header-nav-links a:focus-visible span {
+  max-width: 8rem; /* Expand enough for the longest label */
+  margin-right: 0.15rem; /* Tiny trailing inset inside the pill */
+  opacity: 1; /* Fade the word in */
+}
+
+/* Keep the current page icon distinct while the menu is open */
 .site-header .header-nav-links a.active {
-  color: var(--gold); /* Golden orange on hover or active page */
+  outline: 2px solid var(--gold); /* Gold ring on the active destination */
+  outline-offset: 2px; /* Separate the ring from the pill edge */
+}
+
+/* Soften motion for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .site-header .header-nav-panel,
+  .site-header .header-nav-links li,
+  .site-header .header-nav-links a,
+  .site-header .header-nav-links a span {
+    transition: none; /* Instant open/close without animation */
+  }
+
+  .site-header .header-nav-links li {
+    transform: none; /* Skip pop transform for reduced motion */
+  }
 }
 
 /* Inner pages: header without overlapping logo tab */
@@ -1837,6 +1977,7 @@ body.home .theme-toggle {
   position: relative; /* Normal flow inside sticky site-top wrapper */
   padding: 0; /* Override global header padding */
   border-bottom: none; /* No border; maroon bar is self-contained */
+  overflow: visible; /* Allow the icon popup to extend below the bar */
 }
 
 /* Inner page header row: menu and theme on the left, logo centered */
@@ -2375,10 +2516,6 @@ body.home .gallery-item:focus-within .gallery-desc {
   body.home .feature-card:last-child .card-image-frame {
     --card-side-inset: clamp(1rem, 6vw, 1.75rem); /* Match mobile side inset on Accessories at tablet widths */
   }
-
-  .site-header .header-nav-links {
-    gap: 1.25rem; /* Slightly tighter link spacing on tablet */
-  }
 }
 
 /* Compact tablet / large phone: stack home cards before notch collisions */
@@ -2400,17 +2537,6 @@ body.home .gallery-item:focus-within .gallery-desc {
   body.home .feature-card:nth-child(2) .card-image-frame,
   body.home .feature-card:nth-child(3) .card-image-frame {
     --card-side-inset: clamp(1rem, 6vw, 1.75rem); /* Left/right inset on Pipes, Cigars, and Accessories images */
-  }
-
-  .site-header .header-nav-links {
-    flex-direction: column; /* Stack links vertically */
-    align-items: flex-start; /* Left-align stacked links */
-    gap: 0.5rem; /* Tighter vertical gap */
-    padding: 0.5rem 1.25rem; /* Compact expand bar padding */
-  }
-
-  .site-header.is-nav-open .header-nav-panel {
-    max-height: 10rem; /* Room for stacked mobile links */
   }
 
   .events-ticker-text {
@@ -2503,10 +2629,11 @@ body.home .gallery-item:focus-within .gallery-desc {
   }
 
   .reviews-carousel__slide {
-    padding: 1.5rem 1.25rem; /* Compact review card */
+    padding: 2rem 1.35rem 1.65rem; /* Compact review card on phones */
   }
 
   .reviews-carousel__quote {
+    margin-top: 1rem; /* Slightly tighter mark clearance on phones */
     font-size: 1.05rem; /* Slightly smaller quote */
   }
 

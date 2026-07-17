@@ -7,7 +7,7 @@
   if (!toggle || !panel) { return; } // Exit if expand nav markup is missing
 
   var openClass = "is-nav-open"; // Class on header when panel is expanded
-  var closeDelayMs = 300; // Match CSS transition duration before hiding panel
+  var closeDelayMs = 320; // Wait for icon pop-out transitions before hiding panel
 
   function setOpen(isOpen) { // Sync panel visibility, aria state, and header class
     toggle.setAttribute("aria-expanded", isOpen ? "true" : "false"); // Expose open state to assistive tech
