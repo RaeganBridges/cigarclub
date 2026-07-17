@@ -61,16 +61,10 @@
   </div>
 
   <main class="page-flow"> <!-- Main page content with editorial section flow -->
-    <section class="page-hero"> <!-- Opening hero establishes the page story -->
-      <p class="page-hero__eyebrow">Events</p> <!-- Section label above headline -->
-      <h1 class="page-hero__title">Tastings, Lounge Nights &amp; Club Gatherings</h1> <!-- Primary page headline -->
-      <p class="page-hero__lead">Join us for tastings, lounge nights, and special releases. Events added to <strong>The Cigar Club</strong> calendar appear here automatically.</p> <!-- Supporting hero copy -->
-      <div class="page-hero__actions"> <!-- Next-step actions from hero -->
-        <a href="location.html" class="btn">Plan your visit</a> <!-- Guide visitors to location -->
-        <a href="about-us.html" class="btn btn--ghost">About the club</a> <!-- Guide visitors to about page -->
-      </div>
-    </section>
-
+    <header class="events-page-masthead"> <!-- Page masthead matching the schedule panel language -->
+      <img src="images/ICON-10.png" alt="" class="events-page-masthead__icon" width="48" height="48"> <!-- Calendar brand icon for Events -->
+      <h1 class="events-page-title">Events</h1> <!-- All-caps page title -->
+    </header>
     <section class="page-section events-upcoming-panel"> <!-- Native upcoming events list synced from Google -->
       <header class="events-upcoming-panel__header"> <!-- Compact header for the schedule panel -->
         <p class="events-upcoming-panel__eyebrow">Schedule</p> <!-- Small label above the section title -->
@@ -82,8 +76,6 @@
     </section>
 
     <section class="page-section"> <!-- Full calendar embed section -->
-      <h2 class="page-section__title">Full calendar</h2> <!-- Section heading above embed -->
-      <p class="page-section__lead">Browse the complete schedule by month, week, or agenda view.</p> <!-- Section intro -->
       <div class="calendar-wrapper"> <!-- Responsive container for the embedded calendar -->
         <!-- Google Calendar embed: src is set by js/calendar-embed.js from js/calendar-config.js?v=2 -->
         <iframe
@@ -97,12 +89,6 @@
           title="The Cigar Club Nashville Events Calendar">
         </iframe>
       </div>
-    </section>
-
-    <section class="page-cta"> <!-- Closing call-to-action -->
-      <h2 class="page-cta__title">Ready to join us?</h2> <!-- CTA headline -->
-      <p class="page-cta__text">Find us on Gallatin Pike in Madison and make an event night of it.</p> <!-- CTA supporting copy -->
-      <a href="location.html" class="btn">Get directions</a> <!-- Primary CTA button -->
     </section>
   </main>
 

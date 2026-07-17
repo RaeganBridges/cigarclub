@@ -52,23 +52,23 @@
 
 /* Light mode semantic color roles */
 [data-theme="light"] {
-  --bg: color-mix(in srgb, var(--pale-yellow) 38%, var(--cream)); /* Slightly darker warm page wash */
-  --bg-deep: color-mix(in srgb, var(--teal) 6%, var(--cream)); /* Soft, restrained blue band for atmosphere */
+  --bg: color-mix(in srgb, var(--cream) 94%, var(--teal)); /* Cool cream page wash instead of heavy yellow */
+  --bg-deep: color-mix(in srgb, var(--teal) 5%, var(--cream)); /* Soft teal atmosphere band */
   --text: var(--charcoal); /* Primary text */
-  --text-muted: color-mix(in srgb, var(--teal) 60%, var(--charcoal)); /* Teal muted text with stronger readability */
+  --text-muted: color-mix(in srgb, var(--teal) 55%, var(--charcoal)); /* Readable teal-muted copy */
   --header-bg: var(--maroon); /* Header bar background */
   --accent: var(--gold); /* Buttons and warm highlights */
   --accent-hover: var(--maroon); /* Hover state for accent buttons */
-  --surface: var(--cream); /* Clean cream boxes against the warmer page wash */
-  --surface-strong: color-mix(in srgb, var(--cream) 90%, var(--pale-yellow)); /* Soft raised panel, not loud yellow */
-  --border: color-mix(in srgb, var(--teal) 24%, var(--cream)); /* Soft teal edge on cream cards */
-  --border-strong: color-mix(in srgb, var(--teal) 36%, var(--cream)); /* Clearer card edges without heavy blue */
-  --frame-bg: color-mix(in srgb, var(--cream) 85%, var(--pale-yellow)); /* Soft warm image frames */
+  --surface: color-mix(in srgb, var(--cream) 96%, white); /* Clean near-white cards */
+  --surface-strong: var(--cream); /* Slightly warmer raised panels */
+  --border: color-mix(in srgb, var(--teal) 18%, var(--cream)); /* Soft teal edge */
+  --border-strong: color-mix(in srgb, var(--teal) 28%, var(--cream)); /* Clearer card edges */
+  --frame-bg: color-mix(in srgb, var(--cream) 90%, var(--pale-yellow)); /* Soft warm image frames */
   --notch-bg: var(--bg); /* Card notch cutout matches page bg */
   --logo-tab-bg: var(--header-bg); /* Logo tab matches maroon header */
   --btn-text: var(--charcoal); /* Text on gold buttons */
   --pill-hover: var(--pale-yellow); /* Nav pill hover */
-  --shadow-soft: color-mix(in srgb, var(--charcoal) 10%, transparent); /* Soft neutral depth under cards */
+  --shadow-soft: color-mix(in srgb, var(--charcoal) 8%, transparent); /* Soft neutral depth under cards */
 }
 
 /* Light mode page atmosphere instead of a flat cream wash */
@@ -85,23 +85,25 @@
   background-color: var(--bg); /* Match circle cutouts to the page wash */
 }
 
-/* Light mode refinements: blue headlines, teal supporting accents, gold actions */
+/* Light mode refinements: charcoal headlines, teal supporting accents, gold actions */
 [data-theme="light"] h1,
 [data-theme="light"] .page-hero__title,
 [data-theme="light"] .page-section__title,
 [data-theme="light"] .home-hero__title,
 [data-theme="light"] .page-cta__title,
 [data-theme="light"] .location-details__title,
-[data-theme="light"] .events-upcoming-panel__title,
 [data-theme="light"] .reviews-section__title {
-  color: var(--teal); /* Blue-teal for major headlines in light mode */
+  color: var(--charcoal); /* Strong charcoal headlines on cream */
 }
 
 [data-theme="light"] .page-hero__eyebrow,
 [data-theme="light"] .home-hero__eyebrow,
-[data-theme="light"] .events-upcoming__when,
 [data-theme="light"] .pillar__number {
   color: var(--teal); /* Teal for labels and metadata */
+}
+
+[data-theme="light"] .events-upcoming__when {
+  color: var(--maroon); /* Maroon time line for clear accent on cream */
 }
 
 [data-theme="light"] .page-flow a:not(.btn):not(.calendar-add-link):not(.calendar-open-link):not(.location-address__link):not(.location-phone__link):not(.location-email__link):not(.location-instagram__link):not(.location-x__link),
@@ -166,13 +168,44 @@
 [data-theme="light"] .about-established,
 [data-theme="light"] .about-fact,
 [data-theme="light"] .calendar-wrapper {
-  background-color: var(--surface); /* Cream cards stand apart from the warmer page wash */
+  background-color: var(--surface); /* Near-white cards stand apart from the page wash */
   border-color: var(--border-strong); /* Soft teal edge definition */
-  box-shadow: 0 10px 28px var(--shadow-soft); /* Soft depth without heavy glow */
+  box-shadow: 0 8px 24px var(--shadow-soft); /* Soft depth without heavy glow */
 }
 
 [data-theme="light"] .page-cta {
   background-color: var(--surface-strong); /* Soft raised CTA band */
+}
+
+/* Upcoming schedule panel: maroon header with cream type (shared light/dark format) */
+[data-theme="light"] .events-upcoming-panel {
+  background-color: var(--surface); /* Clean near-white panel body */
+}
+
+[data-theme="light"] .events-upcoming__item {
+  background-color: color-mix(in srgb, var(--cream) 70%, white); /* Bright event row on the panel */
+  border-color: var(--border); /* Soft teal edge */
+}
+
+[data-theme="light"] .events-upcoming__badge {
+  background-color: var(--maroon); /* Maroon calendar chip */
+}
+
+[data-theme="light"] .events-upcoming__badge-weekday {
+  color: var(--pale-yellow); /* Pale yellow weekday on maroon */
+}
+
+[data-theme="light"] .events-upcoming__title {
+  color: var(--charcoal); /* Strong event titles */
+}
+
+[data-theme="light"] .events-upcoming__details {
+  color: var(--text-muted); /* Muted description under the time */
+}
+
+[data-theme="light"] .site-footer {
+  border-top-color: var(--border-strong); /* Clearer footer separator */
+  background-color: color-mix(in srgb, var(--cream) 88%, var(--teal)); /* Cool cream footer band */
 }
 
 [data-theme="light"] .pipes-filter.is-active {
@@ -189,11 +222,6 @@
 [data-theme="light"] .product-panel__bg-icon {
   opacity: 0.22; /* Keep icons present but quieter on cream */
   filter: blur(0.4px); /* Slightly sharper than dark-mode wash */
-}
-
-[data-theme="light"] .site-footer {
-  border-top-color: var(--border-strong); /* Clearer footer separator */
-  background-color: color-mix(in srgb, var(--cream) 82%, var(--pale-yellow)); /* Soft cream footer band */
 }
 
 [data-theme="light"] body.home .card-label {
@@ -373,6 +401,51 @@ h1 {
   width: 100%; /* Fill the main column up to max-width */
   max-width: 900px; /* Section content width */
   margin-inline: auto; /* Center sections within the wider main column */
+}
+
+/* Events page masthead — icon + title aligned with schedule/calendar column */
+.events-page-masthead {
+  display: flex; /* Place calendar icon beside the title */
+  align-items: center; /* Vertically center icon with type */
+  gap: 0.9rem; /* Space between icon and EVENTS */
+  width: 100%; /* Fill the main column up to max-width */
+  max-width: 900px; /* Align with schedule and calendar sections */
+  margin: 0 auto; /* Center with the sections below */
+  padding: 0; /* No bar padding once the fill is removed */
+  background-color: transparent; /* No colored title bar */
+  border-radius: 0; /* No bar shape without a fill */
+  box-sizing: border-box; /* Keep sizing predictable */
+}
+
+/* Calendar icon beside the Events title */
+.events-page-masthead__icon {
+  width: 2.75rem; /* Compact brand mark beside the title */
+  height: 2.75rem; /* Keep the icon square */
+  flex-shrink: 0; /* Prevent the icon from squashing */
+  object-fit: contain; /* Preserve icon proportions */
+  display: block; /* Remove inline image gap */
+  filter: none; /* No shadow once the bar is gone */
+}
+
+/* Events page title */
+.events-page-title {
+  margin: 0; /* Masthead owns outer spacing */
+  font-size: clamp(1.65rem, 4vw, 2.15rem); /* Strong page title scale */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold page title */
+  color: var(--cream); /* Cream title on dark pages */
+  letter-spacing: 0.2em; /* Open all-caps tracking */
+  text-transform: uppercase; /* All-caps Events label */
+  line-height: 1; /* Tight title leading */
+}
+
+/* Light mode Events title without a bar */
+[data-theme="light"] .events-page-title {
+  color: var(--charcoal); /* Charcoal title on cream */
+}
+
+/* Tighten space between Events masthead and the schedule panel */
+.page-flow:has(> .events-page-masthead) {
+  gap: clamp(1rem, 2.5vw, 1.5rem); /* Closely stack masthead with schedule */
 }
 
 /* Section supporting copy */
@@ -1586,7 +1659,8 @@ h1 {
 
 /* Upcoming events panel on events page */
 .events-upcoming-panel {
-  padding: 1.15rem 1.25rem 1.25rem; /* Compact inner spacing for the schedule panel */
+  padding: 0; /* Let the maroon header bleed edge-to-edge */
+  overflow: hidden; /* Clip header corners to the panel radius */
   background-color: var(--surface); /* Theme-aware panel background */
   border: 1px solid var(--border); /* Theme-aware border */
   border-radius: 10px; /* Rounded panel corners */
@@ -1594,13 +1668,15 @@ h1 {
 
 /* Compact header above the upcoming list */
 .events-upcoming-panel__header {
-  margin-bottom: 0.85rem; /* Tight space before the event rows */
+  margin: 0 0 0.85rem; /* Space before the event rows */
+  padding: 0.85rem 1.25rem 0.9rem; /* Comfortable header padding */
+  background-color: var(--maroon); /* Brand maroon schedule header in both themes */
 }
 
 /* Small label above the upcoming title */
 .events-upcoming-panel__eyebrow {
   margin: 0 0 0.2rem; /* Compact space under the eyebrow */
-  color: var(--text-muted); /* Muted schedule label */
+  color: color-mix(in srgb, var(--cream) 82%, var(--pale-yellow)); /* Soft cream eyebrow on maroon */
   font-size: 0.72rem; /* Small supporting label */
   font-variation-settings: "wght" var(--font-wght-bold); /* Bold eyebrow */
   letter-spacing: 0.12em; /* Spaced label feel */
@@ -1612,8 +1688,13 @@ h1 {
   margin: 0; /* Header wrapper owns outer spacing */
   font-size: clamp(1.2rem, 2.5vw, 1.45rem); /* Compact section title */
   font-variation-settings: "wght" var(--font-wght-bold); /* Bold heading */
-  color: var(--accent); /* Golden orange heading */
+  color: var(--cream); /* Cream title on maroon for clear contrast */
   line-height: 1.2; /* Tight title leading */
+}
+
+/* Event list body under the maroon header */
+.events-upcoming {
+  padding: 0 1.25rem 1.25rem; /* Match former panel padding under the header */
 }
 
 /* Staff action links below upcoming list */
@@ -1732,16 +1813,6 @@ h1 {
   font-size: 0.85rem; /* Compact details size */
   line-height: 1.45; /* Readable details leading */
   white-space: pre-wrap; /* Preserve line breaks from calendar descriptions */
-}
-
-/* Light mode upcoming event cards */
-[data-theme="light"] .events-upcoming__item {
-  background-color: color-mix(in srgb, var(--cream) 88%, var(--pale-yellow)); /* Soft cream event card */
-  border-color: var(--border-strong); /* Clearer card edge on light pages */
-}
-
-[data-theme="light"] .events-upcoming__badge {
-  background-color: var(--maroon); /* Keep the maroon calendar chip in light mode */
 }
 
 /* Staff setup note when calendar events are missing */
