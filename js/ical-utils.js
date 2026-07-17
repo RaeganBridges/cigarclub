@@ -43,9 +43,20 @@
     return date ? date.toISOString() : null; // Convert to ISO or null
   }
 
-  function readField(line, prefix) { // Read iCal property value after prefix
-    if (line.indexOf(prefix) !== 0) { return null; } // Line does not match field prefix
-    return line.slice(prefix.length); // Return value portion of property line
+  function readNamedField(line, name) { // Read a property that may include parameters before the colon
+    if (line.indexOf(name) !== 0) { return null; } // Line does not start with the property name
+    if (line.charAt(name.length) !== ":" && line.charAt(name.length) !== ";") { return null; } // Require exact property boundary
+    var colonIndex = line.indexOf(":"); // Value begins after the first colon
+    if (colonIndex === -1) { return null; } // Malformed property line
+    return line.slice(colonIndex + 1); // Return the property value
+  }
+
+  function unescapeIcalText(value) { // Decode common iCal text escapes from Google Calendar
+    return String(value || "") // Coerce missing values to empty string
+      .replace(/\\n/gi, "\n") // Convert escaped newlines into real line breaks
+      .replace(/\\,/g, ",") // Unescape commas
+      .replace(/\\;/g, ";") // Unescape semicolons
+      .replace(/\\\\/g, "\\"); // Unescape backslashes last
   }
 
   function parseIcalFeed(raw) { // Parse VEVENT and VTODO blocks from unfolded iCal text
@@ -61,12 +72,12 @@
       var dtstart = ""; // Raw DTSTART value
       var dateOnly = false; // Whether DTSTART uses DATE not DATE-TIME
       block.split(/\r?\n/).forEach(function (line) { // Parse line-based iCal fields
-        var summaryValue = readField(line, "SUMMARY:"); // Read SUMMARY if present
-        if (summaryValue !== null) { summary = summaryValue; return; } // Store title
-        var descriptionValue = readField(line, "DESCRIPTION:"); // Read DESCRIPTION if present
-        if (descriptionValue !== null) { description = descriptionValue; return; } // Store description
-        var categoriesValue = readField(line, "CATEGORIES:"); // Read CATEGORIES if present
-        if (categoriesValue !== null) { categories = categoriesValue; return; } // Store categories
+        var summaryValue = readNamedField(line, "SUMMARY"); // Read SUMMARY (with optional params)
+        if (summaryValue !== null) { summary = unescapeIcalText(summaryValue); return; } // Store title
+        var descriptionValue = readNamedField(line, "DESCRIPTION"); // Read DESCRIPTION (with optional params)
+        if (descriptionValue !== null) { description = unescapeIcalText(descriptionValue); return; } // Store description
+        var categoriesValue = readNamedField(line, "CATEGORIES"); // Read CATEGORIES (with optional params)
+        if (categoriesValue !== null) { categories = unescapeIcalText(categoriesValue); return; } // Store categories
         var dt = parseDtstartLine(line); // Parse DTSTART variants
         if (dt) { dtstart = dt.value; dateOnly = dt.dateOnly; } // Store start date fields
       });

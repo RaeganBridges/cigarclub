@@ -84,10 +84,11 @@
       body.appendChild(title); // Add title to body
       body.appendChild(when); // Add date to body
 
-      if (item.description) { // Optional description paragraph
+      var description = (item.description || "").trim(); // Optional event description from the calendar
+      if (description) { // Show description when the calendar event has one
         var details = document.createElement("p"); // Event details text
         details.className = "events-upcoming__details"; // Styled details class
-        details.textContent = item.description; // Description copy
+        details.textContent = description; // Description copy from Google Calendar
         body.appendChild(details); // Add details to body
       }
 

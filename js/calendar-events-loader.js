@@ -116,18 +116,25 @@
     return (getConfig().bootstrapEvents || []).map(normalizeItem); // Normalize config rows
   }
 
-  function loadEvents() { // Prefer synced JSON so the ticker always has the latest committed events
-    return loadFromJsonSources().then(function (jsonItems) { // Load calendar-events.json (+ manual) first
-      if (jsonItems.length) { return jsonItems; } // Use synced site data whenever it is available
-      return fetchFromIcal().then(function (icalItems) { // Fall back to live iCal when JSON is empty
-        if (icalItems.length) { return icalItems; } // Use live calendar feed
-        return loadBootstrapEvents(); // Embedded config as last resort
-      }).catch(function () { // iCal blocked or failed
-        return loadBootstrapEvents(); // Embedded config fallback
-      });
+  function loadFromJsonOrBootstrap() { // Synced JSON, then embedded config as last resorts
+    return loadFromJsonSources().then(function (jsonItems) { // Load calendar-events.json (+ manual)
+      if (jsonItems.length) { return jsonItems; } // Use synced site data when present
+      return loadBootstrapEvents(); // Embedded config when JSON is empty
     }).catch(function () { // JSON path failed entirely
-      return fetchAllFromApi().catch(function () { // Try API when configured
-        return fetchFromIcal().catch(function () { return loadBootstrapEvents(); }); // Then iCal, then bootstrap
+      return loadBootstrapEvents(); // Embedded config fallback
+    });
+  }
+
+  function loadEvents() { // Prefer live iCal so descriptions and new events appear without waiting for sync
+    return fetchFromIcal().then(function (icalItems) { // Try public Google iCal feed first
+      if (icalItems.length) { return icalItems; } // Use live calendar when it has events
+      return loadFromJsonOrBootstrap(); // Fall back to synced JSON / bootstrap
+    }).catch(function () { // iCal blocked, CORS failure, or network error
+      return fetchAllFromApi().then(function (apiItems) { // Try API when a key is configured
+        if (apiItems.length) { return apiItems; } // Use API results when present
+        return loadFromJsonOrBootstrap(); // Then synced JSON / bootstrap
+      }).catch(function () { // API unavailable or failed
+        return loadFromJsonOrBootstrap(); // Synced JSON / bootstrap fallback
       });
     });
   }
