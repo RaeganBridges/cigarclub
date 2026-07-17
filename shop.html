@@ -62,9 +62,12 @@
 
   <main class="page-flow product-page"> <!-- Unified cigars / pipes / accessories shop page -->
     <nav class="product-switcher" aria-label="Product sections"> <!-- In-page switcher between product panels -->
-      <button type="button" class="product-switcher__link is-active" data-product-tab="cigars" aria-pressed="true">Cigars</button> <!-- Show cigars panel -->
-      <button type="button" class="product-switcher__link" data-product-tab="pipes" aria-pressed="false">Pipes</button> <!-- Show pipes panel -->
-      <button type="button" class="product-switcher__link" data-product-tab="accessories" aria-pressed="false">Accessories</button> <!-- Show accessories panel -->
+      <div class="product-switcher__track"> <!-- Relative track for the sliding active indicator -->
+        <button type="button" class="product-switcher__link is-active" data-product-tab="cigars" aria-pressed="true">Cigars</button> <!-- Show cigars panel -->
+        <button type="button" class="product-switcher__link" data-product-tab="pipes" aria-pressed="false">Pipes</button> <!-- Show pipes panel -->
+        <button type="button" class="product-switcher__link" data-product-tab="accessories" aria-pressed="false">Accessories</button> <!-- Show accessories panel -->
+        <span class="product-switcher__indicator" aria-hidden="true"></span> <!-- Sliding gold underline under the active tab -->
+      </div>
     </nav>
 
     <div class="product-panels" data-product-panels> <!-- Crossfading product panels share one page -->
@@ -161,10 +164,10 @@
   <script src="js/ical-utils.js"></script> <!-- Shared iCal parser for live calendar fallback -->
   <script src="js/calendar-events-loader.js?v=2"></script> <!-- Shared event loading for ticker -->
   <script src="js/events-ticker.js?v=2"></script> <!-- Scrolling events and tasks announcement -->
-  <script src="js/cigars-catalog.js"></script> <!-- Loads and filters cigar selection -->
-  <script src="js/pipes-catalog.js"></script> <!-- Loads and filters pipe selection -->
-  <script src="js/accessories-catalog.js"></script> <!-- Loads and filters accessories selection -->
-  <script src="js/product-panels.js"></script> <!-- Smooth in-page product panel switcher -->
+  <script src="js/cigars-catalog.js?v=3"></script> <!-- Loads and filters cigar selection -->
+  <script src="js/pipes-catalog.js?v=3"></script> <!-- Loads and filters pipe selection -->
+  <script src="js/accessories-catalog.js?v=3"></script> <!-- Loads and filters accessories selection -->
+  <script src="js/product-panels.js?v=4"></script> <!-- Smooth in-page product panel switcher -->
   <script src="js/theme.js"></script> <!-- Theme toggle logic and persistence -->
   <script src="js/nav-expand.js"></script> <!-- Expandable header navigation panel -->
 

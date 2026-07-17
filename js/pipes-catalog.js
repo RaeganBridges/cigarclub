@@ -1,10 +1,10 @@
-(function () { // Browse-in-store pipe selection catalog for pipes.html
+(function () { // Browse-in-store pipe selection catalog for the shop pipes panel
   var root = document.querySelector("[data-pipes-catalog]"); // Catalog grid mount point
   var filtersEl = document.querySelector("[data-pipes-filters]"); // Category filter chip row
   var statusEl = document.querySelector("[data-pipes-status]"); // Live region for empty / error messages
   if (!root) { return; } // Exit when this page has no catalog markup
 
-  var items = []; // Loaded pipe rows from JSON
+  var items = []; // Loaded pipe rows from JSON or fallbacks
   var activeCategory = "all"; // Current filter chip value
   var fallbackImage = "images/ICON-04.png"; // Shared pipe icon when an item has no photo
 
@@ -13,6 +13,17 @@
     limited: "Limited", // Few pieces remaining
     ask: "Ask in store", // Confirm with staff
   };
+
+  var fallbackItems = [ // Embedded examples when fetch cannot run (file:// or offline)
+    { id: "savinelli-207", name: "Savinelli 207 KS", maker: "Savinelli", category: "briar", material: "Briar", shape: "Billiard", price: "$145", availability: "in-stock", note: "Classic Italian straight billiard — a reliable everyday smoker with clean drilling.", image: "images/IMG_4334.JPG" }, // Briar example
+    { id: "peterson-dublin", name: "Peterson Dublin Filter", maker: "Peterson", category: "briar", material: "Briar", shape: "Bent Dublin", price: "$120", availability: "in-stock", note: "Comfortable bent Dublin with the signature Peterson P-Lip stem.", image: "images/IMG_4334.JPG" }, // Briar example
+    { id: "rattray-bulldog", name: "Rattray's Bulldog", maker: "Rattray's", category: "briar", material: "Briar", shape: "Bulldog", price: "$95", availability: "in-stock", note: "Faceted bulldog bowl with a sturdy vulcanite stem — classic club shape.", image: "images/IMG_4334.JPG" }, // Briar example
+    { id: "artisan-freehand", name: "Workshop Freehand No. 4", maker: "Independent carver", category: "artisan", material: "Briar", shape: "Freehand", price: "Ask in store", availability: "limited", note: "One-of-a-kind freehand with lively grain — ask staff to pull it from the wall.", image: "images/IMG_4341.JPG" }, // Artisan example
+    { id: "artisan-poker", name: "Sandblast Poker", maker: "Independent carver", category: "artisan", material: "Briar", shape: "Poker", price: "$210", availability: "limited", note: "Sit-down poker with a crisp sandblast — sits upright while you pour a drink.", image: "images/IMG_4341.JPG" }, // Artisan example
+    { id: "missouri-meerschaum", name: "Missouri Meerschaum Legend", maker: "Missouri Meerschaum", category: "cob", material: "Corn Cob", shape: "Apple", price: "$18", availability: "in-stock", note: "American-made cob — perfect first pipe or knock-around for the porch.", image: "images/IMG_4338.JPG" }, // Cob example
+    { id: "cob-country-gentleman", name: "Country Gentleman", maker: "Missouri Meerschaum", category: "cob", material: "Corn Cob", shape: "Bent", price: "$22", availability: "in-stock", note: "Bent cob with a longer stem for cooler smoking on warm evenings.", image: "images/IMG_4338.JPG" }, // Cob example
+    { id: "ask-estate", name: "Estate rotation", maker: "Varies", category: "briar", material: "Briar", shape: "Assorted", price: "Ask in store", availability: "ask", note: "Cleaned estate pieces rotate through the shop — ask what is on the shelf this week.", image: "images/ICON-04.png" }, // Ask-in-store example
+  ];
 
   function escapeHtml(text) { // Escape catalog text before inserting into HTML
     return String(text || "") // Coerce missing values to empty string
@@ -51,6 +62,10 @@
     });
   }
 
+  function notifyCatalogUpdated() { // Tell the product panel switcher to remeasure height
+    window.dispatchEvent(new CustomEvent("product-catalog-updated", { detail: { panel: "pipes" } })); // Broadcast catalog paint
+  }
+
   function renderFilters() { // Highlight the active filter chip
     if (!filtersEl) { return; } // Skip when filter markup is missing
     var buttons = filtersEl.querySelectorAll("[data-pipes-filter]"); // All filter chip buttons
@@ -74,6 +89,7 @@
           ? "No pipes in this category right now — try another filter or ask in store."
           : "Selection updates in the shop. Stop by to see what is on the wall.";
       }
+      notifyCatalogUpdated(); // Remeasure after clearing tiles
       return; // Stop after empty state
     }
 
@@ -102,6 +118,7 @@
         + "</div>" // End body
         + "</article>"; // End tile
     }).join(""); // Combine all tiles
+    notifyCatalogUpdated(); // Remeasure panel height after painting tiles
   }
 
   function onFilterClick(event) { // Handle clicks on category filter chips
@@ -111,25 +128,26 @@
     renderCatalog(); // Re-render the grid for the new filter
   }
 
-  function showError() { // Friendly fallback when JSON cannot load
-    items = []; // Clear any partial data
-    root.innerHTML = ""; // Remove stale tiles
-    if (statusEl) { // Point visitors to the shop
-      statusEl.hidden = false; // Reveal the status line
-      statusEl.textContent = "We could not load the current selection online. Stop by the lounge to see what is on the wall."; // Error copy
-    }
+  function useFallbackExamples() { // Paint embedded examples when JSON cannot load
+    items = fallbackItems.map(normalizeItem); // Use the built-in sample pipes
+    renderCatalog(); // Draw the example tiles immediately
   }
 
   function loadCatalog() { // Fetch pipes.json and render the selection
+    useFallbackExamples(); // Show examples right away so the grid is never empty
     var url = resolveDataUrl("data/pipes.json"); // Absolute JSON URL
     var cacheBust = url + (url.indexOf("?") === -1 ? "?" : "&") + "ts=" + Date.now(); // Avoid stale cache
     return fetch(cacheBust, { cache: "no-store" }).then(function (response) { // Request catalog JSON
       if (!response.ok) { throw new Error("Missing pipes.json"); } // Fail when file is absent
       return response.json(); // Parse JSON payload
     }).then(function (payload) { // Normalize and render items
-      items = (payload.items || []).map(normalizeItem); // Build in-memory catalog rows
+      var loaded = (payload.items || []).map(normalizeItem); // Build in-memory catalog rows
+      if (!loaded.length) { return; } // Keep fallbacks when the file is empty
+      items = loaded; // Prefer live JSON when it loads successfully
       renderCatalog(); // Draw the default All filter view
-    }).catch(showError); // Show visit-the-shop message on failure
+    }).catch(function () { // Keep the embedded examples visible on fetch failure
+      useFallbackExamples(); // Re-paint fallbacks if a later failure cleared them
+    });
   }
 
   if (filtersEl) { // Wire filter chips when present

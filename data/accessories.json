@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-16T19:00:00.000Z",
+  "updatedAt": "2026-07-17T21:00:00.000Z",
   "items": [
     {
       "id": "xikar-x2",
@@ -23,6 +23,18 @@
       "price": "$55",
       "availability": "in-stock",
       "note": "Concentrates the draw with a deep V notch — popular with fuller-bodied smokes.",
+      "image": "images/IMG_4341.JPG"
+    },
+    {
+      "id": "credo-synchro",
+      "name": "Credo Synchro Cut",
+      "maker": "Credo",
+      "category": "cutters",
+      "material": "Stainless steel",
+      "shape": "Scissor cutter",
+      "price": "$38",
+      "availability": "limited",
+      "note": "Scissor-style cut with a controlled close — good for ring gauges up to 54.",
       "image": "images/IMG_4341.JPG"
     },
     {
@@ -50,6 +62,18 @@
       "image": "images/IMG_4341.JPG"
     },
     {
+      "id": "table-torch",
+      "name": "Tabletop Quad Torch",
+      "maker": "Assorted",
+      "category": "lighters",
+      "material": "Metal",
+      "shape": "Table torch",
+      "price": "$85",
+      "availability": "ask",
+      "note": "Stable table lighter for lounge nights — fuel type and finish vary by shipment.",
+      "image": "images/IMG_4341.JPG"
+    },
+    {
       "id": "boveda-65",
       "name": "Boveda 65% 60g",
       "maker": "Boveda",
@@ -74,6 +98,18 @@
       "image": "images/IMG_4341.JPG"
     },
     {
+      "id": "desktop-humidor",
+      "name": "25-Count Desktop Humidor",
+      "maker": "Assorted",
+      "category": "storage",
+      "material": "Spanish cedar",
+      "shape": "Desktop box",
+      "price": "$120",
+      "availability": "limited",
+      "note": "Glass-top desktop box with hygrometer — ask staff which finish is on the shelf.",
+      "image": "images/IMG_4341.JPG"
+    },
+    {
       "id": "ashtray-rest",
       "name": "Ceramic Cigar Rest",
       "maker": "Assorted",
@@ -95,6 +131,18 @@
       "price": "Ask in store",
       "availability": "ask",
       "note": "Punches, picks, and pocket tools rotate often — staff will show what is in stock.",
+      "image": "images/ICON-07.png"
+    },
+    {
+      "id": "draw-poker",
+      "name": "Draw Poker Tool",
+      "maker": "Xikar",
+      "category": "tools",
+      "material": "Metal",
+      "shape": "Draw tool",
+      "price": "$18",
+      "availability": "in-stock",
+      "note": "Clears a tight draw without shredding the filler — pocket-friendly size.",
       "image": "images/ICON-07.png"
     }
   ]

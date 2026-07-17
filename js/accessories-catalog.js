@@ -1,10 +1,10 @@
-(function () { // Browse-in-store accessories catalog for accessories.html
+(function () { // Browse-in-store accessories catalog for the shop accessories panel
   var root = document.querySelector("[data-accessories-catalog]"); // Catalog grid mount point
   var filtersEl = document.querySelector("[data-accessories-filters]"); // Category filter chip row
   var statusEl = document.querySelector("[data-accessories-status]"); // Live region for empty / error messages
   if (!root) { return; } // Exit when this page has no catalog markup
 
-  var items = []; // Loaded accessory rows from JSON
+  var items = []; // Loaded accessory rows from JSON or fallbacks
   var activeCategory = "all"; // Current filter chip value
   var fallbackImage = "images/ICON-07.png"; // Shared accessories icon when an item has no photo
 
@@ -13,6 +13,21 @@
     limited: "Limited", // Few pieces remaining
     ask: "Ask in store", // Confirm with staff
   };
+
+  var fallbackItems = [ // Embedded examples when fetch cannot run (file:// or offline)
+    { id: "xikar-x2", name: "X2 Dual Blade Cutter", maker: "Xikar", category: "cutters", material: "Stainless steel", shape: "Double guillotine", price: "$45", availability: "in-stock", note: "Clean, even cuts with lifetime warranty — a reliable everyday cutter.", image: "images/IMG_4341.JPG" }, // Cutter example
+    { id: "colibri-v-cut", name: "V-Cut Cigar Cutter", maker: "Colibri", category: "cutters", material: "Stainless steel", shape: "V-cut", price: "$55", availability: "in-stock", note: "Concentrates the draw with a deep V notch — popular with fuller-bodied smokes.", image: "images/IMG_4341.JPG" }, // Cutter example
+    { id: "credo-synchro", name: "Credo Synchro Cut", maker: "Credo", category: "cutters", material: "Stainless steel", shape: "Scissor cutter", price: "$38", availability: "limited", note: "Scissor-style cut with a controlled close — good for ring gauges up to 54.", image: "images/IMG_4341.JPG" }, // Cutter example
+    { id: "xikar-forb", name: "Forb Soft Flame", maker: "Xikar", category: "lighters", material: "Metal", shape: "Soft flame", price: "$40", availability: "in-stock", note: "Classic soft flame for a gentle toast — easy to control on windless evenings.", image: "images/IMG_4341.JPG" }, // Lighter example
+    { id: "vector-triple", name: "Triple Torch Lighter", maker: "Vector", category: "lighters", material: "Metal", shape: "Triple torch", price: "$65", availability: "in-stock", note: "Hot, focused torch for denser cigars and outdoor lighting.", image: "images/IMG_4341.JPG" }, // Lighter example
+    { id: "table-torch", name: "Tabletop Quad Torch", maker: "Assorted", category: "lighters", material: "Metal", shape: "Table torch", price: "$85", availability: "ask", note: "Stable table lighter for lounge nights — fuel type and finish vary by shipment.", image: "images/IMG_4341.JPG" }, // Lighter example
+    { id: "boveda-65", name: "Boveda 65% 60g", maker: "Boveda", category: "storage", material: "2-way humidity", shape: "Pack", price: "$6", availability: "in-stock", note: "Set-and-forget humidity control for travel humidors and small desktop boxes.", image: "images/ICON-07.png" }, // Storage example
+    { id: "travel-humidor", name: "5-Count Travel Humidor", maker: "The Cigar Club", category: "storage", material: "Cedar lined", shape: "Travel case", price: "$35", availability: "in-stock", note: "Protects a short rotation on the road — fits easily in a bag or glove box.", image: "images/IMG_4341.JPG" }, // Storage example
+    { id: "desktop-humidor", name: "25-Count Desktop Humidor", maker: "Assorted", category: "storage", material: "Spanish cedar", shape: "Desktop box", price: "$120", availability: "limited", note: "Glass-top desktop box with hygrometer — ask staff which finish is on the shelf.", image: "images/IMG_4341.JPG" }, // Storage example
+    { id: "ashtray-rest", name: "Ceramic Cigar Rest", maker: "Assorted", category: "tools", material: "Ceramic", shape: "Ashtray", price: "$28", availability: "in-stock", note: "Stable rest for lounge nights — ask about colors currently on the shelf.", image: "images/IMG_4341.JPG" }, // Tools example
+    { id: "punch-kit", name: "Punch & Tool Kit", maker: "Assorted", category: "tools", material: "Metal", shape: "Multi-tool", price: "Ask in store", availability: "ask", note: "Punches, picks, and pocket tools rotate often — staff will show what is in stock.", image: "images/ICON-07.png" }, // Tools example
+    { id: "draw-poker", name: "Draw Poker Tool", maker: "Xikar", category: "tools", material: "Metal", shape: "Draw tool", price: "$18", availability: "in-stock", note: "Clears a tight draw without shredding the filler — pocket-friendly size.", image: "images/ICON-07.png" }, // Tools example
+  ];
 
   function escapeHtml(text) { // Escape catalog text before inserting into HTML
     return String(text || "") // Coerce missing values to empty string
@@ -51,6 +66,10 @@
     });
   }
 
+  function notifyCatalogUpdated() { // Tell the product panel switcher to remeasure height
+    window.dispatchEvent(new CustomEvent("product-catalog-updated", { detail: { panel: "accessories" } })); // Broadcast catalog paint
+  }
+
   function renderFilters() { // Highlight the active filter chip
     if (!filtersEl) { return; } // Skip when filter markup is missing
     var buttons = filtersEl.querySelectorAll("[data-accessories-filter]"); // All filter chip buttons
@@ -74,6 +93,7 @@
           ? "No accessories in this category right now — try another filter or ask in store."
           : "Selection updates in the shop. Stop by to see what is on the shelf today.";
       }
+      notifyCatalogUpdated(); // Remeasure after clearing tiles
       return; // Stop after empty state
     }
 
@@ -102,6 +122,7 @@
         + "</div>" // End body
         + "</article>"; // End tile
     }).join(""); // Combine all tiles
+    notifyCatalogUpdated(); // Remeasure panel height after painting tiles
   }
 
   function onFilterClick(event) { // Handle clicks on category filter chips
@@ -111,25 +132,26 @@
     renderCatalog(); // Re-render the grid for the new filter
   }
 
-  function showError() { // Friendly fallback when JSON cannot load
-    items = []; // Clear any partial data
-    root.innerHTML = ""; // Remove stale tiles
-    if (statusEl) { // Point visitors to the shop
-      statusEl.hidden = false; // Reveal the status line
-      statusEl.textContent = "We could not load the current selection online. Stop by the lounge to browse accessories."; // Error copy
-    }
+  function useFallbackExamples() { // Paint embedded examples when JSON cannot load
+    items = fallbackItems.map(normalizeItem); // Use the built-in sample accessories
+    renderCatalog(); // Draw the example tiles immediately
   }
 
   function loadCatalog() { // Fetch accessories.json and render the selection
+    useFallbackExamples(); // Show examples right away so the grid is never empty
     var url = resolveDataUrl("data/accessories.json"); // Absolute JSON URL
     var cacheBust = url + (url.indexOf("?") === -1 ? "?" : "&") + "ts=" + Date.now(); // Avoid stale cache
     return fetch(cacheBust, { cache: "no-store" }).then(function (response) { // Request catalog JSON
       if (!response.ok) { throw new Error("Missing accessories.json"); } // Fail when file is absent
       return response.json(); // Parse JSON payload
     }).then(function (payload) { // Normalize and render items
-      items = (payload.items || []).map(normalizeItem); // Build in-memory catalog rows
+      var loaded = (payload.items || []).map(normalizeItem); // Build in-memory catalog rows
+      if (!loaded.length) { return; } // Keep fallbacks when the file is empty
+      items = loaded; // Prefer live JSON when it loads successfully
       renderCatalog(); // Draw the default All filter view
-    }).catch(showError); // Show visit-the-shop message on failure
+    }).catch(function () { // Keep the embedded examples visible on fetch failure
+      useFallbackExamples(); // Re-paint fallbacks if a later failure cleared them
+    });
   }
 
   if (filtersEl) { // Wire filter chips when present

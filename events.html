@@ -72,7 +72,10 @@
     </section>
 
     <section class="page-section events-upcoming-panel"> <!-- Native upcoming events list synced from Google -->
-      <h2 class="page-section__title">Coming up next</h2> <!-- Section heading above event list -->
+      <header class="events-upcoming-panel__header"> <!-- Compact header for the schedule panel -->
+        <p class="events-upcoming-panel__eyebrow">Schedule</p> <!-- Small label above the section title -->
+        <h2 class="events-upcoming-panel__title">Coming up next</h2> <!-- Section heading above event list -->
+      </header>
       <div class="events-upcoming"> <!-- Populated by js/events-list.js -->
         <p class="events-upcoming__loading">Loading events…</p> <!-- Placeholder until events load -->
       </div>
@@ -119,7 +122,7 @@
   <script src="js/ical-utils.js"></script> <!-- Shared iCal parser for live calendar fallback -->
   <script src="js/calendar-events-loader.js?v=2"></script> <!-- Shared event loading for ticker and list -->
   <script src="js/calendar-embed.js"></script> <!-- Build calendar iframe URL from config -->
-  <script src="js/events-list.js"></script> <!-- Upcoming events list on this page -->
+  <script src="js/events-list.js?v=3"></script> <!-- Upcoming events list on this page -->
   <script src="js/events-ticker.js?v=2"></script> <!-- Scrolling events and tasks announcement -->
   <script src="js/theme.js"></script> <!-- Theme toggle logic and persistence -->
   <script src="js/nav-expand.js"></script> <!-- Expandable header navigation panel -->

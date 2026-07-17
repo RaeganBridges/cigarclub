@@ -1,10 +1,10 @@
-(function () { // Browse-in-store cigar selection catalog for cigars.html
+(function () { // Browse-in-store cigar selection catalog for the shop cigars panel
   var root = document.querySelector("[data-cigars-catalog]"); // Catalog grid mount point
   var filtersEl = document.querySelector("[data-cigars-filters]"); // Category filter chip row
   var statusEl = document.querySelector("[data-cigars-status]"); // Live region for empty / error messages
   if (!root) { return; } // Exit when this page has no catalog markup
 
-  var items = []; // Loaded cigar rows from JSON
+  var items = []; // Loaded cigar rows from JSON or fallbacks
   var activeCategory = "all"; // Current filter chip value
   var fallbackImage = "images/ICON-05.png"; // Shared cigar icon when an item has no photo
 
@@ -13,6 +13,17 @@
     limited: "Limited", // Few boxes remaining
     ask: "Ask in store", // Confirm with staff
   };
+
+  var fallbackItems = [ // Embedded examples when fetch cannot run (file:// or offline)
+    { id: "padron-1964", name: "1964 Anniversary Series", maker: "Padron", category: "premium", material: "Maduro", shape: "Toro", price: "$18", availability: "in-stock", note: "Nicaraguan puro with rich cocoa and coffee notes — a club favorite for special occasions.", image: "images/IMG_4338.JPG" }, // Premium example
+    { id: "fuente-hemingway", name: "Hemingway Short Story", maker: "Arturo Fuente", category: "premium", material: "Connecticut Broadleaf", shape: "Perfecto", price: "$9", availability: "in-stock", note: "Short, flavorful perfecto — ideal when you want a premium smoke without a long sit-down.", image: "images/IMG_4338.JPG" }, // Premium example
+    { id: "rocky-decade", name: "Decade", maker: "Rocky Patel", category: "premium", material: "Habano", shape: "Toro", price: "$12", availability: "in-stock", note: "Full-bodied Habano with pepper and leather — great with an evening pour.", image: "images/IMG_4338.JPG" }, // Premium example
+    { id: "perdomo-champagne", name: "Champagne Noir", maker: "Perdomo", category: "everyday", material: "Connecticut", shape: "Robusto", price: "$8", availability: "in-stock", note: "Smooth, creamy Connecticut wrapper — an easy recommendation for newer smokers.", image: "images/IMG_4338.JPG" }, // Everyday example
+    { id: "undercrown-maduro", name: "Undercrown Maduro", maker: "Drew Estate", category: "everyday", material: "Maduro", shape: "Robusto", price: "$7", availability: "in-stock", note: "Sweet maduro wrapper and a reliable burn — a solid everyday stick at a fair price.", image: "images/IMG_4338.JPG" }, // Everyday example
+    { id: "club-sampler", name: "House sampler pack", maker: "The Cigar Club", category: "everyday", material: "Assorted", shape: "Mixed", price: "$45", availability: "in-stock", note: "Staff-picked five-pack rotated weekly — a low-risk way to explore new blends.", image: "images/ICON-05.png" }, // Everyday example
+    { id: "limited-box", name: "Limited release box", maker: "Varies", category: "limited", material: "Assorted", shape: "Box", price: "Ask in store", availability: "limited", note: "Small-batch and regional exclusives land here — ask what is in the humidor this week.", image: "images/IMG_4341.JPG" }, // Limited example
+    { id: "humidor-rotation", name: "Humidor rotation", maker: "Varies", category: "premium", material: "Assorted", shape: "Assorted", price: "Ask in store", availability: "ask", note: "Our full walk-in humidor holds hundreds of SKUs — staff will walk you to the right shelf.", image: "images/ICON-05.png" }, // Ask-in-store example
+  ];
 
   function escapeHtml(text) { // Escape catalog text before inserting into HTML
     return String(text || "") // Coerce missing values to empty string
@@ -51,6 +62,10 @@
     });
   }
 
+  function notifyCatalogUpdated() { // Tell the product panel switcher to remeasure height
+    window.dispatchEvent(new CustomEvent("product-catalog-updated", { detail: { panel: "cigars" } })); // Broadcast catalog paint
+  }
+
   function renderFilters() { // Highlight the active filter chip
     if (!filtersEl) { return; } // Skip when filter markup is missing
     var buttons = filtersEl.querySelectorAll("[data-cigars-filter]"); // All filter chip buttons
@@ -74,6 +89,7 @@
           ? "No cigars in this category right now — try another filter or ask in store."
           : "Selection updates in the humidor. Stop by to see what is on the shelf today.";
       }
+      notifyCatalogUpdated(); // Remeasure after clearing tiles
       return; // Stop after empty state
     }
 
@@ -102,6 +118,7 @@
         + "</div>" // End body
         + "</article>"; // End tile
     }).join(""); // Combine all tiles
+    notifyCatalogUpdated(); // Remeasure panel height after painting tiles
   }
 
   function onFilterClick(event) { // Handle clicks on category filter chips
@@ -111,25 +128,26 @@
     renderCatalog(); // Re-render the grid for the new filter
   }
 
-  function showError() { // Friendly fallback when JSON cannot load
-    items = []; // Clear any partial data
-    root.innerHTML = ""; // Remove stale tiles
-    if (statusEl) { // Point visitors to the shop
-      statusEl.hidden = false; // Reveal the status line
-      statusEl.textContent = "We could not load the current selection online. Stop by the lounge to browse the humidor."; // Error copy
-    }
+  function useFallbackExamples() { // Paint embedded examples when JSON cannot load
+    items = fallbackItems.map(normalizeItem); // Use the built-in sample cigars
+    renderCatalog(); // Draw the example tiles immediately
   }
 
   function loadCatalog() { // Fetch cigars.json and render the selection
+    useFallbackExamples(); // Show examples right away so the grid is never empty
     var url = resolveDataUrl("data/cigars.json"); // Absolute JSON URL
     var cacheBust = url + (url.indexOf("?") === -1 ? "?" : "&") + "ts=" + Date.now(); // Avoid stale cache
     return fetch(cacheBust, { cache: "no-store" }).then(function (response) { // Request catalog JSON
       if (!response.ok) { throw new Error("Missing cigars.json"); } // Fail when file is absent
       return response.json(); // Parse JSON payload
     }).then(function (payload) { // Normalize and render items
-      items = (payload.items || []).map(normalizeItem); // Build in-memory catalog rows
+      var loaded = (payload.items || []).map(normalizeItem); // Build in-memory catalog rows
+      if (!loaded.length) { return; } // Keep fallbacks when the file is empty
+      items = loaded; // Prefer live JSON when it loads successfully
       renderCatalog(); // Draw the default All filter view
-    }).catch(showError); // Show visit-the-shop message on failure
+    }).catch(function () { // Keep the embedded examples visible on fetch failure
+      useFallbackExamples(); // Re-paint fallbacks if a later failure cleared them
+    });
   }
 
   if (filtersEl) { // Wire filter chips when present

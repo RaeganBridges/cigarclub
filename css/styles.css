@@ -140,7 +140,7 @@
 
 /* Product switcher: clearer inactive/active contrast in light mode */
 [data-theme="light"] .product-switcher__link {
-  color: var(--teal); /* Blue-teal inactive labels on cream */
+  color: color-mix(in srgb, var(--teal) 72%, var(--charcoal)); /* Softer inactive labels on cream */
 }
 
 [data-theme="light"] .product-switcher__link:hover {
@@ -151,13 +151,21 @@
   color: var(--teal); /* Blue active section fits the light palette */
 }
 
+[data-theme="light"] .product-switcher__indicator {
+  background: linear-gradient(90deg, var(--teal), color-mix(in srgb, var(--teal) 55%, var(--accent))); /* Teal-to-gold indicator in light mode */
+}
+
 /* Catalog tiles and panels get clearer edges in light mode */
 [data-theme="light"] .pipes-item,
 [data-theme="light"] .pillar,
 [data-theme="light"] .location-details,
 [data-theme="light"] .page-cta,
 [data-theme="light"] .events-upcoming-panel,
-[data-theme="light"] .faq-item {
+[data-theme="light"] .faq-item,
+[data-theme="light"] .about-perk,
+[data-theme="light"] .about-established,
+[data-theme="light"] .about-fact,
+[data-theme="light"] .calendar-wrapper {
   background-color: var(--surface); /* Cream cards stand apart from the warmer page wash */
   border-color: var(--border-strong); /* Soft teal edge definition */
   box-shadow: 0 10px 28px var(--shadow-soft); /* Soft depth without heavy glow */
@@ -170,6 +178,7 @@
 [data-theme="light"] .pipes-filter.is-active {
   color: var(--teal); /* Blue active filter on cream */
   border-bottom-color: var(--teal); /* Match underline to active blue */
+  background-image: none; /* Remove gilded underline treatment */
 }
 
 [data-theme="light"] .pipes-item__price,
@@ -336,6 +345,14 @@ h1 {
   color: var(--accent); /* Golden orange headline */
 }
 
+/* Section heading */
+.page-section__title {
+  margin-bottom: 0.75rem; /* Space below section title */
+  font-size: clamp(1.5rem, 3vw, 2rem); /* Responsive section title */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold section heading */
+  color: var(--accent); /* Golden orange section title */
+}
+
 /* Hero supporting paragraph */
 .page-hero__lead {
   margin-bottom: 1.5rem; /* Space before hero actions */
@@ -356,14 +373,6 @@ h1 {
   width: 100%; /* Fill the main column up to max-width */
   max-width: 900px; /* Section content width */
   margin-inline: auto; /* Center sections within the wider main column */
-}
-
-/* Section heading */
-.page-section__title {
-  margin-bottom: 0.75rem; /* Space below section title */
-  font-size: clamp(1.5rem, 3vw, 2rem); /* Responsive section title */
-  font-variation-settings: "wght" var(--font-wght-bold); /* Bold section heading */
-  color: var(--accent); /* Golden orange section title */
 }
 
 /* Section supporting copy */
@@ -466,6 +475,126 @@ h1 {
   color: var(--text-muted); /* Muted answer copy */
 }
 
+/* About page service discount callout */
+.about-perk {
+  padding: 1.15rem 1.35rem; /* Compact callout padding */
+  background-color: var(--surface); /* Theme-aware perk card background */
+  border: 1px solid var(--border); /* Theme-aware border */
+  border-radius: 10px; /* Rounded perk card corners */
+  text-align: center; /* Center the perk copy */
+}
+
+/* Small label above the discount line */
+.about-perk__label {
+  margin: 0 0 0.35rem; /* Compact space under the label */
+  color: var(--text-muted); /* Muted perk label */
+  font-size: 0.72rem; /* Small supporting label */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold eyebrow */
+  letter-spacing: 0.12em; /* Spaced label feel */
+  text-transform: uppercase; /* Uppercase section label */
+}
+
+/* Discount offer text */
+.about-perk__text {
+  margin: 0; /* Remove default paragraph margin */
+  color: var(--text); /* High-contrast perk copy */
+  font-size: clamp(1.05rem, 2.4vw, 1.25rem); /* Clear discount size */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold discount line */
+  line-height: 1.35; /* Comfortable perk leading */
+}
+
+/* About page year-established callout */
+.about-established {
+  padding: 1.15rem 1.35rem; /* Compact callout padding */
+  background-color: var(--surface); /* Theme-aware year card background */
+  border: 1px solid var(--border); /* Theme-aware border */
+  border-radius: 10px; /* Rounded year card corners */
+  text-align: center; /* Center the founding year */
+}
+
+/* Label above the founding year */
+.about-established__label {
+  margin: 0 0 0.35rem; /* Compact space under the label */
+  color: var(--text-muted); /* Muted year label */
+  font-size: 0.72rem; /* Small supporting label */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold eyebrow */
+  letter-spacing: 0.12em; /* Spaced label feel */
+  text-transform: uppercase; /* Uppercase section label */
+}
+
+/* Large founding year */
+.about-established__year {
+  margin: 0; /* Remove default paragraph margin */
+  color: var(--accent); /* Gold founding year */
+  font-size: clamp(2rem, 5vw, 2.75rem); /* Prominent year size */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold year */
+  line-height: 1.1; /* Tight year leading */
+  letter-spacing: 0.04em; /* Slight spacing on the year */
+}
+
+/* Grid of services, specialties, and associations */
+.about-facts {
+  display: grid; /* Lay out the three fact cards */
+  grid-template-columns: repeat(3, minmax(0, 1fr)); /* Three equal columns on desktop */
+  gap: 1rem; /* Space between fact cards */
+  max-width: 1100px; /* Wider than default sections for the three-up layout */
+}
+
+/* Single about-fact card */
+.about-fact {
+  padding: 1.15rem 1.25rem 1.25rem; /* Compact card padding */
+  background-color: var(--surface); /* Theme-aware fact card background */
+  border: 1px solid var(--border); /* Theme-aware border */
+  border-radius: 10px; /* Rounded fact card corners */
+}
+
+/* Fact card heading */
+.about-fact__title {
+  margin: 0 0 0.75rem; /* Space below the card title */
+  color: var(--accent); /* Gold card heading */
+  font-size: 1.05rem; /* Compact card title size */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold card title */
+  letter-spacing: 0.04em; /* Slight spacing on the title */
+}
+
+/* Fact card bullet list */
+.about-fact__list {
+  list-style: none; /* Remove default bullets */
+  margin: 0; /* Remove default list margin */
+  padding: 0; /* Remove default list padding */
+  display: flex; /* Stack list items */
+  flex-direction: column; /* One item per row */
+  gap: 0.45rem; /* Compact space between items */
+}
+
+/* Individual fact list item */
+.about-fact__list li {
+  position: relative; /* Anchor the gold bullet mark */
+  padding-left: 0.95rem; /* Room for the custom bullet */
+  color: var(--text); /* Readable list text */
+  font-size: 0.92rem; /* Compact list size */
+  line-height: 1.4; /* Comfortable list leading */
+}
+
+/* Custom gold bullet for about fact lists */
+.about-fact__list li::before {
+  content: ""; /* Draw the bullet mark */
+  position: absolute; /* Pin beside the list text */
+  left: 0; /* Align to the item start */
+  top: 0.55em; /* Vertically center with the first line */
+  width: 0.35rem; /* Small gold bullet */
+  height: 0.35rem; /* Small gold bullet */
+  border-radius: 50%; /* Round bullet shape */
+  background: var(--accent); /* Gold bullet color */
+}
+
+/* Stack the about fact cards on phones */
+@media (max-width: 720px) {
+  .about-facts {
+    grid-template-columns: 1fr; /* One fact card per row on phones */
+  }
+}
+
 /* Product pages use tighter spacing than long editorial pages */
 .product-page {
   gap: clamp(1.25rem, 3vw, 2rem); /* Pull the lower sections closer to the section tabs */
@@ -473,17 +602,164 @@ h1 {
 
 /* In-page navigation between product panels */
 .product-switcher {
-  display: flex; /* Place category links beside each other */
-  align-items: center; /* Vertically center all words on the tallest active font */
-  justify-content: center; /* Center the three words horizontally */
-  flex-wrap: wrap; /* Allow links to wrap on narrow screens */
-  gap: clamp(1.25rem, 4vw, 2.5rem); /* Responsive spacing between links */
+  display: flex; /* Center the switcher track in the page */
+  justify-content: center; /* Center the three section tabs */
   width: 100%; /* Span the main content so centering uses the full row */
   max-width: none; /* Override the global nav max-width constraint */
   margin-left: auto; /* Keep the switcher row centered in main */
   margin-right: auto; /* Keep the switcher row centered in main */
-  margin-bottom: 0.15rem; /* Keep the section tabs close to the subtitle below */
+  margin-bottom: 0.35rem; /* Small space before the catalog panels */
   text-align: center; /* Center wrapped words if the row breaks */
+}
+
+/* Relative track that holds the tabs and sliding indicator */
+.product-switcher__track {
+  position: relative; /* Anchor the sliding underline */
+  display: flex; /* Place category links beside each other */
+  align-items: flex-end; /* Align labels along a shared baseline */
+  justify-content: center; /* Center the three words horizontally */
+  flex-wrap: wrap; /* Allow links to wrap on narrow screens */
+  gap: clamp(1.5rem, 5vw, 3rem); /* Generous spacing between section names */
+  padding: 0.15rem 0 0.85rem; /* Room under labels for the gold underline */
+}
+
+/* Sliding gold underline under the active section tab */
+.product-switcher__indicator {
+  position: absolute; /* Float under the active tab */
+  left: 0; /* Starting left edge; JS updates this */
+  bottom: 0.15rem; /* Sit just under the labels */
+  width: 0; /* Starting width; JS updates this */
+  height: 3px; /* Thin gold accent line */
+  border-radius: 999px; /* Soft pill underline */
+  background: var(--accent); /* Simple gold underline */
+  box-shadow: none; /* Keep the indicator flat */
+  transition:
+    left 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    width 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.25s ease; /* Smooth slide between tabs */
+  pointer-events: none; /* Decorative only */
+}
+
+/* Product switcher link */
+.product-switcher__link {
+  position: relative; /* Keep labels above the indicator */
+  z-index: 1; /* Sit above the sliding underline */
+  padding: 0.2rem 0.1rem; /* Comfortable tap target without chrome */
+  border: none; /* Remove default button border */
+  background: transparent; /* Keep switcher chrome-free */
+  color: color-mix(in srgb, var(--teal) 78%, var(--cream)); /* Soft inactive teal */
+  text-decoration: none; /* Remove default underline */
+  font-family: inherit; /* Match site typeface on button tabs */
+  font-size: clamp(1.05rem, 2.4vw, 1.35rem); /* Stable base size for inactive tabs */
+  line-height: 1.1; /* Compact label leading */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold product labels */
+  letter-spacing: 0.12em; /* Spaced uppercase section labels */
+  text-transform: uppercase; /* Match section label style */
+  cursor: pointer; /* Show pointer on interactive tabs */
+  transform: scale(1); /* Resting scale for inactive tabs */
+  transform-origin: center bottom; /* Grow upward from the underline */
+  transition:
+    color 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.35s ease; /* Smooth active and hover changes */
+}
+
+/* Product switcher hover state */
+.product-switcher__link:hover {
+  color: var(--cream); /* Brighten hovered inactive labels */
+  transform: scale(1.04); /* Subtle lift on hover */
+}
+
+/* Active product switcher link */
+.product-switcher__link.is-active {
+  color: var(--accent); /* Gold active section color */
+  transform: scale(1.18); /* Grow the active tab without jumping font-size */
+}
+
+/* Keep the active tab bright on hover */
+.product-switcher__link.is-active:hover {
+  color: var(--accent); /* Preserve gold on the selected tab */
+  transform: scale(1.18); /* Hold the active scale while hovered */
+}
+
+/* Stacked product panels crossfade in place */
+.product-panels {
+  position: relative; /* Anchor absolutely positioned inactive panels */
+  width: 100%; /* Fill the product page content width */
+  overflow: hidden; /* Clip overlapping panels while they crossfade */
+  transition: height 0.75s cubic-bezier(0.22, 1, 0.36, 1); /* Smooth height ease between panels */
+}
+
+/* One product panel (cigars, pipes, or accessories) */
+.product-panel {
+  display: flex; /* Stack subtitle and content sections vertically */
+  flex-direction: column; /* Preserve vertical product-page format */
+  gap: clamp(0.5rem, 1.5vw, 0.85rem); /* Keep subtitle and content close together */
+  width: 100%; /* Fill the panels container */
+  opacity: 1; /* Fully visible when active */
+  transform: translate3d(0, 0, 0); /* Resting position for the crossfade */
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.75s cubic-bezier(0.22, 1, 0.36, 1); /* Soft directional ease in and out */
+  will-change: opacity, transform; /* Hint smoother compositing during switches */
+}
+
+/* Incoming panel from the right when moving forward */
+.product-panel.is-entering-from-right {
+  position: absolute; /* Overlay the outgoing panel during the crossfade */
+  left: 0; /* Align with the panels container */
+  top: 0; /* Keep the incoming panel over the same area */
+  width: 100%; /* Match the outgoing panel width */
+  opacity: 0; /* Hidden at the start of the enter transition */
+  transform: translate3d(2.25rem, 0, 0); /* Soft slide in from the right */
+  pointer-events: none; /* Ignore clicks while entering */
+}
+
+/* Incoming panel from the left when moving backward */
+.product-panel.is-entering-from-left {
+  position: absolute; /* Overlay the outgoing panel during the crossfade */
+  left: 0; /* Align with the panels container */
+  top: 0; /* Keep the incoming panel over the same area */
+  width: 100%; /* Match the outgoing panel width */
+  opacity: 0; /* Hidden at the start of the enter transition */
+  transform: translate3d(-2.25rem, 0, 0); /* Soft slide in from the left */
+  pointer-events: none; /* Ignore clicks while entering */
+}
+
+/* Outgoing panel exits to the left when moving forward */
+.product-panel.is-leaving-to-left {
+  position: absolute; /* Leave the flow so the next panel can take its place */
+  left: 0; /* Align with the panels container */
+  top: 0; /* Keep the outgoing panel over the same area */
+  width: 100%; /* Match the incoming panel width */
+  opacity: 0; /* Fade out during the transition */
+  transform: translate3d(-1.75rem, 0, 0); /* Soft exit to the left */
+  pointer-events: none; /* Ignore clicks while leaving */
+}
+
+/* Outgoing panel exits to the right when moving backward */
+.product-panel.is-leaving-to-right {
+  position: absolute; /* Leave the flow so the next panel can take its place */
+  left: 0; /* Align with the panels container */
+  top: 0; /* Keep the outgoing panel over the same area */
+  width: 100%; /* Match the incoming panel width */
+  opacity: 0; /* Fade out during the transition */
+  transform: translate3d(1.75rem, 0, 0); /* Soft exit to the right */
+  pointer-events: none; /* Ignore clicks while leaving */
+}
+
+/* Prefer less motion when the user asks for it */
+@media (prefers-reduced-motion: reduce) {
+  .product-panels,
+  .product-panel,
+  .product-switcher__link,
+  .product-switcher__indicator {
+    transition: none; /* Disable switcher and panel motion for reduced-motion users */
+  }
+
+  .product-switcher__link.is-active {
+    transform: none; /* Keep active label readable without scale */
+  }
 }
 
 /* Smaller tagline centered under the active section tab */
@@ -529,83 +805,6 @@ h1 {
   pointer-events: none; /* Decorative only; do not block clicks */
   z-index: 0; /* Sit under the foreground content */
   user-select: none; /* Prevent accidental selection of the artwork */
-}
-
-/* Product switcher link */
-.product-switcher__link {
-  padding: 0; /* Remove button chrome so tabs look like text links */
-  border: none; /* Remove default button border */
-  background: transparent; /* Keep switcher chrome-free */
-  color: var(--teal); /* Blue-teal for unselected product sections */
-  text-decoration: none; /* Remove default underline */
-  font-family: inherit; /* Match site typeface on button tabs */
-  font-size: clamp(1.1rem, 2.7vw, 1.55rem); /* Make inactive section labels a bit larger */
-  line-height: 1; /* Keep word height tied to font size for true vertical centering */
-  font-variation-settings: "wght" var(--font-wght-bold); /* Bold product labels */
-  letter-spacing: 0.04em; /* Add label-like spacing */
-  text-transform: uppercase; /* Match section label style */
-  cursor: pointer; /* Show pointer on interactive tabs */
-  transition: color 0.2s ease, transform 0.2s ease, font-size 0.2s ease; /* Smooth active and hover changes */
-}
-
-/* Product switcher hover state */
-.product-switcher__link:hover {
-  color: var(--maroon); /* Turn hovered section labels red */
-}
-
-/* Active product switcher link */
-.product-switcher__link.is-active {
-  color: var(--accent); /* Gold active section color */
-  font-size: clamp(1.6rem, 4.2vw, 2.45rem); /* Make the selected section a bit larger too */
-}
-
-/* Stacked product panels crossfade in place */
-.product-panels {
-  position: relative; /* Anchor absolutely positioned inactive panels */
-  width: 100%; /* Fill the product page content width */
-  overflow: hidden; /* Clip overlapping panels while they crossfade */
-  transition: height 0.62s cubic-bezier(0.22, 1, 0.36, 1); /* Ease height between differently sized panels */
-}
-
-/* One product panel (cigars, pipes, or accessories) */
-.product-panel {
-  display: flex; /* Stack subtitle and content sections vertically */
-  flex-direction: column; /* Preserve vertical product-page format */
-  gap: clamp(0.5rem, 1.5vw, 0.85rem); /* Keep subtitle and content close together */
-  width: 100%; /* Fill the panels container */
-  opacity: 1; /* Fully visible when active */
-  transform: translateY(0); /* Resting position for the crossfade */
-  transition: opacity 0.62s cubic-bezier(0.22, 1, 0.36, 1), transform 0.62s cubic-bezier(0.22, 1, 0.36, 1); /* Soft ease in and out */
-}
-
-/* Incoming panel starts slightly below and faded */
-.product-panel.is-entering {
-  position: absolute; /* Overlay the outgoing panel during the crossfade */
-  left: 0; /* Align with the panels container */
-  top: 0; /* Keep the incoming panel over the same area */
-  width: 100%; /* Match the outgoing panel width */
-  opacity: 0; /* Hidden at the start of the enter transition */
-  transform: translateY(18px); /* Soft rise into place */
-  pointer-events: none; /* Ignore clicks while entering */
-}
-
-/* Outgoing panel fades upward slightly */
-.product-panel.is-leaving {
-  position: absolute; /* Leave the flow so the next panel can take its place */
-  left: 0; /* Align with the panels container */
-  top: 0; /* Keep the outgoing panel over the same area */
-  width: 100%; /* Match the incoming panel width */
-  opacity: 0; /* Fade out during the transition */
-  transform: translateY(-14px); /* Soft exit upward */
-  pointer-events: none; /* Ignore clicks while leaving */
-}
-
-/* Prefer less motion when the user asks for it */
-@media (prefers-reduced-motion: reduce) {
-  .product-panels,
-  .product-panel {
-    transition: none; /* Disable panel motion for reduced-motion users */
-  }
 }
 
 /* Hidden product panels stay out of the page flow */
@@ -849,9 +1048,12 @@ h1 {
   font-size: 0.78rem; /* Compact meta size */
 }
 
-/* Detailed notes are hidden in the compact examples view */
+/* Product notes stay visible so shoppers can scan example details */
 .pipes-item__note {
-  display: none; /* Keep cards focused on name, type, status, and price */
+  margin: 0.35rem 0 0; /* Space above the note line */
+  color: var(--text-muted); /* Muted supporting copy */
+  font-size: 0.8rem; /* Compact note size */
+  line-height: 1.45; /* Comfortable note leading */
 }
 
 /* Price or ask-in-store line */
@@ -969,38 +1171,11 @@ h1 {
   flex: 0 0 100%; /* Make each review occupy one viewport width */
   margin: 0; /* Reset blockquote default margin */
   padding: 2.5rem 2.5rem 2rem; /* Roomier inner spacing around the quote */
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--accent) 14%, var(--surface)) 0%,
-      var(--surface) 28%
-    ); /* Soft gold wash into the card surface */
-  border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--border)); /* Warm gold-edged frame */
-  border-radius: 18px; /* Softer lounge-style corners */
-  box-shadow:
-    0 1px 0 color-mix(in srgb, var(--pale-yellow) 18%, transparent),
-    0 18px 36px color-mix(in srgb, var(--charcoal) 28%, transparent); /* Subtle lift without heavy glow */
+  background-color: var(--surface); /* Theme-aware review card background */
+  border: 1px solid var(--border); /* Theme-aware card border */
+  border-radius: 12px; /* Rounded review card corners */
   scroll-snap-align: center; /* Snap the whole card into the viewport */
   scroll-snap-stop: always; /* Avoid skipping reviews on quick swipes */
-  overflow: hidden; /* Keep the top accent bar clipped to the radius */
-}
-
-/* Gold accent bar across the top of each quote box */
-.reviews-carousel__slide::before {
-  content: ""; /* Draw the top accent strip */
-  position: absolute; /* Pin to the top edge of the card */
-  top: 0; /* Flush with the card top */
-  left: 0; /* Span from the left edge */
-  right: 0; /* Span to the right edge */
-  height: 3px; /* Thin gold accent line */
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--accent) 20%,
-    var(--pale-yellow) 50%,
-    var(--accent) 80%,
-    transparent 100%
-  ); /* Soft gold highlight across the card */
 }
 
 /* Large decorative opening quote mark */
@@ -1010,7 +1185,7 @@ h1 {
   top: 0.85rem; /* Sit near the top of the card */
   left: 50%; /* Center horizontally */
   transform: translateX(-50%); /* Exact center alignment */
-  color: color-mix(in srgb, var(--accent) 45%, transparent); /* Soft gold mark */
+  color: color-mix(in srgb, var(--accent) 35%, transparent); /* Soft gold mark */
   font-size: clamp(3.5rem, 8vw, 5rem); /* Large atmospheric mark */
   line-height: 1; /* Tight mark leading */
   font-variation-settings: "wght" var(--font-wght-bold); /* Bold decorative mark */
@@ -1020,7 +1195,7 @@ h1 {
 
 /* Visible active review slide */
 .reviews-carousel__slide.is-active {
-  border-color: color-mix(in srgb, var(--accent) 48%, var(--border)); /* Stronger gold edge on the current review */
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--border)); /* Subtle gold edge on the current review */
 }
 
 /* Next slide starts just off the right edge */
@@ -1153,7 +1328,7 @@ h1 {
 .home-hero {
   max-width: 760px; /* Limit hero width */
   margin: 0 auto; /* Center hero block */
-  padding: clamp(7.5rem, 18vw, 10rem) clamp(1.25rem, 4vw, 2rem) 0; /* Clear logo tab at every width */
+  padding: clamp(4.5rem, 10vw, 6.25rem) clamp(1.25rem, 4vw, 2rem) clamp(0.75rem, 2vw, 1.25rem); /* Tighter space above and below the slogan */
   text-align: center; /* Center hero copy */
   width: 100%; /* Fill available width */
   box-sizing: border-box; /* Include padding in width */
@@ -1180,7 +1355,7 @@ h1 {
 
 /* Home hero lead paragraph */
 .home-hero__lead {
-  margin: 0 auto 1.5rem; /* Center and space below lead */
+  margin: 0 auto; /* Center the lead with no extra bottom gap */
   color: var(--text-muted); /* Muted lead text */
   font-size: 1.1rem; /* Slightly larger body */
   max-width: 520px; /* Readable line length */
@@ -1367,7 +1542,7 @@ h1 {
   overflow-x: auto; /* Allow horizontal scroll if calendar is wider than screen */
   background-color: var(--surface); /* Theme-aware panel behind calendar */
   border: 1px solid var(--border); /* Theme-aware border around calendar area */
-  border-radius: 6px; /* Rounded corners */
+  border-radius: 8px; /* Rounded corners */
   padding: 1rem; /* Inner spacing around iframe */
 }
 
@@ -1411,10 +1586,34 @@ h1 {
 
 /* Upcoming events panel on events page */
 .events-upcoming-panel {
-  padding: 1.25rem 1.5rem; /* Inner spacing for panel */
+  padding: 1.15rem 1.25rem 1.25rem; /* Compact inner spacing for the schedule panel */
   background-color: var(--surface); /* Theme-aware panel background */
   border: 1px solid var(--border); /* Theme-aware border */
-  border-radius: 8px; /* Rounded panel corners */
+  border-radius: 10px; /* Rounded panel corners */
+}
+
+/* Compact header above the upcoming list */
+.events-upcoming-panel__header {
+  margin-bottom: 0.85rem; /* Tight space before the event rows */
+}
+
+/* Small label above the upcoming title */
+.events-upcoming-panel__eyebrow {
+  margin: 0 0 0.2rem; /* Compact space under the eyebrow */
+  color: var(--text-muted); /* Muted schedule label */
+  font-size: 0.72rem; /* Small supporting label */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold eyebrow */
+  letter-spacing: 0.12em; /* Spaced label feel */
+  text-transform: uppercase; /* Uppercase section label */
+}
+
+/* Upcoming events section heading */
+.events-upcoming-panel__title {
+  margin: 0; /* Header wrapper owns outer spacing */
+  font-size: clamp(1.2rem, 2.5vw, 1.45rem); /* Compact section title */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold heading */
+  color: var(--accent); /* Golden orange heading */
+  line-height: 1.2; /* Tight title leading */
 }
 
 /* Staff action links below upcoming list */
@@ -1423,58 +1622,125 @@ h1 {
   margin-bottom: 0; /* Panel handles outer spacing */
 }
 
-/* Upcoming events section heading */
-.events-upcoming-panel__title {
-  margin-bottom: 0.75rem; /* Space below heading */
-  font-size: 1.25rem; /* Slightly larger section title */
-  font-variation-settings: "wght" var(--font-wght-bold); /* Bold heading */
-  color: var(--accent); /* Golden orange heading */
-}
-
 /* Loading placeholder in upcoming list */
 .events-upcoming__loading {
+  margin: 0; /* Remove default paragraph margin */
+  padding: 0.75rem 0; /* Compact loading state */
   color: var(--text-muted); /* Muted loading text */
+  font-size: 0.95rem; /* Readable loading size */
 }
 
 /* Empty state message in upcoming list */
 .events-upcoming__empty {
+  margin: 0; /* Remove default paragraph margin */
+  padding: 0.75rem 0; /* Compact empty state */
   color: var(--text-muted); /* Muted empty-state text */
+  font-size: 0.95rem; /* Readable empty-state size */
+  line-height: 1.5; /* Comfortable empty-state leading */
 }
 
 /* Upcoming events list */
 .events-upcoming__list {
   list-style: none; /* Remove default bullets */
+  display: flex; /* Stack event cards vertically */
+  flex-direction: column; /* One event per row */
+  gap: 0.65rem; /* Compact space between event cards */
+  margin: 0; /* Remove default list margin */
+  padding: 0; /* Remove default list padding */
 }
 
 /* Single upcoming event row */
 .events-upcoming__item {
-  padding: 0.85rem 0; /* Vertical spacing per event */
-  border-bottom: 1px solid var(--border); /* Divider between events */
+  display: grid; /* Date badge beside event details */
+  grid-template-columns: 4.25rem minmax(0, 1fr); /* Fixed badge width plus flexible text */
+  gap: 0.85rem; /* Space between badge and copy */
+  align-items: center; /* Vertically center badge with text */
+  padding: 0.7rem 0.75rem; /* Compact card padding */
+  background-color: color-mix(in srgb, var(--charcoal) 18%, var(--surface)); /* Slightly deeper event card */
+  border: 1px solid color-mix(in srgb, var(--border) 80%, var(--accent)); /* Soft framed event card */
+  border-radius: 10px; /* Rounded event card corners */
 }
 
-/* Remove divider on last event row */
-.events-upcoming__item:last-child {
-  border-bottom: none; /* No line after final item */
+/* Date badge on the left of each event */
+.events-upcoming__badge {
+  display: flex; /* Stack weekday, day, and month */
+  flex-direction: column; /* Vertical calendar chip */
+  align-items: center; /* Center badge labels */
+  justify-content: center; /* Center badge content */
+  min-height: 4.25rem; /* Keep badges consistently square-ish */
+  padding: 0.35rem 0.25rem; /* Compact badge padding */
+  background-color: color-mix(in srgb, var(--maroon) 82%, var(--charcoal)); /* Maroon calendar chip */
+  border-radius: 8px; /* Rounded badge corners */
+  color: var(--cream); /* Cream text on maroon */
+  text-align: center; /* Center badge type */
+  line-height: 1.1; /* Tight badge leading */
+}
+
+/* Weekday label inside the date badge */
+.events-upcoming__badge-weekday {
+  font-size: 0.65rem; /* Small weekday label */
+  letter-spacing: 0.08em; /* Spaced weekday */
+  text-transform: uppercase; /* Uppercase weekday */
+  color: var(--pale-yellow); /* Soft gold weekday accent */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold weekday */
+}
+
+/* Day number inside the date badge */
+.events-upcoming__badge-day {
+  margin: 0.15rem 0 0.05rem; /* Nest the day between weekday and month */
+  font-size: 1.45rem; /* Large day number */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold day number */
+  color: var(--cream); /* Bright day number */
+}
+
+/* Month label inside the date badge */
+.events-upcoming__badge-month {
+  font-size: 0.68rem; /* Compact month label */
+  letter-spacing: 0.06em; /* Spaced month */
+  text-transform: uppercase; /* Uppercase month */
+  color: color-mix(in srgb, var(--cream) 80%, var(--pale-yellow)); /* Soft cream month */
+  font-variation-settings: "wght" var(--font-wght-bold); /* Bold month */
+}
+
+/* Text column beside the date badge */
+.events-upcoming__body {
+  min-width: 0; /* Allow long titles to wrap cleanly */
 }
 
 /* Event title in upcoming list */
 .events-upcoming__title {
-  margin-bottom: 0.2rem; /* Space below title */
-  font-size: 1.05rem; /* Slightly larger than body */
+  margin: 0 0 0.2rem; /* Tight space below title */
+  font-size: 1.05rem; /* Clear event title size */
   font-variation-settings: "wght" var(--font-wght-bold); /* Bold event title */
   color: var(--text); /* Theme-aware title text */
+  line-height: 1.25; /* Compact title leading */
 }
 
 /* Event date/time in upcoming list */
 .events-upcoming__when {
-  margin-bottom: 0.25rem; /* Space before optional details */
+  margin: 0; /* Remove default paragraph margin */
   color: var(--accent); /* Golden orange date text */
+  font-size: 0.88rem; /* Slightly smaller supporting time line */
   font-variation-settings: "wght" var(--font-wght-regular); /* Regular weight date */
+  line-height: 1.35; /* Comfortable time leading */
 }
 
 /* Event description in upcoming list */
 .events-upcoming__details {
+  margin: 0.35rem 0 0; /* Small space above optional details */
   color: var(--text-muted); /* Muted description text */
+  font-size: 0.85rem; /* Compact details size */
+  line-height: 1.45; /* Readable details leading */
+}
+
+/* Light mode upcoming event cards */
+[data-theme="light"] .events-upcoming__item {
+  background-color: color-mix(in srgb, var(--cream) 88%, var(--pale-yellow)); /* Soft cream event card */
+  border-color: var(--border-strong); /* Clearer card edge on light pages */
+}
+
+[data-theme="light"] .events-upcoming__badge {
+  background-color: var(--maroon); /* Keep the maroon calendar chip in light mode */
 }
 
 /* Staff setup note when calendar events are missing */
@@ -1592,6 +1858,7 @@ footer,
   color: var(--btn-text); /* Charcoal text on gold button */
   padding: 0.75rem 1.75rem; /* Button inner spacing */
   text-decoration: none; /* Remove underline */
+  border: none; /* Flat button edge */
   border-radius: 4px; /* Slightly rounded button corners */
   font-size: 0.95rem; /* Button text size */
   letter-spacing: 0.05em; /* Spaced button label */
@@ -1602,6 +1869,7 @@ footer,
 /* Darken button on hover */
 .btn:hover {
   background-color: var(--accent-hover); /* Maroon button background on hover */
+  color: var(--cream); /* Cream text on maroon hover */
 }
 
 /* Theme toggle button shared styles */
@@ -2192,7 +2460,7 @@ body.home .home-cards {
   gap: clamp(1.5rem, 3vw, 2.5rem); /* Fluid card spacing */
   max-width: 1400px; /* Wider grid for larger cards on big screens */
   margin: 0 auto; /* Center grid horizontally */
-  padding: clamp(2.5rem, 6vw, 4rem) clamp(1.25rem, 4vw, 3rem); /* Fluid side and vertical padding */
+  padding: clamp(1.25rem, 3vw, 2rem) clamp(1.25rem, 4vw, 3rem) clamp(2.5rem, 6vw, 4rem); /* Tighter space under the hero, keep side/bottom room */
   width: 100%; /* Fill available width */
   background-color: var(--notch-bg); /* Match the card cutout circles to the surrounding section */
   box-sizing: border-box; /* Include padding in width */
